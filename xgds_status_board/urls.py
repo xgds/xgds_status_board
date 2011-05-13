@@ -6,6 +6,11 @@
 
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
-    url(r'^$', 'views.index', name='index'),
+urlpatterns = patterns(
+    '',
+    
+    (r'^$', views.statusBoard),
+    (r'^announcements.html$', views.statusBoardAnnouncements),
+    (r'^schedule.json$', views.statusBoardSchedule),
+    (r'^serverDatetime.json$', views.getServerDatetimeJSON),
 )
