@@ -6,6 +6,8 @@
 
 from django.conf.urls.defaults import *
 
+from xgds_status_board import views
+
 urlpatterns = patterns(
     '',
     
