@@ -1,0 +1,9 @@
+recursive-include doc_src *
+recursive-include docs *
+
+recursive-include xgds_status_board/media *
+recursive-include xgds_status_board/templates *
+
+include LICENSE
+include README.rst
+include *.txt
