@@ -1,8 +1,9 @@
 {% if announcements|length > 0 %}
-<ul class='TightSpacePara'>
-  {% for ann in announcements %}<li>{{ann.content}} <i class='pdtTime'>({{ann.dateCreated|date:"m/d H:i"}})</i></li>
-  {% endfor %}
-</ul>
+	<ul class='TightSpacePara'>
+	  {% for ann in announcements %}
+	  	<li>{{ann.content}} <i class='localTime'>({{ann.dateCreated|date:"m/d H:i"}})</i></li>
+	  {% endfor %}
+	</ul>
 {% else %}
  (none)
 {% endif %}

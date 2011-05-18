@@ -10,9 +10,9 @@ from xgds_status_board import views
 
 urlpatterns = patterns(
     '',
-    
-    (r'^$', views.statusBoard),
+    url(r'^$', views.statusBoard, name='xgds_status_boardView'),
     (r'^announcements.html$', views.statusBoardAnnouncements),
     (r'^schedule.json$', views.statusBoardSchedule),
     (r'^serverDatetime.json$', views.getServerDatetimeJSON),
+    url(r'^edit', views.statusBoardEdit, name='xgds_status_boardEdit')
 )

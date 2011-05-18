@@ -33,7 +33,7 @@ class StatusboardAnnouncement(models.Model):
                                        blank=True, auto_now_add=True, editable=False)
     content = models.CharField(max_length=765, blank=True)
     class Meta:
-        db_table = u'StatusBoard_Announcement'
+        db_table = u'xgds_status_board_announcement'
         verbose_name = "Announcement"
     def __unicode__(self):
         return "%s: %s" % (self.dateCreated, self.content)
@@ -56,7 +56,7 @@ class StatusboardEvent(models.Model):
                                        blank=True, default=midnightThisMorning)
     content = models.CharField(max_length=765, blank=True)
     class Meta:
-        db_table = u'StatusBoard_Event'
+        db_table = u'xgds_status_board_event'
         verbose_name = "Event"
     def __unicode__(self):
         return "%s: %s" % (self.dateOfEvent, self.content)
@@ -67,7 +67,7 @@ class StatusboardPlanStatus(models.Model):
     keyword = models.CharField(max_length=64, blank=True)
     value = models.CharField(max_length=196, blank=True)
     class Meta:
-        db_table = u'StatusBoard_PlanStatus'
+        db_table = u'StatusBoard_Plan_Status'
         verbose_name = "PlanStatus"
     def __unicode__(self):
         return "%s: %s (%s)" % (self.keyword, self.value, self.timestamp)

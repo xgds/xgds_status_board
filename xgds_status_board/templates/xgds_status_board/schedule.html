@@ -1,16 +1,23 @@
+<script type="text/javascript">
+var remoteTimezoneOffset = {{ remoteTimezoneOffset }};
+</script>
 <table border="1">
  <tr bgcolor="#333333">
 	<td width="65" align="center">Timer</td>
-	<td >HMP</td>
-	<td >PDT</td>
+	{% if remoteTimezoneOffset != 0 %}
+	<td >{{ remoteTimezone }}</td>
+	{% endif %}
+	<td >{{ localTimezone }}</td>
 	<td>Task</td>
 </tr>
 {% for event,siteTime in eventsPlusSiteTimes %}
   <tr id='schedRow{{forloop.counter}}' 
     {% if forloop.first %} class="boldClass"{% endif %}>
     <td width="120" align="center">In <a href="#" onclick="selectSchedRow({{forloop.counter}});" class='timeLink'><span id='scheduleTimer{{forloop.counter}}'>--</span></a></td>
-    <td width="120" align="center" class='hmpTime'>At {{siteTime|time:"H:i"}}</td>
-    <td width="120" align="center" class='pdtTime'>At {{event.dateOfEvent|time:"H:i"}}</td>
+    {% if remoteTimezoneOffset != 0 %}
+    	<td width="120" align="center" class='remoteTime'>At {{siteTime|time:"H:i"}}</td>
+    {% endif %}
+    <td width="120" align="center" class='localTime'>At {{event.dateOfEvent|time:"H:i"}}</td>
     <td width="440">{{event.content}}</td>
   </tr>
 {% endfor %}

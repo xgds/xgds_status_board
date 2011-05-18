@@ -1,16 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Operations Status Board</title>
-
-<script type="text/javascript" src="/media/js/jquery-1.3.2.js"></script>
-<script type="text/javascript" src="/media/js/jquery.countdown.js"></script>
-<script type="text/javascript" src="/media/js/jquery.timers-1.2.js"></script>
+{% extends "StatusBoardSiteCustomization.html" %}
+{% block headExtras %}
+<script src="{{ MEDIA_URL }}external/js/jquery.min.js"></script>
+<script src="{{ MEDIA_URL }}jquery/js/jquery.countdown.js"></script>
+<script src="{{ MEDIA_URL }}jquery/js/jquery.timers-1.2.js"></script>
 <script type="text/javascript">
 var myDates = ["3/30/2010 12:35:00", "3/30/2010 13:35:00", "3/30/2010 14:30:00"];
 var scheduleItemCount = 0;
 var lastScheduleHTML = "";
+var remoteTimezoneOffset = {{ remoteTimezoneOffset }};
 
 $(function () {
 	var today = new Date();
@@ -27,13 +24,13 @@ function updateDynamicElements() {
 }
 
 function updateAnnouncements() {
-  $.get('/share/statusBoard/announcements.html', function(data) {
+  $.get('/xgds_status_board/announcements.html', function(data) {
     $('#announceSection').html(data);
   })
 }
 
 function updateSchedule() {
-  $.getJSON('/share/statusBoard/schedule.json', function(data) {
+  $.getJSON('/xgds_status_board/schedule.json', function(data) {
     if (lastScheduleHTML != data.schedHtml) {
       $('#scheduleSection').html(data.schedHtml);
       myDates = data.localTimes;
@@ -41,7 +38,7 @@ function updateSchedule() {
       if (scheduleItemCount != 0) {
 //        $('#scheduleTimer1').countdown({until: new Date(myDates[0]),
 //          format:"HM", compact:true});
-	updateSchedRows();
+		updateSchedRows();
       }
     }
     lastScheduleHTML = data.schedHtml;
@@ -49,32 +46,34 @@ function updateSchedule() {
 }
 
 function updateServerTimestamp() {
-  $.getJSON('/share/statusBoard/serverDatetime.json', function(data) {
+  $.getJSON('/xgds_status_board/serverDatetime.json', function(data) {
 
       dateStr = data.dayName + " " + data.month + "/" + data.day;
       $('#date').html(dateStr);
-      timestampStr = "PDT: "  + data.hour + ":" + data.min
+      timestampStr = "{{ localTimezone }}: "  + data.hour + ":" + data.min
+      
       $('#serverTimestamp').html(timestampStr);
      
-      var hourInt = parseInt(data.hour, 10);
-      hourInt = hourInt + 2;
-      hmpTimestampStr = "HMP: " + hourInt + ":" + data.min
-     $('#hmpTimestamp').html(hmpTimestampStr);
+      if (remoteTimezoneOffset != 0){
+	      var hourInt = parseInt(data.hour, 10);
+	      hourInt = hourInt + remoteTimezoneOffset;
+	      remoteTimestampStr = "{{ remoteTimezone }}: " + hourInt + ":" + data.min
+	      $('#remoteTimestamp').html(remoteTimestampStr);
+      }
   })
 }
 
 function zeroPad(num,count)
 {
-var numZeropad = num + '';
-while(numZeropad.length < count) {
-numZeropad = "0" + numZeropad;
-}
-return numZeropad;
+	var numZeropad = num + '';
+	while(numZeropad.length < count) {
+		numZeropad = "0" + numZeropad;
+	}
+	return numZeropad;
 }
 
 function selectSchedRow(num) {
 	var row = 0;
-	var timerField = null;
 	var timerFieldSelector = '';
 
 	for (i=1; i<=scheduleItemCount; i++) {
@@ -82,8 +81,6 @@ function selectSchedRow(num) {
 		row.className = '';
 		timerFieldSelector = '#scheduleTimer' + i;
 		$(timerFieldSelector).countdown('destroy');
-		timerField = document.getElementById('scheduleTimer' + i);
-		timerField.innerHTML = '--';
 	}
 	row = document.getElementById('schedRow' + num);
 	row.className = 'boldClass';
@@ -93,7 +90,6 @@ function selectSchedRow(num) {
 
 function updateSchedRows() {
         var row = 0;
-        var timerField = null;
         var timerFieldSelector = '';
 
         for (i=1; i<=scheduleItemCount; i++) {
@@ -137,10 +133,10 @@ a:visited {color:#00ccff}
 	font-size:26px;
 	text-decoration:bold;
 }
-.hmpTime {
+.remoteTime {
 	color:#FFFF33;
 }
-.pdtTime {
+.localTime {
 	color:#555533;
 }
 .linkblock {
@@ -162,34 +158,39 @@ a:visited {color:#00ccff}
 li { padding-bottom: 10px; }
 -->
 </style>
+{% endblock headExtras %}
 
-
-</head>
-
-<body bgcolor="black">
+{% block contents %}
 <span class="statusboard">
-<h2 class="h3" >K10 Operations Status
-    <a href="/share/admin/statusBoard/" style="color:#0000FF">[Edit]</a></h2>
+
+{% block preAnnouncements %}
+{% endblock preAnnouncements %}
+{% block announcements %}
 <h3 class="h3"><br/>Announcements</h3>
 <span id='announceSection'></span>
+{% endblock announcements %}
+
+{% block preSchedule %}
+{% endblock preSchedule %}
+{% block schedule %}
 <h3 class="h3"><br/>Schedule</h3>
 <span id='scheduleSection'></span>
+{% endblock schedule %}
 </span>
+
 <span class='linkblock'>
+{% block currentTime %}
   <span class='time'>
-  <span id="date"></span><br/>
-  <span class='hmpTime' id="hmpTimestamp" ></span><br/>
-  <span class='pdtTime' id="serverTimestamp" ></span>
+  	<span id="date"></span><br/>
+  	{% if remoteTimezoneOffset != 0 %}
+		  <span class='remoteTime' id="remoteTimestamp" ></span><br/>
+  	{% endif %}
+  	<span class='localTime' id="serverTimestamp" ></span>
   </span>
-<h3 class="h3"><br/>Details</h3>
-  <span class='details'>
-  <ul>
-  <li><a href="/SiteSurveyKML/k10net.kml">K10 Live<br>(loads in Google Earth)</a></li>
-  <li><a href="/gdsManager/status.html">GDS manager status<br>(also links to pyraptord status)</a></li>
-  <li><a href="/SiteSurveyKML/k10planStatus.html">Plan status</a></li>
-  <li><a href="https://babelfish.arc.nasa.gov/trac/roversw/wiki/GdsStartupInstructions">GDS startup instructions<br>(includes how to monitor microraptor)</a></li>
-  </ul>
-  </span>
+{% endblock currentTime %}
+{% block links %}
+{% endblock links %}
 </span>
-</body>
-</html>
+{% block details %}
+{% endblock details %}
+{% endblock contents %}

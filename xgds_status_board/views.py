@@ -8,7 +8,7 @@ import datetime
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
+from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse
 
 from geocamUtil import anyjson as json
 
@@ -17,9 +17,18 @@ from xgds_status_board import settings
 
 def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
-                              {'form': 'Funky Chicken'},
+                              {'remoteTimezone': settings.REMOTE_TIMEZONE,
+                              'localTimezone': settings.LOCAL_TIMEZONE,
+                              'remoteTimezoneOffset': settings.REMOTE_TIMEZONE_OFFSET},
                               context_instance=RequestContext(request))
 
+def statusBoardEdit(request):
+    announcementList = StatusboardAnnouncement.objects.\
+        filter(visible=True).order_by('-priority')
+    return render_to_response("xgds_status_board/announcements.html", 
+                              {'announcements': announcementList},
+                              context_instance=RequestContext(request))
+    
 def statusBoardAnnouncements(request):
     announcementList = StatusboardAnnouncement.objects.\
         filter(visible=True).order_by('-priority')
@@ -30,14 +39,17 @@ def statusBoardAnnouncements(request):
 def statusBoardSchedule(request):
     eventList = StatusboardEvent.objects.\
         filter(visible=True).filter(completed=False).order_by('dateOfEvent')
-    siteTimeOffset = datetime.timedelta(hours = settings.HMP_TIME_OFFSET)
+    siteTimeOffset = datetime.timedelta(hours = settings.REMOTE_TIMEZONE_OFFSET)
     localTimes = [e.dateOfEvent.strftime("%m/%d/%Y %H:%M:%S") 
                   for e in eventList]
     siteTimes = [e.dateOfEvent + siteTimeOffset for e in eventList]
     eventsPlusSiteTimes = zip(eventList, siteTimes)
     schedHtml = render_to_response("xgds_status_board/schedule.html", 
                                    {'eventList': eventList,
-                                    'eventsPlusSiteTimes': eventsPlusSiteTimes},
+                                    'eventsPlusSiteTimes': eventsPlusSiteTimes,
+                                    'remoteTimezone': settings.REMOTE_TIMEZONE,
+                                    'localTimezone': settings.LOCAL_TIMEZONE,
+                                    'remoteTimezoneOffset': settings.REMOTE_TIMEZONE_OFFSET},
                                    context_instance=RequestContext(request))
     resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes, 
                   'dateCount': eventList.count()}
