@@ -61,13 +61,17 @@ class StatusboardEvent(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.dateOfEvent, self.content)
 
-class StatusboardPlanStatus(models.Model):
-    id = models.IntegerField(primary_key=True)
-    timestamp = models.DateTimeField(null=True)
-    keyword = models.CharField(max_length=64, blank=True)
-    value = models.CharField(max_length=196, blank=True)
-    class Meta:
-        db_table = u'StatusBoard_Plan_Status'
-        verbose_name = "PlanStatus"
-    def __unicode__(self):
-        return "%s: %s (%s)" % (self.keyword, self.value, self.timestamp)
+#
+# Note -- was intended for K10 plan status monitoring.  Should probably
+# be moved to Kn specific repository.
+#
+# class StatusboardPlanStatus(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     timestamp = models.DateTimeField(null=True)
+#     keyword = models.CharField(max_length=64, blank=True)
+#     value = models.CharField(max_length=196, blank=True)
+#     class Meta:
+#         db_table = u'StatusBoard_Plan_Status'
+#         verbose_name = "PlanStatus"
+#     def __unicode__(self):
+#         return "%s: %s (%s)" % (self.keyword, self.value, self.timestamp)
