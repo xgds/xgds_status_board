@@ -4,13 +4,15 @@
 <script src="{{ MEDIA_URL }}jquery/js/jquery.countdown.js"></script>
 <script src="{{ MEDIA_URL }}jquery/js/jquery.timers-1.2.js"></script>
 <script type="text/javascript">
-var myDates = ["3/30/2010 12:35:00", "3/30/2010 13:35:00", "3/30/2010 14:30:00"];
+var myDates = [];
 var scheduleItemCount = 0;
 var lastScheduleHTML = "";
 var remoteTimezoneOffset = {{ remoteTimezoneOffset }};
+//TODO: for real, use below date
+//var today = new Date();
+var today = new Date(2011,06,16);
 
 $(function () {
-	var today = new Date();
 //	$('#elapsedTimeField').countdown({since: today, format: "HM", compact:true});
         updateDynamicElements();
 //	$('#scheduleTimer1').countdown({until: new Date(myDates[0]), format:"HM", compact:true});
@@ -18,9 +20,12 @@ $(function () {
 });
 
 function updateDynamicElements() {
-  updateServerTimestamp();
-  updateAnnouncements();
-  updateSchedule();
+	{% block updateDynamicJavascript %}
+  		updateServerTimestamp();
+  		updateAnnouncements();
+  		updateSchedule();
+	{% endblock updateDynamicJavascript %}
+
 }
 
 function updateAnnouncements() {
@@ -163,14 +168,12 @@ li { padding-bottom: 10px; }
 -->
 </style>
 {% endblock headExtras %}
-
 {% block contents %}
 <span class="statusboard">
-
 {% block preAnnouncements %}
 {% endblock preAnnouncements %}
 {% block announcements %}
-<h3 class="h3"><br/>Announcements</h3>
+<h3 class="h3">Announcements</h3>
 <span id='announceSection'></span>
 {% endblock announcements %}
 
