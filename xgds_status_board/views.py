@@ -36,6 +36,21 @@ def statusBoardAnnouncements(request):
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
 
+def statusBoardAnnouncementsJSON(request):
+    announcementList = StatusboardAnnouncement.objects.\
+        filter(visible=True).order_by('-priority')
+    jsonList = []
+
+    for announcement in announcementList:
+        jsonList.append({'id': announcement.id, 
+                         'priority': announcement.priority, 
+                         'visible': announcement.visible,
+                         'dateCreated':announcement.dateCreated.isoformat()+'Z',
+                         'content': announcement.content})
+       
+    stuff = json.dumps(jsonList)
+    return HttpResponse(stuff, mimetype='text/plain')
+
 def statusBoardSchedule(request):
     eventList = StatusboardEvent.objects.\
         filter(visible=True).filter(completed=False).order_by('dateOfEvent')
