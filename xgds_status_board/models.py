@@ -23,7 +23,7 @@ PRIORITY_CHOICES = (
     )
 
 class StatusboardAnnouncement(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     priority = models.IntegerField(null=True, blank=True, 
                                    choices=PRIORITY_CHOICES,
                                    default=5,
@@ -42,7 +42,7 @@ def midnightThisMorning():
     return datetime.datetime.now().replace(hour=0, minute=0, second=0)
 
 class StatusboardEvent(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     priority = models.IntegerField(null=True, blank=True,
                                    choices=PRIORITY_CHOICES,
                                    default=5,
