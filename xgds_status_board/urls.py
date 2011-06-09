@@ -11,10 +11,9 @@ from xgds_status_board import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.statusBoard, name='xgds_status_boardView'),
-    (r'^announcements.html$', views.statusBoardAnnouncements),
-    (r'^announcementsJSON$', views.statusBoardAnnouncementsJSON,
-     {'readOnly':True}),
-    (r'^schedule.json$', views.statusBoardSchedule),
-    (r'^serverDatetime.json$', views.getServerDatetimeJSON),
+    (r'^announcements.html$', views.statusBoardAnnouncements, {}, "announcements.html"),
+    (r'^announcementsJSON$', views.statusBoardAnnouncementsJSON,{'readOnly':True}),
+    (r'^schedule.json$', views.statusBoardSchedule, {}, "schedule.json"),
+    (r'^serverDatetime.json$', views.getServerDatetimeJSON, {}, "serverDatetime.json"),
     url(r'^edit', views.statusBoardEdit, name='xgds_status_boardEdit')
 )

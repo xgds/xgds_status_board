@@ -30,13 +30,13 @@ function updateDynamicElements() {
 }
 
 function updateAnnouncements() {
-  $.get('/xgds_status_board/announcements.html', function(data) {
+  $.get('{% url announcements.html %}', function(data) {
     $('#announceSection').html(data);
   })
 }
 
 function updateSchedule() {
-  $.getJSON('/xgds_status_board/schedule.json', function(data) {
+  $.getJSON('{% url schedule.json %}', function(data) {
     if (lastScheduleHTML != data.schedHtml) {
       $('#scheduleSection').html(data.schedHtml);
       myDates = data.localTimes;
@@ -52,7 +52,7 @@ function updateSchedule() {
 }
 
 function updateServerTimestamp() {
-  $.getJSON('/xgds_status_board/serverDatetime.json', function(data) {
+  $.getJSON('{% url serverDatetime.json %}', function(data) {
 
       dateStr = data.dayName + " " + data.month + "/" + data.day;
       $('#date').html(dateStr);
