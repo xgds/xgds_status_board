@@ -25,7 +25,7 @@ def statusBoard(request):
 def statusBoardEdit(request):
     announcementList = StatusboardAnnouncement.objects.\
         filter(visible=True).order_by('-priority')
-    return render_to_response("xgds_status_board/announcements.html", 
+    return render_to_response("xgds_status_board/EditAnnouncements.html", 
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
     
@@ -35,6 +35,16 @@ def statusBoardAnnouncements(request):
     return render_to_response("xgds_status_board/announcements.html", 
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
+
+def addAnnouncement(request):
+    return HttpResponse("Not implemented", status=400)
+    pass
+
+def updateAnnouncement(request):
+    return HttpResponse("Not implemented", status=400)
+
+def deleteAnnouncement(request):
+    return HttpResponse("Not implemented")
 
 def statusBoardAnnouncementsJSON(request):
     announcementList = StatusboardAnnouncement.objects.\
