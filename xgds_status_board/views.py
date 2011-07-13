@@ -5,6 +5,7 @@
 # __END_LICENSE__
 
 import datetime
+import logging
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -14,6 +15,8 @@ from geocamUtil import anyjson as json
 
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
+
+logger = logging.getLogger('plrp')
 
 def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
@@ -37,11 +40,23 @@ def statusBoardAnnouncements(request):
                               context_instance=RequestContext(request))
 
 def addAnnouncement(request):
-    return HttpResponse("Not implemented", status=400)
-    pass
+    if request.is_ajax():
+        vis = bool(request.REQUEST['visible'])
+        priority = request.REQUEST['priority']
+        content = request.REQUEST['content']
+
+        try:
+            ann = StatusboardAnnouncement(priority=priority, visible=vis,content=content)
+            ann.save()
+            return HttpResponse(str(ann.id))
+        except Exception as e:
+            logger.error(str(e))
+            return HttpResponse("Error saving new announcement.", status=500)
+    else:
+        return HttpResponse(status=500)
 
 def updateAnnouncement(request):
-    return HttpResponse("Not implemented", status=400)
+    return HttpResponse("Not implemented")
 
 def deleteAnnouncement(request):
     return HttpResponse("Not implemented")

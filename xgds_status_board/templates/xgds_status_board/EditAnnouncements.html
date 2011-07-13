@@ -53,6 +53,7 @@ $("#formAddNewRow").validate();
 {% if errorMsg %}
 <h3>{{ errorMsg }}</h3>
 {% endif %}
+<h3>Edit Announcements</h3>
 <p>
 <p>
 <form id="formAddNewRow" action="#" title="Create announcement">
@@ -67,7 +68,7 @@ $("#formAddNewRow").validate();
 <select id="priority" name="priority" class="required" rel="2">
 {% for i in 0123456789|make_list %}
   <option
-    {% if i==9 %}
+    {% if i == "9" %}
     selected="{{ i }}"
     {% endif %}
     value="{{ i }}">{{ i }}</option>
@@ -101,8 +102,14 @@ $("#formAddNewRow").validate();
 	{% if announcements %}
 	{% for ann in announcements %}
 	<tr id="{{ ann.id }}">
-	  <td>{{ ann.dateCreated|date:"YYYY-mm-dd H:i:s" }}</td>
-	  <td>{{ ann.visible }}</td>
+	  <td>{{ ann.dateCreated|date:"Y-m-d H:i:s" }}</td>
+	  <td id="{{ ann.visible }}">
+	    {% if ann.visible %}
+	    Yes
+	    {% else %}
+	    No
+	    {% endif %}
+	  </td>
 	  <td>{{ ann.priority }}</td>
 	  <td>{{ ann.content }}</td>
 	</tr>

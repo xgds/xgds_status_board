@@ -15,8 +15,8 @@ urlpatterns = patterns(
     (r'^announcementsJSON$', views.statusBoardAnnouncementsJSON,{'readOnly':True}),
     (r'^schedule.json$', views.statusBoardSchedule, {}, "schedule.json"),
     (r'^serverDatetime.json$', views.getServerDatetimeJSON, {}, "serverDatetime.json"),
-    url(r'^edit', views.statusBoardEdit, name='xgds_status_boardEdit'),
-    (r'^addAnnouncement$', views.addAnnouncement, {}, name='addAnnouncement'),
-    (r'^updateAnnouncement$', views.updateAnnouncement, {}, name='updateAnnouncement'),
-    (r'^deleteAnnouncement$', views.deleteAnnouncement, {}, name='deleteAnnouncement'),    
+    (r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
+    (r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
+    (r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
+    (r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),    
 )
