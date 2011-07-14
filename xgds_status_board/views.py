@@ -37,6 +37,17 @@ def statusBoardAnnouncements(request):
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
 
+def getAnnouncementTS(request):
+    if request.is_ajax():
+        id = request.REQUEST['id']
+
+        try:
+            ann = StatusboardAnnouncement.objects.get(id=id)
+            return HttpResponse(str(ann.dateCreated))
+        except StatusboardAnnouncement.DoesNotExist:
+            return HttpResponse(status=500)
+        
+
 def addAnnouncement(request):
     if request.is_ajax():
         vis = bool(int(request.REQUEST['visible']))

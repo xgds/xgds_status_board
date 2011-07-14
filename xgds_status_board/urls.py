@@ -18,5 +18,6 @@ urlpatterns = patterns(
     (r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
     (r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
     (r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
-    (r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),    
+    (r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
+    (r'^getAnnouncementTS$', views.getAnnouncementTS, {}, "getAnnouncementTS"),
 )
