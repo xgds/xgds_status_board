@@ -30,7 +30,7 @@ null,
 {
 type: 'select',
 onblur: 'submit',
-data: '{"True":"Yes","False":"No","selected":"True"}',
+data: '{"1":"Yes","0":"No","selected":"1"}',
 },
 {
 type: 'select',
@@ -60,8 +60,8 @@ $("#formAddNewRow").validate();
 <input type="hidden" name="time" id="time" value="" rel="0" />
 <label for="name">Visible?</label><br />
 <select id="visible" name="visible" class="required" rel="1">
-  <option value="True">Yes</option>
-  <option value="False">No</option>
+  <option value="1">Yes</option>
+  <option value="0">No</option>
 </select>
 <br />
 <label for="name">Priority</label><br />
@@ -103,7 +103,7 @@ $("#formAddNewRow").validate();
 	{% for ann in announcements %}
 	<tr id="{{ ann.id }}">
 	  <td>{{ ann.dateCreated|date:"Y-m-d H:i:s" }}</td>
-	  <td id="{{ ann.visible }}">
+	  <td>
 	    {% if ann.visible %}
 	    Yes
 	    {% else %}

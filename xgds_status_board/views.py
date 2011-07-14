@@ -27,7 +27,7 @@ def statusBoard(request):
 
 def statusBoardEdit(request):
     announcementList = StatusboardAnnouncement.objects.\
-        filter(visible=True).order_by('-priority')
+        order_by('-priority')
     return render_to_response("xgds_status_board/EditAnnouncements.html", 
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
@@ -41,7 +41,7 @@ def statusBoardAnnouncements(request):
 
 def addAnnouncement(request):
     if request.is_ajax():
-        vis = bool(request.REQUEST['visible'])
+        vis = bool(int(request.REQUEST['visible']))
         priority = request.REQUEST['priority']
         content = request.REQUEST['content']
 
@@ -56,10 +56,45 @@ def addAnnouncement(request):
         return HttpResponse(status=500)
 
 def updateAnnouncement(request):
-    return HttpResponse("Not implemented")
+    if request.is_ajax():
+        id = request.REQUEST['id']
+        value = request.REQUEST['value']
+        colName = request.REQUEST['columnName']
+        colPos = request.REQUEST['columnPosition']
+        colId = request.REQUEST['columnId']
+        rowId = request.REQUEST['rowId']
+        logging.debug("got update event: id=[%s] value=[%s] colName=[%s] colPos=[%s] colId=[%s] rowId=[%s]"%(id, value, colName, colPos, colId, rowId))
+
+        ann = StatusboardAnnouncement.objects.get(id=id)
+        if colId == '1':
+            ann.visible = bool(int(value))
+        elif colId == '2':
+            ann.priority = value
+        elif colId == '3':
+            ann.content = value
+
+        ann.save()
+        return HttpResponse(value)        
+    else:
+        return HttpResponse(status=500)
 
 def deleteAnnouncement(request):
-    return HttpResponse("Not implemented")
+    if request.is_ajax():
+        id = request.REQUEST['id']
+
+        try:
+            ann = StatusboardAnnouncement.objects.get(id=id)
+        except StatusboardAnnouncement.DoesNotExist:
+            return HttpResponse("Could not find announcement to delete. Please refresh the page.")
+
+        try:
+            ann.delete()
+        except Exception:
+            return HttpResponse("Server error attempting to delete announcement.")
+
+        return HttpResponse("ok")
+    else:        
+        return HttpResponse(status=500)
 
 def statusBoardAnnouncementsJSON(request):
     announcementList = StatusboardAnnouncement.objects.\
