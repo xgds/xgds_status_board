@@ -47,8 +47,8 @@ def addAnnouncement(request):
             ann = StatusboardAnnouncement(priority=priority, visible=vis,content=content)
             ann.save()
             return HttpResponse(str(ann.id))
-        except Exception as e:
-            logging.error(str(e))
+        except Exception:
+            #logging.error(str(e))
             return HttpResponse("Error saving new announcement.", status=500)
     else:
         return HttpResponse(status=500)
