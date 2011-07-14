@@ -16,8 +16,6 @@ from geocamUtil import anyjson as json
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
 
-logger = logging.getLogger('plrp')
-
 def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
                               {'remoteTimezone': settings.REMOTE_TIMEZONE,
@@ -49,8 +47,8 @@ def addAnnouncement(request):
             ann = StatusboardAnnouncement(priority=priority, visible=vis,content=content)
             ann.save()
             return HttpResponse(str(ann.id))
-        except Exception as e:
-            logger.error(str(e))
+        except Exception:
+            #logging.error(str(e))
             return HttpResponse("Error saving new announcement.", status=500)
     else:
         return HttpResponse(status=500)
