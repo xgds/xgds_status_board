@@ -126,6 +126,14 @@ function updateSchedRows() {
 	color:#66ccff;
 	text-decoration: bold;
 }
+
+.h2 {
+	vertical-align: baseline;
+	margin: 3px;
+	font-size: 18px;
+	color:#66ccff;
+	text-decoration: bold;
+}
 .details {
 	font-size:14px;
 }
@@ -133,14 +141,14 @@ function updateSchedRows() {
 	float:left;
 	width:80%;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	font-size: 23px;
+	font-size: 14px;
 	color:#FFFF99;
 }
 
 a:link {color:#00ccff}
 a:visited {color:#00ccff}
 .time {
-	font-size:26px;
+	#font-size:26px;
 	text-decoration:bold;
 }
 .remoteTime {
@@ -153,8 +161,8 @@ a:visited {color:#00ccff}
 	float:left;
 	width:20%;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-        font-size: 23px;
-        color:#FFFF99;
+#        font-size: 23px;
+    color:#FFFF99;
 }
 
 .timeLink {
@@ -174,14 +182,14 @@ li { padding-bottom: 10px; }
 {% block preAnnouncements %}
 {% endblock preAnnouncements %}
 {% block announcements %}
-<h3 class="h3">Announcements</h3>
+<h2 class="h2">Announcements</h3>
 <span id='announceSection'></span>
 {% endblock announcements %}
 
 {% block preSchedule %}
 {% endblock preSchedule %}
 {% block schedule %}
-<h3 class="h3"><br/>Schedule</h3>
+<h2 class="h2"><br/>Schedule</h3>
 <span id='scheduleSection'></span>
 {% endblock schedule %}
 </span>
