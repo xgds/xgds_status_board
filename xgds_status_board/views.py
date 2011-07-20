@@ -32,7 +32,7 @@ def statusBoardEdit(request):
     
 def statusBoardAnnouncements(request):
     announcementList = StatusboardAnnouncement.objects.\
-        filter(visible=True).order_by('-priority')
+        filter(visible=True).order_by('-dateCreated')
     return render_to_response("xgds_status_board/announcements.html", 
                               {'announcements': announcementList},
                               context_instance=RequestContext(request))
@@ -107,7 +107,7 @@ def deleteAnnouncement(request):
 
 def statusBoardAnnouncementsJSON(request):
     announcementList = StatusboardAnnouncement.objects.\
-        filter(visible=True).order_by('-priority')
+        filter(visible=True).order_by('-dateCreated')
     jsonList = []
 
     for announcement in announcementList:
