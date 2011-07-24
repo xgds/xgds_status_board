@@ -9,7 +9,7 @@ import logging
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 
 from geocamUtil import anyjson as json
 
