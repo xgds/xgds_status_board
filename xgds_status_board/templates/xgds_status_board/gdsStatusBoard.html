@@ -7,7 +7,10 @@
 var myDates = [];
 var scheduleItemCount = 0;
 var lastScheduleHTML = "";
+
+// these will be populated by the server timestamp
 var today = new Date();
+var now = new Date();
 
 $(function () {
 //	$('#elapsedTimeField').countdown({since: today, format: "HM", compact:true});
@@ -37,13 +40,21 @@ function updateDynamicElements() {
 function updateServerTimestamp() {
   $.getJSON('{% url serverDatetime.json %}', function(data) {
 	 $.each(data,function(index, value) {
-	 	dateStr = value.dayName + " " + value.month + "/" + value.day;
-      	$('#date').html(dateStr);
+	 	// populate todays date
+	 	if (index == {{STATUS_BOARD_DATE_TIMEZONE_INDEX}}){
+		 	dateStr = value.dayName + " " + value.month + "/" + value.day;
+	      	$('#date').html(dateStr);
+	      	
+	      	// Javascript dates have the month starting from 0.
+	      	today = new Date(value.year, value.month - 1, value.day);
+	      	now = new Date(value.year, value.month - 1, value.day, value.hour, value.min);
+	      	console.log("now is " + now);
+	 	}
+	 	
+	 	// populate the times
       	timestampStr = value.zone + ": "  + value.hour + ":" + value.min
       	var elementname = '#time' + (index+1)
-      	//var time_element=document.getElementsByName("time" + (index+1))
       	$(elementname).html(timestampStr);
-     	//$(time_element)[0].html(timestampStr);
 	 })
   })
 }
@@ -159,7 +170,7 @@ function updateSchedRows() {
 <span class='linkblock'>
 {% block currentTime %}
   <span class='time'>
-  	<span class='time1' id="date"></span><br/>
+  	<span class='{{today_timeclass}}' id="date"></span><br/>
   	{% for t in STATUS_BOARD_TIMEZONES %}
   		<span class='time{{forloop.counter}}' id="time{{forloop.counter}}" ></span><br/>
   	{% endfor %}

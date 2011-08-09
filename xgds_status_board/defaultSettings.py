@@ -35,12 +35,16 @@ STATUS_BOARD_ANNOUNCEMENTS = True
 STATUS_BOARD_SCHEDULE = False
 STATUS_BOARD_SCORE_SCHEDULE = True
 
-# to add timezones to the status board display fill out this handy dictionary.
-# first one is the default, what is stored in the server and displayed.
-# this can be the only one and is required. (does not have to be GMT)
+# to add timezones to the status board display fill out this handy list.
+# in the database things are stored in uct (GMT)
+# this is the order of display
 STATUS_BOARD_TIMEZONES = []
-STATUS_BOARD_TIMEZONES.append(('GMT','Etc/Greenwich',0)) #store in GMT for the server
+STATUS_BOARD_TIMEZONES.append(('GMT','Etc/Greenwich',0))
 STATUS_BOARD_TIMEZONES.append(('CDT', 'US/Central', -6)) 
-STATUS_BOARD_TIMEZONES.append(('MST', 'US/Mountain', -7)) 
+STATUS_BOARD_TIMEZONES.append(('MST', 'US/Mountain', -7))
+
+# this is the index of the timezone above to use for the date (count from 0)
+# this will control when events will roll over, ie when status board lists will no longer display things for the current day
+STATUS_BOARD_DATE_TIMEZONE = 2 
 
 

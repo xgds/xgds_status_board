@@ -4,17 +4,16 @@
 # All Rights Reserved.
 # __END_LICENSE__
 
-import datetime
 import logging
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from pytz import timezone
 import pytz
 utc = pytz.utc
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
+from django.http import  HttpResponse
 
 from geocamUtil import anyjson as json
 
@@ -25,6 +24,8 @@ timezones = []
 for tzinfo in settings.STATUS_BOARD_TIMEZONES:
     zone = timezone(tzinfo[1])
     timezones.append(zone)
+
+today_timeclass = 'time%d' % (settings.STATUS_BOARD_DATE_TIMEZONE + 1);
         
 # given a datetime that is in utc, return that time as the timezones defined in settings.        
 def getMultiTimezones(time):
@@ -37,11 +38,13 @@ def getMultiTimezones(time):
 def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
                               {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
-                              'navigation_tab':settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
-                              'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
-                              'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
-                              'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
-                              'SCORE_URL':settings.SCORE_URL,
+                               'STATUS_BOARD_DATE_TIMEZONE_INDEX': settings.STATUS_BOARD_DATE_TIMEZONE,
+                               'today_timeclass': today_timeclass,
+                               'navigation_tab':settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
+                               'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
+                               'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
+                               'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
+                               'SCORE_URL':settings.SCORE_URL,
                               },
                               context_instance=RequestContext(request))
 
@@ -65,7 +68,10 @@ def statusBoardAnnouncements(request):
         
     return render_to_response("xgds_status_board/announcements.html", 
                               {'announcements': result,
-                               'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES},
+                               'STATUS_BOARD_DATE_TIMEZONE_INDEX': settings.STATUS_BOARD_DATE_TIMEZONE,
+                               'today_timeclass': today_timeclass,
+                               'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
+                               'STATUS_BOARD_DATE_TIMEZONE': timezones[settings.STATUS_BOARD_DATE_TIMEZONE]},
                               context_instance=RequestContext(request))
 
 def getAnnouncementTS(request):
@@ -168,7 +174,9 @@ def statusBoardSchedule(request):
     schedHtml = render_to_response("xgds_status_board/schedule.html", 
                                    {'eventList': eventList,
                                     'eventsPlusSiteTimes': eventsPlusSiteTimes,
-                                    'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,},
+                                    'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
+                                    'STATUS_BOARD_DATE_TIMEZONE': timezones[settings.STATUS_BOARD_DATE_TIMEZONE],
+                                    },
                                    context_instance=RequestContext(request))
     resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes, 
                   'dateCount': eventList.count()}

@@ -8,9 +8,9 @@
 		}
 	</style>
 <script type="text/javascript">
+// today and now must be set in this page.
+// see gdsStatusBoard.html
 var activities = [];
-var today = new Date();
-var now = new Date();
 
 var theScoreTable;
 
@@ -26,12 +26,6 @@ function updateSCORESchedule() {
 		  success: function(data) {
 			  activities.length = 0;
 			  var temp = data.activities;
-			 
-			  var now = new Date();
-			  //TODO: remove
-			  now.setDate(today.getDate());
-			  now.setMonth(today.getMonth());
-			  now.setHours(12);
 			 
 			  for (var i = 0; i < temp.length; i++) {
 				  var current = temp[i];
@@ -158,7 +152,7 @@ function updateSCORERows() {
 <!--  end stuff for score schedule -->
 
 
-<table border="1" class="display" id="scoreTable" style="width:100%;">
+<table border="0" class="display" id="scoreTable" style="width:100%;">
 	<thead>
 		<tr>
 			<th width="15%">Starting In</th>

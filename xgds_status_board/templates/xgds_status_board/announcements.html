@@ -4,11 +4,12 @@
 	  	<li>{{ann.content}} 
 	  	<span style='font-size:70%'>
 	  	{% for time in ann.time %}
-	  		{% if forloop.counter == 1 %}
-	  	<i class='time{{forloop.counter}}'>{{time|date:"m/d H:i"}}</i>
-	  		{% else %}
-	  	<i class='time{{forloop.counter}}'>{{time|date:"H:i"}}</i>
+	  	{% if forloop.counter0 == STATUS_BOARD_DATE_TIMEZONE_INDEX %}
+	  	<i class='{{today_timeclass}}'>{{time|date:"m/d"}}</i>
 	  		{% endif %}
+	  	{% endfor %}
+	  	{% for time in ann.time %}
+	  	<i class='time{{forloop.counter}}'>{{time|date:"H:i"}}</i>
 	  	{% endfor %}
 	  	</span>
 	  	</li>
