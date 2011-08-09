@@ -1,0 +1,173 @@
+<!--  stuff for score schedule -->
+ <script src="{{ MEDIA_URL }}jquery/js/jquery.dataTables.js"></script>
+	<style type="text/css" title="currentStyle">
+		@import "{{ MEDIA_URL }}jquery/css/demo_page.css";
+		@import "{{ MEDIA_URL }}jquery/css/demo_table.css";
+		.active_task {
+			color:#OO6400;
+		}
+	</style>
+<script type="text/javascript">
+var activities = [];
+var today = new Date();
+var now = new Date();
+
+var theScoreTable;
+
+function updateSCORESchedule() {
+	  var month = today.getMonth() + 1;
+	  var scheduleURL = "{{ SCORE_URL }}?"
+      scheduleURL = scheduleURL + "date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2) + "&";
+	  scheduleURL = scheduleURL + "callback=?";
+	  console.log(scheduleURL);
+	  $.ajax({
+		  url: scheduleURL,
+		  dataType: 'jsonp',
+		  success: function(data) {
+			  activities.length = 0;
+			  var temp = data.activities;
+			 
+			  var now = new Date();
+			  //TODO: remove
+			  now.setDate(today.getDate());
+			  now.setMonth(today.getMonth());
+			  now.setHours(12);
+			 
+			  for (var i = 0; i < temp.length; i++) {
+				  var current = temp[i];
+				  var startDate = new Date(current.start);
+				  var endDate = new Date(current.end);
+					  
+				  var include = true;
+				  if (now > endDate){
+					  var diff = new Date();
+					  var delta = now - endDate;
+					  diff.setTime(delta);
+					  if (diff.getHours() == 0){
+						  if (diff.getMinutes() <= 15){
+							  include = true;
+						  }
+					  }
+					  include = false;
+				  }
+				  
+				  if (include){
+			  		var activity = [getRemainingTimeString(startDate, now),
+			  		                formatTime(startDate),
+			                  		formatTime(endDate),
+			  		   				current.label,
+			  		   				current.execution];
+	  			  	activities.push(activity);
+				  }
+			  }
+			  
+			  if (activities.length > 0){
+				  updateSCORERows();
+			  }
+		}
+	  }
+	  );
+	}
+	  
+	
+	function formatTime(time, negative){
+		var result;
+		result = time.getHours();
+		if (time.getMinutes() < 10){
+			result = result + ":0" + time.getMinutes();
+		} else {
+			result = result + ":" + time.getMinutes();
+		}
+		if (negative){
+			result += " ago"
+		}
+		return result;
+	}
+	
+	function formatDiff(diff, negative){
+		var result = "";
+		result = result + diff.hours;
+		if (diff.minutes < 10){
+			result = result + ":0" + diff.minutes;
+		} else {
+			result = result + ":" + diff.minutes;
+		}
+		if (negative){
+			result += " ago";
+		}
+		return result;
+	}
+	
+function getRemainingTimeString(compareDate, now) {
+	if (compareDate >= now){
+		var diff = get_time_difference(now, compareDate);
+		return formatDiff(diff, false);
+	} else if (compareDate.getHours() == now.getHours() && compareDate.getMinutes() == now.getMinutes()){
+		return "NOW"
+	} else {
+		var diff = get_time_difference(compareDate, now);
+		return formatDiff(diff, true);
+	}
+	
+}
+
+function get_time_difference(earlierDate,laterDate)
+{
+       var nTotalDiff = laterDate.getTime() - earlierDate.getTime();
+       var oDiff = new Object();
+ 
+       oDiff.hours = Math.floor(nTotalDiff/1000/60/60);
+       nTotalDiff -= oDiff.hours*1000*60*60;
+ 
+       oDiff.minutes = Math.floor(nTotalDiff/1000/60);
+       nTotalDiff -= oDiff.minutes*1000*60;
+ 
+       return oDiff;
+}
+	
+function updateSCORERows() {
+	if (theScoreTable == null){
+		theScoreTable = $('#scoreTable').dataTable({
+			"bRetrieve": true,
+			"aaData":activities,
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bFilter": false,
+			"bSort": false,
+			"bInfo": false,
+			"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				if ( aData[0] == "NOW" || aData[0][aData[0].length - 1] == "o")
+				{
+				   $('td:eq(0)', nRow).html( '<b style="color:green;">' + aData[0] + '</b>' );
+				   $('td:eq(1)', nRow).html( '<b style="color:green;">' + aData[1] + '</b>' );
+				   $('td:eq(2)', nRow).html( '<b style="color:green;">' + aData[2] + '</b>' );
+				   $('td:eq(3)', nRow).html( '<b style="color:green;">' + aData[3] + '</b>' );
+				   $('td:eq(4)', nRow).html( '<b style="color:green;">' + aData[4] + '</b>' );
+				}
+				return nRow;
+				}
+			});
+	} else {
+		theScoreTable.fnClearTable();
+		theScoreTable.fnAddData(activities);
+		//theScoreTable.fnUpdate(activities);
+	}
+	
+}
+</script>
+<!--  end stuff for score schedule -->
+
+
+<table border="1" class="display" id="scoreTable" style="width:100%;">
+	<thead>
+		<tr>
+			<th width="15%">Starting In</th>
+			<th width="8%">Start</th>
+			<th width="8%">End</th>
+			<th width="25%">Task</th>
+			<th width="45%">Execution</th>
+		</tr>
+	</thead>
+	<tbody style="color:black;">
+	</tbody>
+</table>

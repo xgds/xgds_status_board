@@ -1,4 +1,4 @@
-{% extends "StatusBoardSiteCustomization.html" %}
+{% extends "base.html" %}
 {% block headExtras %}
 <script src="{{ MEDIA_URL }}external/js/jquery.min.js"></script>
 <script src="{{ MEDIA_URL }}jquery/js/jquery.countdown.js"></script>
@@ -7,9 +7,7 @@
 var myDates = [];
 var scheduleItemCount = 0;
 var lastScheduleHTML = "";
-var remoteTimezoneOffset = {{ remoteTimezoneOffset }};
 var today = new Date();
-
 
 $(function () {
 //	$('#elapsedTimeField').countdown({since: today, format: "HM", compact:true});
@@ -21,18 +19,53 @@ $(function () {
 function updateDynamicElements() {
 	{% block updateDynamicJavascript %}
   		updateServerTimestamp();
+  		{% if STATUS_BOARD_ANNOUNCEMENTS %}
   		updateAnnouncements();
+  		{% endif %}
+  		
+  		{% if STATUS_BOARD_SCHEDULE %}
   		updateSchedule();
+  		{% endif %}
+  		
+  		{% if STATUS_BOARD_SCORE_SCHEDULE %}
+  		updateSCORESchedule();
+  		{% endif %}
 	{% endblock updateDynamicJavascript %}
 
 }
 
-function updateAnnouncements() {
-  $.get('{% url announcements.html %}', function(data) {
-    $('#announceSection').html(data);
+function updateServerTimestamp() {
+  $.getJSON('{% url serverDatetime.json %}', function(data) {
+	 $.each(data,function(index, value) {
+	 	dateStr = value.dayName + " " + value.month + "/" + value.day;
+      	$('#date').html(dateStr);
+      	timestampStr = value.zone + ": "  + value.hour + ":" + value.min
+      	var elementname = '#time' + (index+1)
+      	//var time_element=document.getElementsByName("time" + (index+1))
+      	$(elementname).html(timestampStr);
+     	//$(time_element)[0].html(timestampStr);
+	 })
   })
 }
 
+function zeroPad(num,count)
+{
+	var numZeropad = num + '';
+	while(numZeropad.length < count) {
+		numZeropad = "0" + numZeropad;
+	}
+	return numZeropad;
+}
+
+{% if STATUS_BOARD_ANNOUNCEMENTS %}
+function updateAnnouncements() {
+  $.get('{% url announcements %}', function(data) {
+    $('#announceSection').html(data);
+  })
+}
+{% endif %}
+
+{% if STATUS_BOARD_SCHEDULE %}
 function updateSchedule() {
   $.getJSON('{% url schedule.json %}', function(data) {
     if (lastScheduleHTML != data.schedHtml) {
@@ -47,33 +80,6 @@ function updateSchedule() {
     }
     lastScheduleHTML = data.schedHtml;
   })
-}
-
-function updateServerTimestamp() {
-  $.getJSON('{% url serverDatetime.json %}', function(data) {
-
-      dateStr = data.dayName + " " + data.month + "/" + data.day;
-      $('#date').html(dateStr);
-      timestampStr = "{{ localTimezone }}: "  + data.hour + ":" + data.min
-      
-      $('#serverTimestamp').html(timestampStr);
-     
-      if (remoteTimezoneOffset != 0){
-	      var hourInt = parseInt(data.hour, 10);
-	      hourInt = hourInt + remoteTimezoneOffset;
-	      remoteTimestampStr = "{{ remoteTimezone }}: " + hourInt + ":" + data.min
-	      $('#remoteTimestamp').html(remoteTimestampStr);
-      }
-  })
-}
-
-function zeroPad(num,count)
-{
-	var numZeropad = num + '';
-	while(numZeropad.length < count) {
-		numZeropad = "0" + numZeropad;
-	}
-	return numZeropad;
 }
 
 function selectSchedRow(num) {
@@ -108,103 +114,58 @@ function updateSchedRows() {
 	}
 }
 
+{% endif %}
 </script>
-
-<style type="text/css">
-<!--
-.TightSpacePara {
-	vertical-align: baseline;
-	margin: 3px;
-}
-
-.h3 {
-	vertical-align: baseline;
-	margin: 3px;
-	font-size: 24px;
-	color:#66ccff;
-	text-decoration: bold;
-}
-
-.h2 {
-	vertical-align: baseline;
-	margin: 3px;
-	font-size: 18px;
-	color:#66ccff;
-	text-decoration: bold;
-}
-.details {
-	font-size:14px;
-}
-.statusboard {
-	float:left;
-	width:80%;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	font-size: 14px;
-	color:#FFFF99;
-}
-
-a:link {color:#00ccff}
-a:visited {color:#00ccff}
-.time {
-	#font-size:26px;
-	text-decoration:bold;
-}
-.remoteTime {
-	color:#FFFF33;
-}
-.localTime {
-	color:#555533;
-}
-.linkblock {
-	float:left;
-	width:20%;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-#        font-size: 23px;
-    color:#FFFF99;
-}
-
-.timeLink {
-	text-decoration: none;
-}
-.timeLink:visited {color:#FFFF33;font-decoration:none }
-.timeLink:link { color: #FFFF33;font-decoration:none }
-.boldClass {
-	font-weight: bold;
-}
-li { padding-bottom: 10px; }
--->
-</style>
 {% endblock headExtras %}
+{% block cssExtras %}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}style/status_board.css" ></link>
+{% endblock %}
 {% block contents %}
+
 <span class="statusboard">
+
+{% if STATUS_BOARD_ANNOUNCEMENTS %}
 {% block preAnnouncements %}
 {% endblock preAnnouncements %}
 {% block announcements %}
-<h2 class="h2">Announcements</h3>
+<h2 class="h2">Announcements</h2>
 <span id='announceSection'></span>
 {% endblock announcements %}
+{% endif %}
 
+
+{% if STATUS_BOARD_SCHEDULE %}
 {% block preSchedule %}
 {% endblock preSchedule %}
 {% block schedule %}
-<h2 class="h2"><br/>Schedule</h3>
+<h2 class="h2"><br/>Schedule</h2>
 <span id='scheduleSection'></span>
 {% endblock schedule %}
+{% endif %}
+
+{% if STATUS_BOARD_SCORE_SCHEDULE %}
+{% block preScoreSchedule %}
+{% endblock preScoreSchedule %}
+{% block scoreSchedule %}
+<h2 class="h2"><br/>SCORE Schedule</h2>
+{% include "xgds_status_board/ScheduleFromSCORE.html" %}
+{% endblock scoreSchedule %}
+{% endif %}
+
+{% block details %}
+{% endblock details %}
 </span>
 
 <span class='linkblock'>
 {% block currentTime %}
   <span class='time'>
-  	<span id="date"></span><br/>
-  	{% if remoteTimezoneOffset != 0 %}
-		  <span class='remoteTime' id="remoteTimestamp" ></span><br/>
-  	{% endif %}
-  	<span class='localTime' id="serverTimestamp" ></span>
+  	<span class='time1' id="date"></span><br/>
+  	{% for t in STATUS_BOARD_TIMEZONES %}
+  		<span class='time{{forloop.counter}}' id="time{{forloop.counter}}" ></span><br/>
+  	{% endfor %}
   </span>
 {% endblock currentTime %}
 {% block links %}
 {% endblock links %}
 </span>
-{% block details %}
-{% endblock details %}
 {% endblock contents %}

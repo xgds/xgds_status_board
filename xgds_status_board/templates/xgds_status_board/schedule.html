@@ -10,14 +10,15 @@ var remoteTimezoneOffset = {{ remoteTimezoneOffset }};
 	<td >{{ localTimezone }}</td>
 	<td>Task</td>
 </tr>
+
 {% for event,siteTime in eventsPlusSiteTimes %}
   <tr id='schedRow{{forloop.counter}}' 
     {% if forloop.first %} class="boldClass"{% endif %}>
     <td width="120" align="center">In <a href="#" onclick="selectSchedRow({{forloop.counter}});" class='timeLink'><span id='scheduleTimer{{forloop.counter}}'>--</span></a></td>
     {% if remoteTimezoneOffset != 0 %}
-    	<td width="120" align="center" class='remoteTime'>At {{siteTime|time:"H:i"}}</td>
+    	<td width="120" align="center" class='time2'>At {{siteTime|time:"H:i"}}</td>
     {% endif %}
-    <td width="120" align="center" class='localTime'>At {{event.dateOfEvent|time:"H:i"}}</td>
+    <td width="120" align="center" class='time1'>At {{event.dateOfEvent|time:"H:i"}}</td>
     <td width="440">{{event.content}}</td>
   </tr>
 {% endfor %}

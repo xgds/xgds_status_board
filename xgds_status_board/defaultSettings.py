@@ -24,3 +24,23 @@ Other modules can access the value of FOO like this:
 Don't try to get the value of FOO from django.conf.settings.  That
 settings object will not know about the default value!
 """
+
+# this can be used to specify a string in your template to indicate a navigation tab.  It is not required.
+STATUS_BOARD_VIEW_NAVIGATION_TAB = 'status.view'
+STATUS_BOARD_EDIT_NAVIGATION_TAB = 'status.edit'
+
+SCORE_URL = 'https://techno.arc.nasa.gov/DRATS/schedule.json'
+
+STATUS_BOARD_ANNOUNCEMENTS = True
+STATUS_BOARD_SCHEDULE = False
+STATUS_BOARD_SCORE_SCHEDULE = True
+
+# to add timezones to the status board display fill out this handy dictionary.
+# first one is the default, what is stored in the server and displayed.
+# this can be the only one and is required. (does not have to be GMT)
+STATUS_BOARD_TIMEZONES = []
+STATUS_BOARD_TIMEZONES.append(('GMT','Etc/Greenwich',0)) #store in GMT for the server
+STATUS_BOARD_TIMEZONES.append(('CDT', 'US/Central', -6)) 
+STATUS_BOARD_TIMEZONES.append(('MST', 'US/Mountain', -7)) 
+
+

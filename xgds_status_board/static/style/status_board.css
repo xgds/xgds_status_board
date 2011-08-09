@@ -1,0 +1,70 @@
+/* status board stuff */
+.TightSpacePara {
+	vertical-align: baseline;
+	margin: 3px;
+}
+
+.h3 {
+	vertical-align: baseline;
+	margin: 3px;
+	font-size: 24px;
+	color:#6a2b2b;  /* status board big headings */
+	text-decoration: bold;
+}
+
+.h2 {
+	vertical-align: baseline;
+	margin: 3px;
+	font-size: 18px;
+	color:#6a2b2b;  /* status board section headings */
+	text-decoration: bold;
+}
+.details {
+	font-size:14px;
+}
+.statusboard {
+	float:left;
+	width:75%;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 14px;
+	color:#333333;  /* status board text body */
+}
+
+a:link {color:#00ccff}
+a:visited {color:#00ccff}
+.time {
+	text-decoration:bold;
+}
+.time1 {
+	color:#304073;  /* local time color */
+}
+
+.time2 {
+	color:#439ba3;  /* remote time color */
+}
+
+.time3 {
+	color:#b47e4a;  /* remote time color */
+}
+
+
+.linkblock {
+	padding: 5px;
+	border: 2px solid #7a7a7a;
+	float:right;
+	margin-top: -40px;
+	width:20%;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    color:#6a2b2b;  /* color for plain text in the link block on the right including the bullets and date
+}
+
+.timeLink {
+	text-decoration: none;
+}
+.timeLink:visited {color:#FFFF33;font-decoration:none }
+.timeLink:link { color: #FFFF33;font-decoration:none }
+.boldClass {
+	font-weight: bold;
+}
+li { padding-bottom: 10px; }
+/* end status board */

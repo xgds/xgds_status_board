@@ -1,7 +1,17 @@
 {% if announcements|length > 0 %}
 	<ul class='TightSpacePara'>
 	  {% for ann in announcements %}
-	  	<li>{{ann.content}} <i class='localTime'>({{ann.dateCreated|date:"m/d H:i"}})</i></li>
+	  	<li>{{ann.content}} 
+	  	<span style='font-size:70%'>
+	  	{% for time in ann.time %}
+	  		{% if forloop.counter == 1 %}
+	  	<i class='time{{forloop.counter}}'>{{time|date:"m/d H:i"}}</i>
+	  		{% else %}
+	  	<i class='time{{forloop.counter}}'>{{time|date:"H:i"}}</i>
+	  		{% endif %}
+	  	{% endfor %}
+	  	</span>
+	  	</li>
 	  {% endfor %}
 	</ul>
 {% else %}

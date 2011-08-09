@@ -31,6 +31,8 @@ class StatusboardAnnouncement(models.Model):
     visible = models.BooleanField(null=False, blank=True, default=True)
     dateCreated = models.DateTimeField(null=True, db_column='dateCreated', 
                                        blank=True, auto_now_add=True, editable=False)
+    dateOfAnnouncement = models.DateTimeField(null=True, db_column='dateOfAnnouncement',
+                                       blank=True)
     content = models.CharField(max_length=765, blank=True)
     class Meta:
         db_table = u'xgds_status_board_announcement'

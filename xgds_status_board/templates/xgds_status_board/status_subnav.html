@@ -1,0 +1,4 @@
+<p> 
+  {% if nav.status.view %}View{% else %}<a href="{% url xgds_status_boardView %}"> View </a> {% endif %} &nbsp;&nbsp;|&nbsp;&nbsp;
+  {% if nav.status.edit %}Edit{% else %}<a href="{% url xgds_status_boardEdit %}"> Edit </a> {% endif %}
+</p>
