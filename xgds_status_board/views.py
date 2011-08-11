@@ -189,7 +189,7 @@ def getServerDatetimeJSON(request):
     timestamp = datetime.utcnow()
     times = getMultiTimezones(timestamp)
     result = []
-    for time in times:
+    for index, time in enumerate(times):
         datedict = {'dayName':time.strftime("%a"), 
                     'monthName':time.strftime("%b"),
                     'month':time.month, 'day':time.day, 
@@ -198,7 +198,8 @@ def getServerDatetimeJSON(request):
                     'hour12':time.strftime("%I"),
                     'ampm':time.strftime("%p"),
                     'min':time.strftime("%M"),'sec':time.strftime("%S"),
-                    'zone':time.tzinfo._tzname}
+                    'zone':time.tzinfo._tzname,
+                    'zonelabel':settings.STATUS_BOARD_TIMEZONES[index][0]}
         result.append(datedict)
     datejson = json.dumps(result)
 

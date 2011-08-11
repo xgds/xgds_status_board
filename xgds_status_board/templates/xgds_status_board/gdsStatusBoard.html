@@ -52,7 +52,7 @@ function updateServerTimestamp() {
 	 	}
 	 	
 	 	// populate the times
-      	timestampStr = value.zone + ": "  + value.hour + ":" + value.min
+      	timestampStr = value.zonelabel + ": "  + value.hour + ":" + value.min
       	var elementname = '#time' + (index+1)
       	$(elementname).html(timestampStr);
 	 })
