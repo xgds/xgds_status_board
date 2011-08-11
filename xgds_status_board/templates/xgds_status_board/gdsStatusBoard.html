@@ -48,7 +48,9 @@ function updateServerTimestamp() {
 	      	// Javascript dates have the month starting from 0.
 	      	today = new Date(value.year, value.month - 1, value.day);
 	      	now = new Date(value.year, value.month - 1, value.day, value.hour, value.min);
-	      	console.log("now is " + now);
+	      	//console.log("now is " + now);
+	      	
+	      	$('#today_timezonelabel').html("In " + value.zonelabel + " time");
 	 	}
 	 	
 	 	// populate the times
@@ -158,7 +160,7 @@ function updateSchedRows() {
 {% block preScoreSchedule %}
 {% endblock preScoreSchedule %}
 {% block scoreSchedule %}
-<h2 class="h2"><br/>SCORE Schedule</h2>
+<h2 class="h2"><br/>SCORE Schedule <span class='{{today_timeclass}}' id="today_timezonelabel"></span></h2>
 {% include "xgds_status_board/ScheduleFromSCORE.html" %}
 {% endblock scoreSchedule %}
 {% endif %}
