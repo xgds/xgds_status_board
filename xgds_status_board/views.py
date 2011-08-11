@@ -39,6 +39,8 @@ def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
                               {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
                                'STATUS_BOARD_DATE_TIMEZONE_INDEX': settings.STATUS_BOARD_DATE_TIMEZONE,
+                               'STATUS_BOARD_DATE_TIMEZONE': timezones[settings.STATUS_BOARD_DATE_TIMEZONE],
+                               'STATUS_BOARD_DATE_TIMEZONE_NAME': timezones[settings.STATUS_BOARD_DATE_TIMEZONE]._tzname,
                                'today_timeclass': today_timeclass,
                                'navigation_tab':settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
                                'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,

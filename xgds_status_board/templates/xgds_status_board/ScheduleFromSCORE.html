@@ -17,7 +17,12 @@ var theScoreTable;
 function updateSCORESchedule() {
 	  var month = today.getMonth() + 1;
 	  var scheduleURL = "{{ SCORE_URL }}?"
-      scheduleURL = scheduleURL + "date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2) + "&";
+      scheduleURL = scheduleURL + "date=" + month + "-" + today.getDate() + "-" + today.getFullYear().toString().slice(2) + "&";
+      scheduleURL = scheduleURL + "timezone={{STATUS_BOARD_DATE_TIMEZONE_NAME}}&";
+      // IMPORTANT: the uploaded schedule should have an 'overview' category.  That is what is and should be returned by default.
+      // so far the drats schedule has not had this overview category and so the only way to see events from the schedule is to include the below line.
+	  scheduleURL = scheduleURL + "showAll=true&";
+	  // TODO: comment out the above line once the overview category has been added to the uploaded schedule.
 	  scheduleURL = scheduleURL + "callback=?";
 	  console.log(scheduleURL);
 	  $.ajax({

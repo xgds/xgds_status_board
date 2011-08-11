@@ -40,7 +40,12 @@ STATUS_BOARD_SCORE_SCHEDULE = True
 # this is the order of display
 # if you want MORE than 3 timezones you will have to edit the css and create time classes for the colors.
 # right now we are only using the 2nd thing, ie US/Central -- but may want to use the others in javascript
-STATUS_BOARD_TIMEZONES = [('Pacific', 'America/Los_Angeles', -8)]
+STATUS_BOARD_TIMEZONES = []
+STATUS_BOARD_TIMEZONES.append(('GMT','Etc/Greenwich'))
+STATUS_BOARD_TIMEZONES.append(('CDT', 'US/Central')) 
+STATUS_BOARD_TIMEZONES.append(('MST', 'US/Mountain'))
+#STATUS_BOARD_TIMEZONES.append(('EST', 'US/Eastern'))
+#STATUS_BOARD_TIMEZONES.append(('PDT', 'US/Pacific')) 
 
 # this is the index of the timezone above to use for the date (count from 0)
 # this will control when events will roll over, ie when status board lists will no longer display things for the current day
