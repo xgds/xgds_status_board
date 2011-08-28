@@ -20,20 +20,16 @@ from geocamUtil import anyjson as json
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
 
-timezones = []
-for tzinfo in settings.STATUS_BOARD_TIMEZONES:
-    zone = timezone(tzinfo[1])
-    timezones.append(zone)
+timezones = [(name, pytz.timezone(code))
+             for name, code in settings.STATUS_BOARD_TIMEZONES]
 
 today_timeclass = 'time%d' % (settings.STATUS_BOARD_DATE_TIMEZONE + 1);
         
 # given a datetime that is in utc, return that time as the timezones defined in settings.        
 def getMultiTimezones(time):
     utc_time = utc.localize(time)
-    result = []
-    for tz in timezones:
-        result.append(utc_time.astimezone(tz))
-    return result
+    return [(name, utc_time.astimezone(tz))
+             for name, tz in timezones]
     
 def statusBoard(request):
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
@@ -63,7 +59,7 @@ def statusBoardAnnouncements(request):
     result = []
         
     for announcement in announcementList:
-        announcement.time = getMultiTimezones(announcement.dateOfAnnouncement)
+        announcement.time = [t for name, t in getMultiTimezones(announcement.dateOfAnnouncement)]
         result.append(announcement)
         
     return render_to_response("xgds_status_board/announcements.html", 
@@ -189,7 +185,7 @@ def getServerDatetimeJSON(request):
     timestamp = datetime.utcnow()
     times = getMultiTimezones(timestamp)
     result = []
-    for time in times:
+    for name, time in times:
         datedict = {'dayName':time.strftime("%a"), 
                     'monthName':time.strftime("%b"),
                     'month':time.month, 'day':time.day, 
@@ -198,7 +194,7 @@ def getServerDatetimeJSON(request):
                     'hour12':time.strftime("%I"),
                     'ampm':time.strftime("%p"),
                     'min':time.strftime("%M"),'sec':time.strftime("%S"),
-                    'zone':time.tzinfo._tzname}
+                    'zone':name}
         result.append(datedict)
     datejson = json.dumps(result)
 
