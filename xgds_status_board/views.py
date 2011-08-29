@@ -42,7 +42,7 @@ def statusBoard(request):
                                'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
                                'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
                                'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
-                               'SCORE_URL':settings.SCORE_URL,
+                               'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
                               },
                               context_instance=RequestContext(request))
 
