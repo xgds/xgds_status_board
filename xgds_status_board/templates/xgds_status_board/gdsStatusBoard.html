@@ -13,6 +13,12 @@
 		.active_task {
 			color:#OO6400;
 		}
+.alignRight {
+  text-align: right;
+}
+.alignLeft {
+  text-align: left;
+}
 	</style>
 <!--  end stuff for score schedule -->
 
@@ -67,7 +73,7 @@ function updateServerTimestamp() {
 	 	}
 	 	
 	 	// populate the times
-      	timestampStr = value.zone + ": "  + value.hour + ":" + value.min
+      	timestampStr = '<span style="width: 50px;">' + value.hour + ":" + value.min + '</span> ' + value.zone;
       	var elementname = '#time' + (index+1)
       	$(elementname).html(timestampStr);
 	 })
@@ -266,6 +272,7 @@ function updateSCORERows() {
 			"bFilter": false,
 			"bSort": false,
 			"bInfo": false,
+"aoColumns": [{"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignLeft"}, {"sClass": "alignLeft"}],
 			"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 				if ( aData[0] == "NOW" || aData[0][aData[0].length - 1] == "o")
 				{
@@ -295,6 +302,19 @@ function updateSCORERows() {
 {% block contents %}
 
 <span class="statusboard">
+
+<span class='linkblock'>
+{% block currentTime %}
+  <span class='time'>
+  	<span class='{{today_timeclass}}' id="date"></span><br/>
+  	{% for t in STATUS_BOARD_TIMEZONES %}
+  		<span class='time{{forloop.counter}}' id="time{{forloop.counter}}" ></span><br/>
+  	{% endfor %}
+  </span>
+{% endblock currentTime %}
+{% block links %}
+{% endblock links %}
+</span>
 
 {% if STATUS_BOARD_ANNOUNCEMENTS %}
 {% block preAnnouncements %}
@@ -326,18 +346,7 @@ function updateSCORERows() {
 
 {% block details %}
 {% endblock details %}
+
 </span>
 
-<span class='linkblock'>
-{% block currentTime %}
-  <span class='time'>
-  	<span class='{{today_timeclass}}' id="date"></span><br/>
-  	{% for t in STATUS_BOARD_TIMEZONES %}
-  		<span class='time{{forloop.counter}}' id="time{{forloop.counter}}" ></span><br/>
-  	{% endfor %}
-  </span>
-{% endblock currentTime %}
-{% block links %}
-{% endblock links %}
-</span>
 {% endblock contents %}

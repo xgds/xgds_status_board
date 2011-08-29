@@ -24,7 +24,7 @@
 }
 .statusboard {
 	float:left;
-	width:75%;
+	width:100%;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size: 14px;
 	color:#333333;  /* status board text body */
