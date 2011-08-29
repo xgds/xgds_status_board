@@ -152,9 +152,10 @@ var theScoreTable;
 
 function updateSCORESchedule() {
 	  var month = today.getMonth() + 1;
-	  var scheduleURL = "{{ SCORE_URL }}?"
-      scheduleURL = scheduleURL + "date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2) + "&";
-	  scheduleURL = scheduleURL + "callback=?";
+	  var scheduleURL = ("{{ SCORE_URL }}"
+                     + "?showAll=true"
+                     + "&date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2)
+                     + "&callback=?");
 	  console.log(scheduleURL);
 	  $.ajax({
 		  url: scheduleURL,

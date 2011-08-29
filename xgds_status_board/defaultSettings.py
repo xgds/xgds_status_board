@@ -29,7 +29,7 @@ settings object will not know about the default value!
 STATUS_BOARD_VIEW_NAVIGATION_TAB = 'status.view'
 STATUS_BOARD_EDIT_NAVIGATION_TAB = 'status.edit'
 
-STATUS_BOARD_SCORE_URL = 'https://techno.arc.nasa.gov/DRATS/schedule.json'
+STATUS_BOARD_SCORE_URL = 'please_set_score_url_in_siteSettings.py'
 
 STATUS_BOARD_ANNOUNCEMENTS = True
 STATUS_BOARD_SCHEDULE = False
