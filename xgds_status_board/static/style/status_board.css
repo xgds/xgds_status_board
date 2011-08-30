@@ -35,18 +35,6 @@ a:visited {color:#00ccff}
 .time {
 	text-decoration:bold;
 }
-.time1 {
-	color:#304073;  /* local time color */
-}
-
-.time2 {
-	color:#439ba3;  /* remote time color */
-}
-
-.time3 {
-	color:#b47e4a;  /* remote time color */
-}
-
 
 .linkblock {
 	padding: 5px;

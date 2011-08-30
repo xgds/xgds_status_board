@@ -57,11 +57,11 @@ function updateDynamicElements() {
 }
 
 function updateServerTimestamp() {
-  $.getJSON('{% url serverDatetime.json %}', function(data) {
-	 $.each(data,function(index, value) {
-	 	// populate todays date
-	 	if (index == {{STATUS_BOARD_DATE_TIMEZONE_INDEX}}){
-		 	dateStr = value.dayName + " " + value.month + "/" + value.day;
+    $.getJSON('{% url serverDatetime.json %}', function(data) {
+	$.each(data, function(index, value) {
+	    // populate today's date
+	    if (value.zone == "{{ STATUS_BOARD_DATE_TIMEZONE.name }}") {
+		dateStr = value.dayName + " " + value.month + "/" + value.day;
 	      	$('#date').html(dateStr);
 	      	
 	      	// Javascript dates have the month starting from 0.
@@ -70,14 +70,14 @@ function updateServerTimestamp() {
 	      	//console.log("now is " + now);
 	      	
 	      	$('#today_timezonelabel').html("In " + value.zone + " time");
-	 	}
-	 	
-	 	// populate the times
-      	timestampStr = '<span style="width: 50px;">' + value.hour + ":" + value.min + '</span> ' + value.zone;
-      	var elementname = '#time' + (index+1)
-      	$(elementname).html(timestampStr);
-	 })
-  })
+	    }
+	    
+	    // populate the times
+      	    timestampStr = '<span style="width: 50px;">' + value.hour + ":" + value.min + '</span> ' + value.zone;
+      	    var elementname = '#time' + (index+1)
+      	    $(elementname).html(timestampStr);
+	});
+    })
 }
 
 function zeroPad(num,count)
@@ -308,7 +308,7 @@ function updateSCORERows() {
   <span class='time'>
   	<span class='{{today_timeclass}}' id="date"></span><br/>
   	{% for t in STATUS_BOARD_TIMEZONES %}
-  		<span class='time{{forloop.counter}}' id="time{{forloop.counter}}" ></span><br/>
+  		<span style="color: {{ t.color }};" id="time{{forloop.counter}}" ></span><br/>
   	{% endfor %}
   </span>
 {% endblock currentTime %}
@@ -339,7 +339,7 @@ function updateSCORERows() {
 {% block preScoreSchedule %}
 {% endblock preScoreSchedule %}
 {% block scoreSchedule %}
-<h2 class="h2"><br/>SCORE Schedule <span class='{{today_timeclass}}' id="today_timezonelabel"></span></h2>
+<h2 class="h2"><br/>SCORE Schedule <span id="today_timezonelabel" style="color: {{ STATUS_BOARD_DATE_TIMEZONE.color }};" ></span></h2>
 {% include "xgds_status_board/ScheduleFromSCORE.html" %}
 {% endblock scoreSchedule %}
 {% endif %}
