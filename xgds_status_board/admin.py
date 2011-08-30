@@ -8,13 +8,5 @@ from django.contrib import admin
 
 from xgds_status_board.models import *
 
-class StatusboardAnnouncementAdmin(admin.ModelAdmin):
-    fields = ['content', 'priority', 'visible']
-
-class StatusboardEventAdmin(admin.ModelAdmin):
-    fields = ['dateOfEvent', 'content', 'priority',
-              'visible', 'completed',
-              ]
-
-admin.site.register(StatusboardAnnouncement, StatusboardAnnouncementAdmin)
-admin.site.register(StatusboardEvent, StatusboardEventAdmin)
+admin.site.register(StatusboardAnnouncement)
+admin.site.register(StatusboardEvent)
