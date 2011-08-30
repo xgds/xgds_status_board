@@ -157,12 +157,13 @@ var activities = [];
 var theScoreTable;
 
 function updateSCORESchedule() {
+  		
 	  var month = today.getMonth() + 1;
+	  
 	  var scheduleURL = ("{{ SCORE_URL }}"
                      + "?showAll=true"
                      + "&date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2)
                      + "&callback=?");
-	  console.log(scheduleURL);
 	  $.ajax({
 		  url: scheduleURL,
 		  dataType: 'jsonp',
@@ -339,7 +340,7 @@ function updateSCORERows() {
 {% block preScoreSchedule %}
 {% endblock preScoreSchedule %}
 {% block scoreSchedule %}
-<h2 class="h2"><br/>SCORE Schedule <span id="today_timezonelabel" style="color: {{ STATUS_BOARD_DATE_TIMEZONE.color }};" ></span></h2>
+<h2 class="h2"><br/>Score Schedule <span id="today_timezonelabel" style="color: {{ STATUS_BOARD_DATE_TIMEZONE.color }};" ></span></h2>
 {% include "xgds_status_board/ScheduleFromSCORE.html" %}
 {% endblock scoreSchedule %}
 {% endif %}
