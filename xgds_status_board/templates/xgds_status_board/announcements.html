@@ -1,15 +1,11 @@
+
 {% if announcements|length > 0 %}
 	<ul class='TightSpacePara'>
 	  {% for ann in announcements %}
-	  	<li>{{ann.content}} 
+	  	<li class="announcement{{ann.priority}}">{{ann.content}} 
 	  	<span style='font-size:70%'>
-	  	{% for time in ann.time %}
-	  	{% if forloop.counter0 == STATUS_BOARD_DATE_TIMEZONE_INDEX %}
-	  	<i class='{{today_timeclass}}'>{{time|date:"m/d"}}</i>
-	  		{% endif %}
-	  	{% endfor %}
-	  	{% for time in ann.time %}
-	  	<i class='time{{forloop.counter}}'>{{time|date:"H:i"}}</i>
+	  	{% for time, color in ann.time %}
+	  	<i><span style="color: {{ color }};">{{time|date:"H:i"}}</span></i>
 	  	{% endfor %}
 	  	</span>
 	  	</li>

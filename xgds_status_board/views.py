@@ -28,7 +28,7 @@ for timezone in timezones:
 # given a datetime that is in utc, return that time as the timezones defined in settings.        
 def getMultiTimezones(time):
     utc_time = utc.localize(time)
-    return [(tz.name, utc_time.astimezone(tz.tzobject))
+    return [(tz.name, utc_time.astimezone(tz.tzobject), tz.color)
             for tz in timezones]
     
 def statusBoard(request):
@@ -58,11 +58,13 @@ def statusBoardAnnouncements(request):
     result = []
         
     for announcement in announcementList:
-        announcement.time = [t for name, t in getMultiTimezones(announcement.dateOfAnnouncement)]
+        multiTimezones = getMultiTimezones(announcement.dateOfAnnouncement)
+        announcement.time = [(t, color) for name, t, color in multiTimezones]
         result.append(announcement)
         
     return render_to_response("xgds_status_board/announcements.html", 
                               {'announcements': result,
+                               'timeColors': [tz.color for tz in timezones],
                                'STATUS_BOARD_DATE_TIMEZONE_INDEX': settings.STATUS_BOARD_DATE_TIMEZONE,
                                'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
                                'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE},
@@ -183,7 +185,7 @@ def getServerDatetimeJSON(request):
     timestamp = datetime.utcnow()
     times = getMultiTimezones(timestamp)
     result = []
-    for name, time in times:
+    for name, time, color in times:
         datedict = {'dayName':time.strftime("%a"), 
                     'monthName':time.strftime("%b"),
                     'month':time.month, 'day':time.day, 

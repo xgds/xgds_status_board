@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block cssExtras %}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}style/status_board.css" ></link>
+{% endblock %}
 {% block scripts %}
   {{ block.super }}
 <script src="{{ MEDIA_URL }}external/js/jquery.min.js"></script>
@@ -297,9 +300,7 @@ function updateSCORERows() {
 <!--  end stuff for score schedule -->
 
 {% endblock scripts %}
-{% block cssExtras %}
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}style/status_board.css" ></link>
-{% endblock %}
+
 {% block contents %}
 
 <span class="statusboard">

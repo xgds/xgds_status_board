@@ -43,7 +43,7 @@ a:visited {color:#00ccff}
 	margin-top: -40px;
 	width:20%;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    color:#6a2b2b;  /* color for plain text in the link block on the right including the bullets and date
+    color:#6a2b2b;  // color for plain text in the link block on the right including the bullets and date
 }
 
 .timeLink {
@@ -55,4 +55,14 @@ a:visited {color:#00ccff}
 	font-weight: bold;
 }
 li { padding-bottom: 10px; }
+
+.announcement1 { color:#af1b1b; text-decoration: bold;}
+.announcement2 { color:#af1b1b; text-decoration: bold;}
+.announcement3 { color:#af1b1b; text-decoration: bold;}
+.announcement4 { color:#f7a33e; text-decoration: bold;}
+.announcement5 { color:#f7a33e; text-decoration: bold;}
+.announcement6 { color:#f7a33e; text-decoration: bold;}
+.announcement7 { color:#14594d; }
+.announcement8 { color:#14594d; }
+.announcement9 { color:#14594d; }
 /* end status board */
