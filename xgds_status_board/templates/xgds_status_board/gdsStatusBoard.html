@@ -159,10 +159,6 @@ var activities = [];
 var theScoreTable;
 
 function updateSCORESchedule() {
-	if (now == null) {
-		return;
-	}
-  		
 	  var month = now.getMonth() + 1;
 	  
 	  var scheduleURL = ("{{ SCORE_URL }}"
