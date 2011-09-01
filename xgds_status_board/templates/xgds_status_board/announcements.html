@@ -4,9 +4,11 @@
 	  {% for ann in announcements %}
 	  	<li class="announcement{{ann.priority}}">{{ann.content}} 
 	  	<span style='font-size:70%'>
+	  	<i>{{time|date:"m/d"}} 
 	  	{% for time, color in ann.time %}
-	  	<i><span style="color: {{ color }};">{{time|date:"H:i"}}</span></i>
+	  	<span style="color: {{ color }};">{{time|date:"H:i"}}</span>
 	  	{% endfor %}
+	  	</i>
 	  	</span>
 	  	</li>
 	  {% endfor %}
