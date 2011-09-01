@@ -165,7 +165,10 @@ function updateSCORESchedule() {
 	  
 	  var scheduleURL = ("{{ SCORE_URL }}"
                      + "?showAll=true"
-                     + "&date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2)
+                     + "&startTime={{ SCORE_START_TIME }}"
+                     + "&minuteSpan=720"
+                     + "&timezone={{ STATUS_BOARD_DATE_TIMEZONE.name }}"
+                     //+ "&date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2)
                      + "&callback=?");
 	  $.ajax({
 		  url: scheduleURL,
@@ -221,6 +224,8 @@ function updateSCORESchedule() {
 		}
 		if (negative){
 			result += " ago"
+		} else if (result == "0:00") {
+			result = "NOW"
 		}
 		return result;
 	}
@@ -235,6 +240,8 @@ function updateSCORESchedule() {
 		}
 		if (negative){
 			result += " ago";
+		} else if (result == "0:00") {
+			result = "NOW"
 		}
 		return result;
 	}
@@ -243,8 +250,6 @@ function getRemainingTimeString(compareDate, now) {
 	if (compareDate >= now){
 		var diff = get_time_difference(now, compareDate);
 		return formatDiff(diff, false);
-	} else if (compareDate.getHours() == now.getHours() && compareDate.getMinutes() == now.getMinutes()){
-		return "NOW"
 	} else {
 		var diff = get_time_difference(compareDate, now);
 		return formatDiff(diff, true);

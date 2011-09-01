@@ -6,7 +6,7 @@
 
 import logging
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 utc = pytz.utc
@@ -32,6 +32,8 @@ def getMultiTimezones(time):
             for tz in timezones]
     
 def statusBoard(request):
+    timestamp = datetime.utcnow()
+    startTime = timestamp - timedelta(hours=12)
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
                               {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
                                'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
@@ -40,6 +42,7 @@ def statusBoard(request):
                                'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
                                'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
                                'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
+                               'SCORE_START_TIME': startTime,
                               },
                               context_instance=RequestContext(request))
 
