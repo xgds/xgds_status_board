@@ -31,8 +31,8 @@ var scheduleItemCount = 0;
 var lastScheduleHTML = "";
 
 // these will be populated by the server timestamp
-var today = new Date();
-var now = new Date();
+var now = null;
+var today = null;
 
 $(function () {
 //	$('#elapsedTimeField').countdown({since: today, format: "HM", compact:true});
@@ -154,22 +154,26 @@ function updateSchedRows() {
 <!--  stuff for score schedule -->
 
 // today and now must be set in this page.
-// see gdsStatusBoard.html
 var activities = [];
 
 var theScoreTable;
 
 function updateSCORESchedule() {
+	if (now == null) {
+		return;
+	}
   		
-	  var month = today.getMonth() + 1;
+	  var month = now.getMonth() + 1;
 	  
 	  var scheduleURL = ("{{ SCORE_URL }}"
                      + "?showAll=true"
                      + "&startTime={{ SCORE_START_TIME }}"
                      + "&minuteSpan=720"
                      + "&timezone={{ STATUS_BOARD_DATE_TIMEZONE.name }}"
-                     //+ "&date=" + month + "/" + today.getDate() + "/" + today.getFullYear().toString().slice(2)
                      + "&callback=?");
+      
+      console.log(scheduleURL);
+      
 	  $.ajax({
 		  url: scheduleURL,
 		  dataType: 'jsonp',
@@ -183,9 +187,10 @@ function updateSCORESchedule() {
 				  var endDate = new Date(current.end);
 					  
 				  var include = true;
-				  if (now > endDate){
+				  var rightNow = new Date();
+				  if (rightNow > endDate){
 					  var diff = new Date();
-					  var delta = now - endDate;
+					  var delta = rightNow - endDate;
 					  diff.setTime(delta);
 					  if (diff.getHours() == 0){
 						  if (diff.getMinutes() <= 15){
@@ -193,10 +198,10 @@ function updateSCORESchedule() {
 						  }
 					  }
 					  include = false;
-				  }
+				  } 
 				  
 				  if (include){
-			  		var activity = [getRemainingTimeString(startDate, now),
+			  		var activity = [getRemainingTimeString(startDate, rightNow),
 			  		                formatTime(startDate),
 			                  		formatTime(endDate),
 			  		   				current.label,

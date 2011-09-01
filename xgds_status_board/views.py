@@ -33,7 +33,7 @@ def getMultiTimezones(time):
     
 def statusBoard(request):
     timestamp = datetime.utcnow()
-    startTime = timestamp - timedelta(hours=12)
+    startTime = timestamp - timedelta(hours=12, microseconds=0)
     return render_to_response("xgds_status_board/gdsStatusBoard.html",
                               {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
                                'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
@@ -42,7 +42,7 @@ def statusBoard(request):
                                'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
                                'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
                                'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
-                               'SCORE_START_TIME': startTime,
+                               'SCORE_START_TIME': startTime.isoformat(),
                               },
                               context_instance=RequestContext(request))
 
