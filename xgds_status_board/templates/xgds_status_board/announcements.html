@@ -4,9 +4,13 @@
 	  {% for ann in announcements %}
 	  	<li class="announcement{{ann.priority}}">{{ann.content}} 
 	  	<span style='font-size:70%'>
-	  	<i>{{time|date:"m/d"}} 
+	  	<i>
 	  	{% for time, color in ann.time %}
-	  	<span style="color: {{ color }};">{{time|date:"H:i"}}</span>
+	  	<span style="color: {{ color }};">
+	  	{% if forloop.counter == 1 %}
+	  	{{time|date:"m/d"}} 
+	  	{% endif %}
+	  	{{time|date:"H:i"}}</span>
 	  	{% endfor %}
 	  	</i>
 	  	</span>
