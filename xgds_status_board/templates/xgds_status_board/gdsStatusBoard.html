@@ -158,61 +158,14 @@ var activities = [];
 
 var theScoreTable;
 
-function updateSCORESchedule() {
-	  var scheduleURL = ("{{ SCORE_URL }}"
-                     + "?showAll=true"
-                     + "&startTime={{ SCORE_START_TIME }}"
-                     + "&minuteSpan=720"
-                     + "&timezone={{ STATUS_BOARD_DATE_TIMEZONE.name }}"
-                     + "&callback=?");
-      
-      console.log(scheduleURL);
-      
-	  $.ajax({
-		  url: scheduleURL,
-		  dataType: 'jsonp',
-		  success: function(data) {
-			  activities.length = 0;
-			  var temp = data.activities;
-			 
-			  for (var i = 0; i < temp.length; i++) {
-				  var current = temp[i];
-				  var startDate = new Date(current.start);
-				  var endDate = new Date(current.end);
-					  
-				  var include = true;
-				  var rightNow = new Date();
-				  if (rightNow > endDate){
-					  var diff = new Date();
-					  var delta = rightNow - endDate;
-					  diff.setTime(delta);
-					  if (diff.getHours() == 0){
-						  if (diff.getMinutes() <= 15){
-							  include = true;
-						  }
-					  }
-					  include = false;
-				  } 
-				  
-				  if (include){
-			  		var activity = [getRemainingTimeString(startDate, rightNow),
-			  		                formatTime(startDate),
-			                  		formatTime(endDate),
-			  		   				current.label,
-			  		   				current.execution];
-	  			  	activities.push(activity);
-				  }
-			  }
-			  
-			  if (activities.length > 0){
-				  updateSCORERows();
-			  }
-		}
-	  }
-	  );
-	}
-	  
-	
+	function dateTimezoneShift ( dateObject ){
+    		var tzAdjust =  parseInt({{ TIMEZONE_OFFSET }});
+    		var locOffset =  (dateObject.getTimezoneOffset() * 60 * 1000 );
+    		var utcTime = dateObject.getTime() + locOffset;
+    		var adjustedTime = new Date(utcTime + tzAdjust) ;
+    		return adjustedTime;
+    }
+
 	function formatTime(time, negative){
 		var result;
 		result = time.getHours();
@@ -223,9 +176,7 @@ function updateSCORESchedule() {
 		}
 		if (negative){
 			result += " ago"
-		} else if (result == "0:00") {
-			result = "NOW"
-		}
+		} 
 		return result;
 	}
 	
@@ -269,7 +220,7 @@ function get_time_difference(earlierDate,laterDate)
  
        return oDiff;
 }
-	
+
 function updateSCORERows() {
 	if (theScoreTable == null){
 		theScoreTable = $('#scoreTable').dataTable({
@@ -300,6 +251,60 @@ function updateSCORERows() {
 	}
 	
 }
+
+function updateSCORESchedule() {
+	  var scheduleURL = ("{{ SCORE_URL }}"
+                     + "?showAll=true"
+                     + "&startTime={{ SCORE_START_TIME }}"
+                     + "&minuteSpan=720"
+                     + "&timezone={{ STATUS_BOARD_DATE_TIMEZONE.name }}"
+                     + "&callback=?");
+      
+      console.log(scheduleURL);
+      
+	  $.ajax({
+		  url: scheduleURL,
+		  dataType: 'jsonp',
+		  success: function(data) {
+			  activities.length = 0;
+			  var temp = data.activities;
+			 
+			  for (var i = 0; i < temp.length; i++) {
+				  var current = temp[i];
+				  var startDate = new Date(current.start);
+				  var endDate = new Date(current.end);
+					  
+				  var include = true;
+				  var rightNow = new Date();
+				  if (rightNow > endDate){
+					  var diff = new Date();
+					  var delta = rightNow - endDate;
+					  diff.setTime(delta);
+					  if (diff.getHours() == 0){
+						  if (diff.getMinutes() <= 15){
+							  include = true;
+						  }
+					  }
+					  include = false;
+				  } 
+				  
+				  if (include){
+			  		var activity = [getRemainingTimeString(startDate, rightNow),
+			  		                formatTime(dateTimezoneShift(startDate)),
+			                  		formatTime(dateTimezoneShift(endDate)),
+			  		   				current.label,
+			  		   				current.execution];
+	  			  	activities.push(activity);
+				  }
+			  }
+			  
+			  if (activities.length > 0){
+				  updateSCORERows();
+			  }
+		}
+	  }
+	  );
+	}
 </script>
 <!--  end stuff for score schedule -->
 

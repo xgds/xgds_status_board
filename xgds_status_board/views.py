@@ -21,9 +21,14 @@ from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
 
+default_timezone_offset = 0
+
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
 for timezone in timezones:
     timezone.tzobject = pytz.timezone(timezone.code)
+    if timezone == settings.STATUS_BOARD_DATE_TIMEZONE:
+        default_timezone_offset = timezone.tzobject.utcoffset()
+
 
 # given a datetime that is in utc, return that time as the timezones defined in settings.        
 def getMultiTimezones(time):
@@ -43,6 +48,7 @@ def statusBoard(request):
                                'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
                                'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
                                'SCORE_START_TIME': startTime.isoformat(),
+                               'TIMEZONE_OFFSET':default_timezone_offset,
                               },
                               context_instance=RequestContext(request))
 
@@ -67,10 +73,7 @@ def statusBoardAnnouncements(request):
         
     return render_to_response("xgds_status_board/announcements.html", 
                               {'announcements': result,
-                               'timeColors': [tz.color for tz in timezones],
-                               'STATUS_BOARD_DATE_TIMEZONE_INDEX': settings.STATUS_BOARD_DATE_TIMEZONE,
-                               'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
-                               'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE},
+                               },
                               context_instance=RequestContext(request))
 
 def getAnnouncementTS(request):
