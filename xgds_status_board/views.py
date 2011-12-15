@@ -24,11 +24,16 @@ from xgds_status_board import settings
 default_timezone_offset = 0
 
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
+#print 'CALCULATING TIMEZONES WE HAVE %d' % len(timezones)
 for timezone in timezones:
+#    print 'looking up %s' % timezone.code
     timezone.tzobject = pytz.timezone(timezone.code)
-    if timezone == settings.STATUS_BOARD_DATE_TIMEZONE:
-        default_timezone_offset = timezone.tzobject.utcoffset()
-
+#    if str(timezone.code) == str(settings.STATUS_BOARD_DATE_TIMEZONE['code']):
+#    if timezone == settings.STATUS_BOARD_DATE_TIMEZONE:
+#        default_timezone_offset = timezone.tzobject.utcoffset()
+#	print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
+#default_timezone_offset = timezone[0].tzobject.utcoffset()
+#print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
 
 # given a datetime that is in utc, return that time as the timezones defined in settings.        
 def getMultiTimezones(time):
@@ -48,7 +53,7 @@ def statusBoard(request):
                                'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
                                'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
                                'SCORE_START_TIME': startTime.isoformat(),
-                               'TIMEZONE_OFFSET':default_timezone_offset,
+                               'TIMEZONE_OFFSET': default_timezone_offset,
                               },
                               context_instance=RequestContext(request))
 
@@ -157,7 +162,7 @@ def statusBoardAnnouncementsJSON(request):
                          'visible': announcement.visible,
                          'dateCreated':announcement.dateCreated.isoformat()+'Z',
                          'content': announcement.content,
-                         'utcDateCreated': announcement.dateOfAnnouncement.isoFormat()+'Z',
+                         'utcDateCreated': announcement.dateOfAnnouncement.isoformat()+'Z',
                          })
        
     stuff = json.dumps(jsonList)
