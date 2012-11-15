@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% block cssExtras %}
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}style/status_board.css" ></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style/status_board.css" ></link>
 {% endblock %}
 {% block scripts %}
   {{ block.super }}
-<script src="{{ MEDIA_URL }}external/js/jquery.min.js"></script>
-<script src="{{ MEDIA_URL }}jquery/js/jquery.countdown.js"></script>
-<script src="{{ MEDIA_URL }}jquery/js/jquery.timers-1.2.js"></script>
+<script src="{{ STATIC_URL }}external/js/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}jquery/js/jquery.countdown.js"></script>
+<script src="{{ STATIC_URL }}jquery/js/jquery.timers-1.2.js"></script>
 
 <!--  stuff for score schedule -->
- <script src="{{ MEDIA_URL }}jquery/js/jquery.dataTables.js"></script>
+ <script src="{{ STATIC_URL }}jquery/js/jquery.dataTables.js"></script>
 	<style type="text/css" title="currentStyle">
-		@import "{{ MEDIA_URL }}jquery/css/demo_page.css";
-		@import "{{ MEDIA_URL }}jquery/css/demo_table.css";
+		@import "{{ STATIC_URL }}jquery/css/demo_page.css";
+		@import "{{ STATIC_URL }}jquery/css/demo_table.css";
 		.active_task {
 			color:#OO6400;
 		}
