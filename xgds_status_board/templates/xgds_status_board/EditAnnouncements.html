@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load url from future %}
 {% load nav %}
 {% block siteSection %}Status Board{% endblock %}
 {% block nav %}
@@ -27,7 +28,7 @@ fnOnNewRowPosted: function(theId) {
    $.ajax({
            type: "GET",
            async: false,
-           url: "{% url getAnnouncementTS %}",
+           url: "{% url 'getAnnouncementTS' %}",
            success: function(data) {
               theTimeString = data;
            },
@@ -39,9 +40,9 @@ fnOnNewRowPosted: function(theId) {
    
    return true;
 },
-sAddURL: "{% url addAnnouncement %}",
-sUpdateURL: "{% url updateAnnouncement %}",
-sDeleteURL: "{% url deleteAnnouncement %}",
+sAddURL: "{% url 'addAnnouncement' %}",
+sUpdateURL: "{% url 'updateAnnouncement' %}",
+sDeleteURL: "{% url 'deleteAnnouncement' %}",
 "aoColumns": [
 null,
 {

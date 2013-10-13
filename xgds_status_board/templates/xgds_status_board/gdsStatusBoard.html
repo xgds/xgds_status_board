@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load url from future %}
 {% block cssExtras %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style/status_board.css" ></link>
 {% endblock %}
@@ -60,7 +61,7 @@ function updateDynamicElements() {
 }
 
 function updateServerTimestamp() {
-    $.getJSON('{% url serverDatetime.json %}', function(data) {
+    $.getJSON('{% url 'serverDatetime.json' %}', function(data) {
 	$.each(data, function(index, value) {
 	    // populate today's date
 	    if (value.zone == "{{ STATUS_BOARD_DATE_TIMEZONE.name }}") {
@@ -94,7 +95,7 @@ function zeroPad(num,count)
 
 {% if STATUS_BOARD_ANNOUNCEMENTS %}
 function updateAnnouncements() {
-  $.get('{% url announcements %}', function(data) {
+  $.get('{% url 'announcements' %}', function(data) {
     $('#announceSection').html(data);
   })
 }
@@ -102,7 +103,7 @@ function updateAnnouncements() {
 
 {% if STATUS_BOARD_SCHEDULE %}
 function updateSchedule() {
-  $.getJSON('{% url schedule.json %}', function(data) {
+  $.getJSON('{% url 'schedule.json' %}', function(data) {
     if (lastScheduleHTML != data.schedHtml) {
       $('#scheduleSection').html(data.schedHtml);
       myDates = data.localTimes;
