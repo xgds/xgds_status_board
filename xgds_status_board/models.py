@@ -24,12 +24,12 @@ PRIORITY_CHOICES = (
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
-    priority = models.IntegerField(null=True, blank=True, 
+    priority = models.IntegerField(null=True, blank=True,
                                    choices=PRIORITY_CHOICES,
                                    default=5,
                                    verbose_name='Priority (higher values are more important)')
     visible = models.BooleanField(null=False, blank=True, default=True)
-    dateCreated = models.DateTimeField(null=True, db_column='dateCreated', 
+    dateCreated = models.DateTimeField(null=True, db_column='dateCreated',
                                        blank=True, auto_now_add=True, editable=False)
     dateOfAnnouncement = models.DateTimeField(null=True, db_column='dateOfAnnouncement',
                                        blank=True)
@@ -53,7 +53,7 @@ class StatusboardEvent(models.Model):
     visible = models.BooleanField(null=False, blank=True, default=True)
     completed = models.BooleanField(null=False, blank=True)
     dateCreated = models.DateTimeField(null=True, db_column='dateCreated',
-                                       blank=True, auto_now_add=True, editable=False) 
+                                       blank=True, auto_now_add=True, editable=False)
     dateOfEvent = models.DateTimeField(null=True, db_column='dateOfEvent',
                                        blank=True, default=midnightThisMorning)
     content = models.CharField(max_length=765, blank=True)

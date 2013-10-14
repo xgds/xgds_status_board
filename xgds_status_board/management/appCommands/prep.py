@@ -24,7 +24,7 @@ from geocamUtil.management import commandUtil
 
 class Command(NoArgsCommand):
     help = 'Prep xgds_status_board'
-    
+
     def handle_noargs(self, **options):
         # put your code here
         pass

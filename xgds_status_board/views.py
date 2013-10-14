@@ -31,16 +31,16 @@ for timezone in timezones:
 #    if str(timezone.code) == str(settings.STATUS_BOARD_DATE_TIMEZONE['code']):
 #    if timezone == settings.STATUS_BOARD_DATE_TIMEZONE:
 #        default_timezone_offset = timezone.tzobject.utcoffset()
-#	print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
+#       print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
 #default_timezone_offset = timezone[0].tzobject.utcoffset()
 #print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
 
-# given a datetime that is in utc, return that time as the timezones defined in settings.        
+# given a datetime that is in utc, return that time as the timezones defined in settings.
 def getMultiTimezones(time):
     utc_time = utc.localize(time)
     return [(tz.name, utc_time.astimezone(tz.tzobject), tz.color)
             for tz in timezones]
-    
+
 def statusBoard(request):
     timestamp = datetime.utcnow()
     startTime = timestamp - timedelta(hours=12, microseconds=0)
@@ -60,23 +60,23 @@ def statusBoard(request):
 def statusBoardEdit(request):
     announcementList = StatusboardAnnouncement.objects.\
         order_by('-priority')
-    return render_to_response("xgds_status_board/EditAnnouncements.html", 
+    return render_to_response("xgds_status_board/EditAnnouncements.html",
                               {'announcements': announcementList,
                                'navigation_tab':settings.STATUS_BOARD_EDIT_NAVIGATION_TAB,},
                               context_instance=RequestContext(request))
-    
-    
+
+
 def statusBoardAnnouncements(request):
     announcementList = StatusboardAnnouncement.objects.\
         filter(visible=True).order_by('-dateCreated')
     result = []
-        
+
     for announcement in announcementList:
         multiTimezones = getMultiTimezones(announcement.dateOfAnnouncement)
         announcement.time = [(t, color) for name, t, color in multiTimezones]
         result.append(announcement)
-        
-    return render_to_response("xgds_status_board/announcements.html", 
+
+    return render_to_response("xgds_status_board/announcements.html",
                               {'announcements': result,
                                },
                               context_instance=RequestContext(request))
@@ -90,7 +90,7 @@ def getAnnouncementTS(request):
             return HttpResponse(str(ann.dateCreated))
         except StatusboardAnnouncement.DoesNotExist:
             return HttpResponse(status=500)
-        
+
 
 def addAnnouncement(request):
     if request.is_ajax():
@@ -129,7 +129,7 @@ def updateAnnouncement(request):
 
         ann.dateOfAnnouncement = datetime.utcnow()
         ann.save()
-        return HttpResponse(value)        
+        return HttpResponse(value)
     else:
         return HttpResponse(status=500)
 
@@ -148,7 +148,7 @@ def deleteAnnouncement(request):
             return HttpResponse("Server error attempting to delete announcement.")
 
         return HttpResponse("ok")
-    else:        
+    else:
         return HttpResponse(status=500)
 
 def statusBoardAnnouncementsJSON(request):
@@ -157,14 +157,14 @@ def statusBoardAnnouncementsJSON(request):
     jsonList = []
 
     for announcement in announcementList:
-        jsonList.append({'id': announcement.id, 
-                         'priority': announcement.priority, 
+        jsonList.append({'id': announcement.id,
+                         'priority': announcement.priority,
                          'visible': announcement.visible,
                          'dateCreated':announcement.dateCreated.isoformat()+'Z',
                          'content': announcement.content,
                          'utcDateCreated': announcement.dateOfAnnouncement.isoformat()+'Z',
                          })
-       
+
     stuff = json.dumps(jsonList)
     return HttpResponse(stuff, mimetype='text/plain')
 
@@ -173,19 +173,19 @@ def statusBoardSchedule(request):
     eventList = StatusboardEvent.objects.\
         filter(visible=True).filter(completed=False).order_by('dateOfEvent')
     #siteTimeOffset = datetime.timedelta(hours = settings.REMOTE_TIMEZONE_OFFSET)
-    localTimes = [e.dateOfEvent.strftime("%m/%d/%Y %H:%M:%S") 
+    localTimes = [e.dateOfEvent.strftime("%m/%d/%Y %H:%M:%S")
                   for e in eventList]
     siteTimeOffset = 0
     siteTimes = [e.dateOfEvent + siteTimeOffset for e in eventList]
     eventsPlusSiteTimes = zip(eventList, siteTimes)
-    schedHtml = render_to_response("xgds_status_board/schedule.html", 
+    schedHtml = render_to_response("xgds_status_board/schedule.html",
                                    {'eventList': eventList,
                                     'eventsPlusSiteTimes': eventsPlusSiteTimes,
                                     'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
                                     'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
                                     },
                                    context_instance=RequestContext(request))
-    resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes, 
+    resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes,
                   'dateCount': eventList.count()}
     resultJson = json.dumps(resultDict)
     resp = HttpResponse(resultJson, mimetype='application/json')
@@ -197,9 +197,9 @@ def getServerDatetimeJSON(request):
     times = getMultiTimezones(timestamp)
     result = []
     for name, time, color in times:
-        datedict = {'dayName':time.strftime("%a"), 
+        datedict = {'dayName':time.strftime("%a"),
                     'monthName':time.strftime("%b"),
-                    'month':time.month, 'day':time.day, 
+                    'month':time.month, 'day':time.day,
                     'year':time.year, 'shortyear':timestamp.strftime("%y"),
                     'hour':time.strftime("%H"),
                     'hour12':time.strftime("%I"),
