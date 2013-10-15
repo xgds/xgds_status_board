@@ -6,7 +6,7 @@
 
 from django.contrib import admin
 
-from xgds_status_board.models import *
+from xgds_status_board.models import *  # pylint: disable=W0401
 
 admin.site.register(StatusboardAnnouncement)
 admin.site.register(StatusboardEvent)

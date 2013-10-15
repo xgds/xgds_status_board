@@ -20,7 +20,8 @@ management/appCommands/prep.py command for each app (if it exists).
 
 from django.core.management.base import NoArgsCommand
 
-from geocamUtil.management import commandUtil
+# from geocamUtil.management import commandUtil
+
 
 class Command(NoArgsCommand):
     help = 'Prep xgds_status_board'

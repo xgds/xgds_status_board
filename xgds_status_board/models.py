@@ -8,19 +8,22 @@ import datetime
 
 from django.db import models
 
+# pylint: disable=C1001
+
 # Create your models here.
 PRIORITY_CHOICES = (
-        (0, '0'),
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-        (6, '6'),
-        (7, '7'),
-        (8, '8'),
-        (9, '9'),
-    )
+    (0, '0'),
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4'),
+    (5, '5'),
+    (6, '6'),
+    (7, '7'),
+    (8, '8'),
+    (9, '9'),
+)
+
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
@@ -32,16 +35,20 @@ class StatusboardAnnouncement(models.Model):
     dateCreated = models.DateTimeField(null=True, db_column='dateCreated',
                                        blank=True, auto_now_add=True, editable=False)
     dateOfAnnouncement = models.DateTimeField(null=True, db_column='dateOfAnnouncement',
-                                       blank=True)
+                                              blank=True)
     content = models.CharField(max_length=765, blank=True)
+
     class Meta:
         db_table = u'xgds_status_board_announcement'
         verbose_name = "Announcement"
+
     def __unicode__(self):
         return "%s: %s" % (self.dateCreated, self.content)
 
+
 def midnightThisMorning():
     return datetime.datetime.now().replace(hour=0, minute=0, second=0)
+
 
 class StatusboardEvent(models.Model):
     id = models.AutoField(primary_key=True)
@@ -57,9 +64,11 @@ class StatusboardEvent(models.Model):
     dateOfEvent = models.DateTimeField(null=True, db_column='dateOfEvent',
                                        blank=True, default=midnightThisMorning)
     content = models.CharField(max_length=765, blank=True)
+
     class Meta:
         db_table = u'xgds_status_board_event'
         verbose_name = "Event"
+
     def __unicode__(self):
         return "%s: %s" % (self.dateOfEvent, self.content)
 

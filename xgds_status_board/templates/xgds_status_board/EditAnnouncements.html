@@ -8,17 +8,17 @@
 {% endblock %}
 {% block cssExtras %}
 <style type="text/css" title="currentStyle">
-@import "{{ STATIC_URL }}jquery/css/demo_page.css";
-@import "{{ STATIC_URL }}jquery/css/demo_table.css";
-@import "{{ STATIC_URL }}jquery/css/jquery-ui.css";
+@import "{{ STATIC_URL }}external/css/demo_page.css";
+@import "{{ STATIC_URL }}external/css/demo_table.css";
+@import "{{ STATIC_URL }}external/css/jquery-ui.css";
 </style>
 {% endblock cssExtras %}
 {% block scripts %}
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery.dataTables.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery.jeditable.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-ui.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery.validate.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.dataTables.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.jeditable.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery-ui.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.validate.js"></script>
 <script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.dataTables.editable.js"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready( function() {

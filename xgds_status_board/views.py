@@ -13,13 +13,15 @@ utc = pytz.utc
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import  HttpResponse
+from django.http import HttpResponse
 
 from geocamUtil import anyjson as json
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
+
+# pylint: disable=E1101
 
 default_timezone_offset = 0
 
@@ -35,34 +37,41 @@ for timezone in timezones:
 #default_timezone_offset = timezone[0].tzobject.utcoffset()
 #print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
 
-# given a datetime that is in utc, return that time as the timezones defined in settings.
+
 def getMultiTimezones(time):
+    """
+    given a datetime that is in utc, return that time as the timezones defined in settings.
+    """
     utc_time = utc.localize(time)
     return [(tz.name, utc_time.astimezone(tz.tzobject), tz.color)
             for tz in timezones]
 
+
 def statusBoard(request):
     timestamp = datetime.utcnow()
     startTime = timestamp - timedelta(hours=12, microseconds=0)
-    return render_to_response("xgds_status_board/gdsStatusBoard.html",
-                              {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
-                               'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
-                               'navigation_tab':settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
-                               'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
-                               'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
-                               'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
-                               'SCORE_URL':settings.STATUS_BOARD_SCORE_URL,
-                               'SCORE_START_TIME': startTime.isoformat(),
-                               'TIMEZONE_OFFSET': default_timezone_offset,
-                              },
-                              context_instance=RequestContext(request))
+    return (render_to_response
+            ("xgds_status_board/gdsStatusBoard.html",
+             {
+                 'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
+                 'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
+                 'navigation_tab': settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
+                 'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
+                 'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
+                 'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
+                 'SCORE_URL': settings.STATUS_BOARD_SCORE_URL,
+                 'SCORE_START_TIME': startTime.isoformat(),
+                 'TIMEZONE_OFFSET': default_timezone_offset
+             },
+             context_instance=RequestContext(request)))
+
 
 def statusBoardEdit(request):
     announcementList = StatusboardAnnouncement.objects.\
         order_by('-priority')
     return render_to_response("xgds_status_board/EditAnnouncements.html",
                               {'announcements': announcementList,
-                               'navigation_tab':settings.STATUS_BOARD_EDIT_NAVIGATION_TAB,},
+                               'navigation_tab': settings.STATUS_BOARD_EDIT_NAVIGATION_TAB},
                               context_instance=RequestContext(request))
 
 
@@ -73,7 +82,7 @@ def statusBoardAnnouncements(request):
 
     for announcement in announcementList:
         multiTimezones = getMultiTimezones(announcement.dateOfAnnouncement)
-        announcement.time = [(t, color) for name, t, color in multiTimezones]
+        announcement.time = [(t, color) for _name, t, color in multiTimezones]
         result.append(announcement)
 
     return render_to_response("xgds_status_board/announcements.html",
@@ -81,12 +90,13 @@ def statusBoardAnnouncements(request):
                                },
                               context_instance=RequestContext(request))
 
+
 def getAnnouncementTS(request):
     if request.is_ajax():
-        id = request.REQUEST['id']
+        annId = request.REQUEST['id']
 
         try:
-            ann = StatusboardAnnouncement.objects.get(id=id)
+            ann = StatusboardAnnouncement.objects.get(id=annId)
             return HttpResponse(str(ann.dateCreated))
         except StatusboardAnnouncement.DoesNotExist:
             return HttpResponse(status=500)
@@ -99,27 +109,30 @@ def addAnnouncement(request):
         content = request.REQUEST['content']
 
         try:
-            ann = StatusboardAnnouncement(priority=priority, visible=vis,content=content)
+            ann = StatusboardAnnouncement(priority=priority, visible=vis,
+                                          content=content)
             ann.dateOfAnnouncement = datetime.utcnow()
             ann.save()
             return HttpResponse(str(ann.id))
-        except Exception, e:
+        except Exception, e:  # pylint: disable=W0703
             logging.error(str(e))
             return HttpResponse("Error saving new announcement.", status=500)
     else:
         return HttpResponse(status=500)
 
+
 def updateAnnouncement(request):
     if request.is_ajax():
-        id = request.REQUEST['id']
+        annId = request.REQUEST['id']
         value = request.REQUEST['value']
         colName = request.REQUEST['columnName']
         colPos = request.REQUEST['columnPosition']
         colId = request.REQUEST['columnId']
         rowId = request.REQUEST['rowId']
-        logging.debug("got update event: id=[%s] value=[%s] colName=[%s] colPos=[%s] colId=[%s] rowId=[%s]"%(id, value, colName, colPos, colId, rowId))
+        logging.debug("got update event: annId=[%s] value=[%s] colName=[%s] colPos=[%s] colId=[%s] rowId=[%s]",
+                      annId, value, colName, colPos, colId, rowId)
 
-        ann = StatusboardAnnouncement.objects.get(id=id)
+        ann = StatusboardAnnouncement.objects.get(id=annId)
         if colId == '1':
             ann.visible = bool(int(value))
         elif colId == '2':
@@ -133,23 +146,25 @@ def updateAnnouncement(request):
     else:
         return HttpResponse(status=500)
 
+
 def deleteAnnouncement(request):
     if request.is_ajax():
-        id = request.REQUEST['id']
+        annId = request.REQUEST['id']
 
         try:
-            ann = StatusboardAnnouncement.objects.get(id=id)
+            ann = StatusboardAnnouncement.objects.get(id=annId)
         except StatusboardAnnouncement.DoesNotExist:
             return HttpResponse("Could not find announcement to delete. Please refresh the page.")
 
         try:
             ann.delete()
-        except Exception:
+        except Exception:  # pylint: disable=W0703
             return HttpResponse("Server error attempting to delete announcement.")
 
         return HttpResponse("ok")
     else:
         return HttpResponse(status=500)
+
 
 def statusBoardAnnouncementsJSON(request):
     announcementList = StatusboardAnnouncement.objects.\
@@ -160,15 +175,16 @@ def statusBoardAnnouncementsJSON(request):
         jsonList.append({'id': announcement.id,
                          'priority': announcement.priority,
                          'visible': announcement.visible,
-                         'dateCreated':announcement.dateCreated.isoformat()+'Z',
+                         'dateCreated': announcement.dateCreated.isoformat() + 'Z',
                          'content': announcement.content,
-                         'utcDateCreated': announcement.dateOfAnnouncement.isoformat()+'Z',
+                         'utcDateCreated': announcement.dateOfAnnouncement.isoformat() + 'Z',
                          })
 
     stuff = json.dumps(jsonList)
     return HttpResponse(stuff, mimetype='text/plain')
 
-#TODO support timezone array
+
+# TODO support timezone array
 def statusBoardSchedule(request):
     eventList = StatusboardEvent.objects.\
         filter(visible=True).filter(completed=False).order_by('dateOfEvent')
@@ -192,20 +208,24 @@ def statusBoardSchedule(request):
 
     return resp
 
+
 def getServerDatetimeJSON(request):
     timestamp = datetime.utcnow()
     times = getMultiTimezones(timestamp)
     result = []
-    for name, time, color in times:
-        datedict = {'dayName':time.strftime("%a"),
-                    'monthName':time.strftime("%b"),
-                    'month':time.month, 'day':time.day,
-                    'year':time.year, 'shortyear':timestamp.strftime("%y"),
-                    'hour':time.strftime("%H"),
-                    'hour12':time.strftime("%I"),
-                    'ampm':time.strftime("%p"),
-                    'min':time.strftime("%M"),'sec':time.strftime("%S"),
-                    'zone':name}
+    for name, time, _color in times:
+        datedict = {'dayName': time.strftime("%a"),
+                    'monthName': time.strftime("%b"),
+                    'month': time.month,
+                    'day': time.day,
+                    'year': time.year,
+                    'shortyear': timestamp.strftime("%y"),
+                    'hour': time.strftime("%H"),
+                    'hour12': time.strftime("%I"),
+                    'ampm': time.strftime("%p"),
+                    'min': time.strftime("%M"),
+                    'sec': time.strftime("%S"),
+                    'zone': name}
         result.append(datedict)
     datejson = json.dumps(result)
 

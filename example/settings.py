@@ -8,7 +8,8 @@
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-import os, sys
+import os
+import sys
 APP = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 PROJ_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(APP)
@@ -76,7 +77,7 @@ SECRET_KEY = 'jq@a!p%f$u^6m8fo^+^scdpzn6k^-%#_-5b5(zpx95os8!j)gv'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+    # 'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
