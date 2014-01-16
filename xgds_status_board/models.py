@@ -47,7 +47,7 @@ class StatusboardAnnouncement(models.Model):
 
 
 def midnightThisMorning():
-    return datetime.datetime.now().replace(hour=0, minute=0, second=0)
+    return datetime.datetime.utcnow().replace(hour=0, minute=0, second=0)
 
 
 class StatusboardEvent(models.Model):
