@@ -8,18 +8,18 @@
 {% endblock %}
 {% block cssExtras %}
 <style type="text/css" title="currentStyle">
-@import "{{ STATIC_URL }}external/css/demo_page.css";
-@import "{{ STATIC_URL }}external/css/demo_table.css";
-@import "{{ STATIC_URL }}external/css/jquery-ui.css";
+@import "{{ STATIC_URL }}external/css/jquery/demo_page.css";
+@import "{{ STATIC_URL }}external/css/jquery/demo_table.css";
+@import "{{ STATIC_URL }}external/css/jquery/jquery-ui.css";
 </style>
 {% endblock cssExtras %}
 {% block scripts %}
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.dataTables.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.jeditable.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery-ui.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.validate.js"></script>
-<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery.dataTables.editable.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery.dataTables.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery.jeditable.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery-ui.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery.validate.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}external/js/jquery/jquery.dataTables.editable.js"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready( function() {
 var oTable = $('#announceTable').dataTable().makeEditable({
