@@ -12,8 +12,6 @@
 <!--  stuff for score schedule -->
  <script src="{{ STATIC_URL }}external/js/jquery/jquery.dataTables.js"></script>
 	<style type="text/css" title="currentStyle">
-		@import "{{ STATIC_URL }}external/css/demo_page.css";
-		@import "{{ STATIC_URL }}external/css/demo_table.css";
 		.active_task {
 			color:#OO6400;
 		}
@@ -232,7 +230,7 @@ function updateSCORERows() {
 			"bFilter": false,
 			"bSort": false,
 			"bInfo": false,
-"aoColumns": [{"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignLeft"}, {"sClass": "alignLeft"}],
+			"aoColumns": [{"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignRight"}, {"sClass": "alignLeft"}, {"sClass": "alignLeft"}],
 			"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 				if ( aData[0] == "NOW" || aData[0][aData[0].length - 1] == "o")
 				{
