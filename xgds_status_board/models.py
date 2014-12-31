@@ -58,7 +58,7 @@ class StatusboardEvent(models.Model):
                                    verbose_name='Priority (higher values are more important)'
                                    )
     visible = models.BooleanField(null=False, blank=True, default=True)
-    completed = models.BooleanField(null=False, blank=True)
+    completed = models.BooleanField(null=False, blank=True, default=False)
     dateCreated = models.DateTimeField(null=True, db_column='dateCreated',
                                        blank=True, auto_now_add=True, editable=False)
     dateOfEvent = models.DateTimeField(null=True, db_column='dateOfEvent',

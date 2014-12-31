@@ -181,7 +181,7 @@ def statusBoardAnnouncementsJSON(request):
                          })
 
     stuff = json.dumps(jsonList)
-    return HttpResponse(stuff, mimetype='text/plain')
+    return HttpResponse(stuff, content_type='text/plain')
 
 
 # TODO support timezone array
@@ -204,7 +204,7 @@ def statusBoardSchedule(request):
     resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes,
                   'dateCount': eventList.count()}
     resultJson = json.dumps(resultDict)
-    resp = HttpResponse(resultJson, mimetype='application/json')
+    resp = HttpResponse(resultJson, content_type='application/json')
 
     return resp
 
@@ -229,4 +229,4 @@ def getServerDatetimeJSON(request):
         result.append(datedict)
     datejson = json.dumps(result)
 
-    return HttpResponse(datejson, mimetype='application/json')
+    return HttpResponse(datejson, content_type='application/json')
