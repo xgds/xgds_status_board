@@ -46,3 +46,9 @@ STATUS_BOARD_TIMEZONES = [GMT_TIME_ZONE]
 # will roll over, ie when status board lists will no longer display
 # things for the current day
 STATUS_BOARD_DATE_TIMEZONE = GMT_TIME_ZONE
+
+# include this in your siteSettings.py BOWER_INSTALLED_APPS
+STATUS_BOARD_BOWER_INSTALLED_APPS = (
+    'jquery-countdown',
+    'jquery-timers=https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js',
+)

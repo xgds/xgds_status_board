@@ -5,12 +5,12 @@
 {% endblock %}
 {% block scripts %}
   {{ block.super }}
-<script src="{{ STATIC_URL }}external/js/jquery/jquery.min.js"></script>
-<script src="{{ STATIC_URL }}external/js/jquery/jquery.countdown.js"></script>
-<script src="{{ STATIC_URL }}external/js/jquery/jquery.timers-1.2.js"></script>
+<script src="{{ EXTERNAL_URL }}jquery/dist/jquery.min.js"></script>
+<script src="{{ EXTERNAL_URL }}jquery-countdown/build/jquery.countdown.js"></script>
+<script src="{{ EXTERNAL_URL }}jquery-timers/index.js"></script>
 
 <!--  stuff for score schedule -->
- <script src="{{ STATIC_URL }}external/js/jquery/jquery.dataTables.js"></script>
+<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
 	<style type="text/css" title="currentStyle">
 		.active_task {
 			color:#OO6400;
