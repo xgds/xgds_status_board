@@ -1,5 +1,12 @@
 {% load url from future %}
-<p> 
-  {% if nav.status.view %}View{% else %}<a href="{% url 'xgds_status_boardView' %}"> View </a> {% endif %} &nbsp;&nbsp;|&nbsp;&nbsp;
-  {% if nav.status.edit %}Edit{% else %}<a href="{% url 'xgds_status_boardEdit' %}"> Edit </a> {% endif %}
-</p>
+{% block sitemenu-content-secondary %}
+{% load nav %}
+<div class="sitemenu-nav-secondary">
+	<nav class="subnav">
+		<ul>
+		    <li {% currentnav status xgds_status_boardView %}><a href="{% url 'status' %}">View</a></li>
+		    <li {% currentnav xgds_status_boardEdit %}><a href="{% url 'xgds_status_boardEdit' %}">Edit</a></li>
+		</ul>
+	</nav>
+</div>
+{% endblock %}

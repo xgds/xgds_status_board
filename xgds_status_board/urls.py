@@ -20,8 +20,7 @@ from xgds_status_board import views
 
 urlpatterns = patterns(
     '',
-    (r'^$', views.statusBoard, {'readOnly': True},
-     'xgds_status_boardView'),
+    (r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
     (r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True},
      "announcements"),
     (r'^announcementsJSON$', views.statusBoardAnnouncementsJSON, {'readOnly': True}),

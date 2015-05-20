@@ -1,37 +1,20 @@
 /* status board stuff */
+.selected {
+	background-color: #a1aec7;
+}
 .TightSpacePara {
 	vertical-align: baseline;
 	margin: 3px;
 }
 
-.h3 {
-	vertical-align: baseline;
-	margin: 3px;
-	font-size: 24px;
-	color:#6a2b2b;  /* status board big headings */
-	text-decoration: bold;
-}
-
-.h2 {
-	vertical-align: baseline;
-	margin: 3px;
-	font-size: 18px;
-	color:#6a2b2b;  /* status board section headings */
-	text-decoration: bold;
-}
 .details {
 	font-size:14px;
 }
 .statusboard {
-	float:left;
-	width:100%;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size: 14px;
 	color:#333333;  /* status board text body */
 }
 
-a:link {color:#00ccff}
-a:visited {color:#00ccff}
 .time {
 	text-decoration:bold;
 }
@@ -39,10 +22,6 @@ a:visited {color:#00ccff}
 .linkblock {
 	padding: 5px;
 	border: 2px solid #7a7a7a;
-	float:right;
-	margin-top: -40px;
-	width:20%;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     color:#6a2b2b;  // color for plain text in the link block on the right including the bullets and date
 }
 

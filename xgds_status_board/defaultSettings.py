@@ -61,4 +61,5 @@ STATUS_BOARD_DATE_TIMEZONE = GMT_TIME_ZONE
 STATUS_BOARD_BOWER_INSTALLED_APPS = (
     'jquery-countdown',
     'jquery-timers=https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js',
+    'datatables-editable=https://github.com/jphustman/jquery-datatables-editable.git'
 )

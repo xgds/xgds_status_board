@@ -1,28 +1,37 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load nav %}
+ {% block nav %}
+    {% nav "status" %}
+    {{ block.super }}
+    {% endblock nav %}
+    
+    {% block sitemenu-content-secondary %}
+	{% include "xgds_status_board/status_subnav.html" %}
+	{% endblock sitemenu-content-secondary %}
 {% block cssExtras %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xgds_status_board/css/status_board.css" ></link>
-{% endblock %}
-{% block scripts %}
-  {{ block.super }}
-<script src="{{ EXTERNAL_URL }}jquery/dist/jquery.min.js"></script>
-<script src="{{ EXTERNAL_URL }}jquery-countdown/build/jquery.countdown.js"></script>
-<script src="{{ EXTERNAL_URL }}jquery-timers/index.js"></script>
-
-<!--  stuff for score schedule -->
-<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
-	<style type="text/css" title="currentStyle">
+    <!--  stuff for score schedule -->
+    <style type="text/css" title="currentStyle">
 		.active_task {
 			color:#OO6400;
 		}
-.alignRight {
-  text-align: right;
-}
-.alignLeft {
-  text-align: left;
-}
+		.alignRight {
+		  text-align: right;
+		}
+		.alignLeft {
+		  text-align: left;
+		}
 	</style>
-<!--  end stuff for score schedule -->
+	<!--  end stuff for score schedule -->
+{% endblock %}
+{% block scripts %}
+  {{ block.super }}
+    <script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-ui/jquery-ui.min.js"></script>
+  	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
+	<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}geocamUtil/js/datatable_helpers.js"></script>
+	<script src="{{ EXTERNAL_URL }}jquery-countdown/build/jquery.countdown.js"></script>
+	<script src="{{ EXTERNAL_URL }}jquery-timers/index.js"></script>
 
 <script type="text/javascript">
 var myDates = [];
@@ -310,21 +319,8 @@ function updateSCORESchedule() {
 {% endblock scripts %}
 
 {% block contents %}
-
-<span class="statusboard">
-
-<span class='linkblock'>
-{% block currentTime %}
-  <span class='time'>
-  	<span class='{{today_timeclass}}' id="date"></span><br/>
-  	{% for t in STATUS_BOARD_TIMEZONES %}
-  		<span style="color: {{ t.color }};" id="time{{forloop.counter}}" ></span><br/>
-  	{% endfor %}
-  </span>
-{% endblock currentTime %}
-{% block links %}
-{% endblock links %}
-</span>
+<div class="row twelve columns statusboard">
+<div class="row ten columns">
 
 {% if STATUS_BOARD_ANNOUNCEMENTS %}
 {% block preAnnouncements %}
@@ -356,7 +352,20 @@ function updateSCORESchedule() {
 
 {% block details %}
 {% endblock details %}
+</div>
+<div class='row two columns linkblock'>
+{% block currentTime %}
+  <span class='time'>
+  	<span class='{{today_timeclass}}' id="date"></span><br/>
+  	{% for t in STATUS_BOARD_TIMEZONES %}
+  		<span style="color: {{ t.color }};" id="time{{forloop.counter}}" ></span><br/>
+  	{% endfor %}
+  </span>
+{% endblock currentTime %}
+{% block links %}
+{% endblock links %}
+</div>
 
-</span>
+</div>
 
 {% endblock contents %}
