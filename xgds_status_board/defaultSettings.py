@@ -43,7 +43,7 @@ STATUS_BOARD_SCORE_URL = 'please_set_score_url_in_siteSettings.py'
 
 STATUS_BOARD_ANNOUNCEMENTS = True
 STATUS_BOARD_SCHEDULE = False
-STATUS_BOARD_SCORE_SCHEDULE = True
+STATUS_BOARD_SCORE_SCHEDULE = False
 
 # to add timezones to the status board display override these values *** in siteSettings.py ***
 # note: in the database things are stored in UTC (GMT)
