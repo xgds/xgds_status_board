@@ -77,8 +77,7 @@ def statusBoard(request):
 
 
 def statusBoardEdit(request):
-    announcementList = StatusboardAnnouncement.objects.\
-        order_by('-priority')
+    announcementList = StatusboardAnnouncement.objects.order_by('-priority')
     return render_to_response("xgds_status_board/EditAnnouncements.html",
                               {'announcements': announcementList,
                                'navigation_tab': settings.STATUS_BOARD_EDIT_NAVIGATION_TAB},
