@@ -44,6 +44,14 @@ li { padding-bottom: 10px; }
 .announcement7 { color:#14594d; }
 .announcement8 { color:#14594d; }
 .announcement9 { color:#14594d; }
+
+table.display tr.even.row_selected td {
+    background-color: #B0BED9;
+}
+table.display tr.odd.row_selected td {
+    background-color: #9FAFD1;
+}
+
 /* end status board */
 
 /* __BEGIN_LICENSE__
