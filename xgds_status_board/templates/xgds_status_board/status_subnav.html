@@ -1,10 +1,9 @@
-{% load url from future %}
 {% block sitemenu-content-secondary %}
 {% load nav %}
 <div class="sitemenu-nav-secondary">
 	<nav class="subnav">
 		<ul>
-		    <li {% currentnav status xgds_status_boardView %}><a href="{% url 'status' %}">View</a></li>
+		    <li {% currentnav status xgds_status_boardView %}><a href="{% url 'xgds_status_boardView' %}">View</a></li>
 		    <li {% currentnav xgds_status_boardEdit %}><a href="{% url 'xgds_status_boardEdit' %}">Edit</a></li>
 		</ul>
 	</nav>

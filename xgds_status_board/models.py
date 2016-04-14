@@ -82,17 +82,44 @@ class StatusboardEvent(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.dateOfEvent, self.content)
 
-#
-# Note -- was intended for K10 plan status monitoring.  Should probably
-# be moved to Kn specific repository.
-#
-# class StatusboardPlanStatus(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     timestamp = models.DateTimeField(null=True)
-#     keyword = models.CharField(max_length=64, blank=True)
-#     value = models.CharField(max_length=196, blank=True)
-#     class Meta:
-#         db_table = u'StatusBoard_Plan_Status'
-#         verbose_name = "PlanStatus"
-#     def __unicode__(self):
-#         return "%s: %s (%s)" % (self.keyword, self.value, self.timestamp)
+
+
+
+
+class SubsystemGroup(models.Model):
+    """
+    EV1, EV2, Field Server, etc that groups subsystems in the monitor view.
+    """
+    name = models.CharField(max_length=255, blank=True, help_text='no spaces and unique')
+    displayName = models.CharField(max_length=255, blank=True)
+    warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
+    failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
+    
+    def getTitle(self):
+        return self.displayName
+    
+    def getIcon(self):
+        pass
+    
+    def getStatus(self, currentTime):
+        pass
+    
+    
+class Subsystem(models.Model):
+    """
+    Data quality, Video, etc. Each individual device.
+    """
+    name = models.CharField(max_length=255, blank=True, help_text='no spaces and unique')
+    displayName = models.CharField(max_length=255, blank=True)
+    group = models.ForeignKey(SubsystemGroup, null=True, blank=True)
+    logFileUrl = models.CharField(max_length=765, blank=True)
+    warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
+    failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
+    
+    def getTitle(self):
+        return self.displayName
+    
+    def getStatus(self, currentTime):
+        # returns condensed version status 
+        pass
+    

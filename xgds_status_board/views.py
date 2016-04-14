@@ -24,12 +24,19 @@ utc = pytz.utc
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.core.cache import cache    
+from django.core.urlresolvers import reverse
 
 from geocamUtil import anyjson as json
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
 from xgds_status_board import settings
+
+from subprocess import Popen, PIPE
+import datetime
+from time import sleep as time_sleep
+import re
 
 # pylint: disable=E1101
 
@@ -239,3 +246,56 @@ def getServerDatetimeJSON(request):
     datejson = json.dumps(result)
 
     return HttpResponse(datejson, content_type='application/json')
+
+
+def showSubsystemStatus(request):
+    # Status timestamp in UTC:
+    statusTimestamp = datetime.datetime.utcnow()
+    
+    # load averages
+    def statusColor(val,yellowThresh,redThresh):
+        if val > redThresh:
+            return '#ff0000'
+        if val > yellowThresh:
+            return '#ffff00'
+        return '#00ff00'
+    
+    loadStatus = {}
+    proc = Popen('uptime',stdout=PIPE)
+    (status,retval) = proc.communicate()
+    pattern = '(?P<time>\S+)\sup\s?(?P<updays>\d+)?(\sday)?(.+)?\s(?P<uphms>\S+),\s+(?P<users>\d+)\suser.*,\s+load average: (?P<load1m>[\.\d]+), (?P<load5m>[\.\d]+), (?P<load15m>[\.\d]+)'
+    match = re.search(pattern,status)
+    if match:
+        loadStatus = match.groupdict()
+        if not match.group('updays'):
+            loadStatus['updays'] = 0
+        loadStatus['load1m'] = float(loadStatus['load1m'])
+        loadStatus['load5m'] = float(loadStatus['load5m'])
+        loadStatus['load15m'] = float(loadStatus['load15m'])
+        loadStatus['load1mColor'] = statusColor(loadStatus['load1m'],1,3)
+        loadStatus['load5mColor'] = statusColor(loadStatus['load5m'],1,3)
+        loadStatus['load15mColor'] = statusColor(loadStatus['load15m'],1,3)
+    
+#     # subsystem status
+#     status = {}
+#     status['domain'] = 'GPS'
+#     status['state'] = 'Running'
+#     status['timestamp'] = datetime.datetime.now()
+#     statuses = [status]
+    return render_to_response("xgds_status_board/subsystemStatus.html",
+                              {'load_status': loadStatus,
+#                                'statuses': statuses, 
+                               'status_timestamp': statusTimestamp,
+                               'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
+                              context_instance=RequestContext(request))
+
+
+def subsystemStatusJson(request):
+    status = {}
+    status['domain'] = 'TEST DOMAIN'
+    status['state'] = 'TEST STATUS'
+    status['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    statuses = [status]
+    return HttpResponse(json.dumps(statuses, indent=4, sort_keys=True),
+                        content_type='application/json')
+

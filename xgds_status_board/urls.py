@@ -14,21 +14,22 @@
 #specific language governing permissions and limitations under the License.
 # __END_LICENSE__
 
-from django.conf.urls import patterns
+from django.conf.urls import patterns, url
 
 from xgds_status_board import views
 
-urlpatterns = patterns(
-    '',
-    (r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
-    (r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True},
+urlpatterns = [
+    url(r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
+    url(r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True},
      "announcements"),
-    (r'^announcementsJSON$', views.statusBoardAnnouncementsJSON, {'readOnly': True}),
-    (r'^schedule.json$', views.statusBoardSchedule, {'readOnly': True}, "schedule.json"),
-    (r'^serverDatetime.json$', views.getServerDatetimeJSON, {'readOnly': True}, "serverDatetime.json"),
-    (r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
-    (r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
-    (r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
-    (r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
-    (r'^getAnnouncementTS$', views.getAnnouncementTS, {'readOnly': True}, "getAnnouncementTS"),
-)
+    url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON, {'readOnly': True}),
+    url(r'^schedule.json$', views.statusBoardSchedule, {'readOnly': True}, "schedule.json"),
+    url(r'^serverDatetime.json$', views.getServerDatetimeJSON, {'readOnly': True}, "serverDatetime.json"),
+    url(r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
+    url(r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
+    url(r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
+    url(r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
+    url(r'^getAnnouncementTS$', views.getAnnouncementTS, {'readOnly': True}, "getAnnouncementTS"),
+    url(r'^subsystemStatus/$', views.showSubsystemStatus, {}, 'xgds_status_board_showSubsystemStatus'),
+    url(r'^subsystemStatus\.json$', views.subsystemStatusJson, {}, 'xgds_status_board_subsystemStatusJson')
+]
