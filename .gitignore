@@ -8,3 +8,4 @@
 /static/js/*.r*.js
 /static/css/*.r*.css
 /xgds_status_board/build
+/xgds_status_board/migrations
