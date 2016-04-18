@@ -34,6 +34,7 @@ Other modules can access the value of FOO like this:
 Don't try to get the value of FOO from django.conf.settings.  That
 settings object will not know about the default value!
 """
+import os
 
 # this can be used to specify a string in your template to indicate a navigation tab.  It is not required.
 STATUS_BOARD_VIEW_NAVIGATION_TAB = 'status.view'
@@ -56,6 +57,8 @@ STATUS_BOARD_TIMEZONES = [GMT_TIME_ZONE]
 # will roll over, ie when status board lists will no longer display
 # things for the current day
 STATUS_BOARD_DATE_TIMEZONE = GMT_TIME_ZONE
+
+XGDS_STATUS_BOARD_HANDLEBARS_DIR = [os.path.join('xgds_status_board', 'templates', 'handlebars')]
 
 # include this in your siteSettings.py BOWER_INSTALLED_APPS
 STATUS_BOARD_BOWER_INSTALLED_APPS = (

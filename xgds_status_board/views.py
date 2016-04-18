@@ -19,6 +19,7 @@ import logging
 from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
+from apps.xgds_core.views import get_handlebars_templates
 utc = pytz.utc
 
 from django.shortcuts import render_to_response
@@ -30,7 +31,7 @@ from django.core.urlresolvers import reverse
 from geocamUtil import anyjson as json
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 
-from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent
+from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, Subsystem, SubsystemGroup
 from xgds_status_board import settings
 
 from subprocess import Popen, PIPE
@@ -38,11 +39,13 @@ import datetime
 from time import sleep as time_sleep
 import re
 
+
 # pylint: disable=E1101
-
 default_timezone_offset = 0
-
+XGDS_STATUS_BOARD_TEMPLATE_LIST = list(settings.XGDS_STATUS_BOARD_HANDLEBARS_DIR)
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
+
+
 #print 'CALCULATING TIMEZONES WE HAVE %d' % len(timezones)
 for timezone in timezones:
 #    print 'looking up %s' % timezone.code
@@ -244,14 +247,11 @@ def getServerDatetimeJSON(request):
                     'zone': name}
         result.append(datedict)
     datejson = json.dumps(result)
-
+    
     return HttpResponse(datejson, content_type='application/json')
 
 
 def showSubsystemStatus(request):
-    # Status timestamp in UTC:
-    statusTimestamp = datetime.datetime.utcnow()
-    
     # load averages
     def statusColor(val,yellowThresh,redThresh):
         if val > redThresh:
@@ -276,26 +276,21 @@ def showSubsystemStatus(request):
         loadStatus['load5mColor'] = statusColor(loadStatus['load5m'],1,3)
         loadStatus['load15mColor'] = statusColor(loadStatus['load15m'],1,3)
     
-#     # subsystem status
-#     status = {}
-#     status['domain'] = 'GPS'
-#     status['state'] = 'Running'
-#     status['timestamp'] = datetime.datetime.now()
-#     statuses = [status]
     return render_to_response("xgds_status_board/subsystemStatus.html",
                               {'load_status': loadStatus,
-#                                'statuses': statuses, 
-                               'status_timestamp': statusTimestamp,
+                               'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
                                'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
                               context_instance=RequestContext(request))
 
 
 def subsystemStatusJson(request):
-    status = {}
-    status['domain'] = 'TEST DOMAIN'
-    status['state'] = 'TEST STATUS'
-    status['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    statuses = [status]
-    return HttpResponse(json.dumps(statuses, indent=4, sort_keys=True),
+    handlebarsData = []
+    for name in request.GET:
+        subsystem = Subsystem.objects.get(name=name)
+        lastUpdated = cache.get(subsystem.name).strftime('%Y-%m-%d %H:%M')
+        handlebarsData.append({"name": subsystem.displayName,
+                               "status": subsystem.getStatus(),
+                               "lastUpdated": lastUpdated})
+    return HttpResponse(json.dumps(handlebarsData, indent=4, sort_keys=True),
                         content_type='application/json')
 

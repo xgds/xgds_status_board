@@ -17,6 +17,8 @@
 import datetime
 
 from django.db import models
+from geocamUtil.modelJson import modelToDict
+from django.core.cache import cache  
 
 # pylint: disable=C1001
 
@@ -83,9 +85,6 @@ class StatusboardEvent(models.Model):
         return "%s: %s" % (self.dateOfEvent, self.content)
 
 
-
-
-
 class SubsystemGroup(models.Model):
     """
     EV1, EV2, Field Server, etc that groups subsystems in the monitor view.
@@ -104,6 +103,13 @@ class SubsystemGroup(models.Model):
     def getStatus(self, currentTime):
         pass
     
+    def toMapDict(self):
+        """
+        Return a reduced dictionary that will be turned to JSON
+        """
+        result = modelToDict(self)
+        return result
+    
     
 class Subsystem(models.Model):
     """
@@ -119,7 +125,20 @@ class Subsystem(models.Model):
     def getTitle(self):
         return self.displayName
     
-    def getStatus(self, currentTime):
-        # returns condensed version status 
-        pass
+    def getStatus(self):
+        # compare the current time to the cached time.
+        currentTime = datetime.datetime.utcnow()
+        lastUpdatedTime = cache.get(self.name)
+        if currentTime > lastUpdatedTime:
+            return "GREEN"
+        else: 
+            return "RED"
+            
+    
+    def toMapDict(self):
+        """
+        Return a reduced dictionary that will be turned to JSON
+        """
+        result = modelToDict(self)
+        return result
     
