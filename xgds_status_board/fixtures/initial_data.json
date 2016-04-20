@@ -40,7 +40,7 @@
 		}
 	},
 	{
-		"pk": 5, 
+		"pk": 1, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "GPScontroller1",
@@ -52,7 +52,7 @@
 		}
 	},
 	{
-		"pk": 6, 
+		"pk": 2, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "GPScontroller2",
@@ -64,7 +64,7 @@
 		}
 	}, 
 	{
-		"pk": 7, 
+		"pk": 3, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "GPSDataQuality1",
@@ -76,7 +76,7 @@
 		}
 	}, 
 	{
-		"pk": 8, 
+		"pk": 4, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "GPSDataQuality2",
@@ -88,7 +88,7 @@
 		}
 	},
 	{
-		"pk": 9, 
+		"pk": 5, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "telemetryListener1",
@@ -100,7 +100,7 @@
 		}
 	}, 
 	{
-		"pk": 10, 
+		"pk": 6, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "telemetryListener2",
@@ -112,7 +112,7 @@
 		}
 	},
 	{
-		"pk": 11, 
+		"pk": 7, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "videoRecorder1",
@@ -124,7 +124,7 @@
 		}
 	}, 
 	{
-		"pk": 12, 
+		"pk": 8, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "videoRecorder2",
@@ -136,7 +136,7 @@
 		}
 	},
 	{
-		"pk": 13, 
+		"pk": 9, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "FTIR",
@@ -148,7 +148,7 @@
 		}
 	},	
 	{
-		"pk": 14, 
+		"pk": 10, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "ASD",
@@ -160,7 +160,7 @@
 		}
 	}, 
 	{
-		"pk": 15, 
+		"pk": 11, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "redCamera",
@@ -172,7 +172,7 @@
 		}
 	},
 	{
-		"pk": 16, 
+		"pk": 12, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "SAcamera",
@@ -184,7 +184,7 @@
 		}
 	},
 	{
-		"pk": 17, 
+		"pk": 13, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "video1",
@@ -196,7 +196,7 @@
 		}
 	}, 
 	{
-		"pk": 18, 
+		"pk": 14, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "video2",
@@ -208,7 +208,7 @@
 		}
 	}, 	
 	{
-		"pk": 19, 
+		"pk": 15, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "telemetryCleanup1",
@@ -220,7 +220,7 @@
 		}
 	}, 
 	{
-		"pk": 20, 
+		"pk": 16, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "telemetryCleanup2",
@@ -232,7 +232,7 @@
 		}
 	}, 	
 	{
-		"pk": 21, 
+		"pk": 17, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "dataReplication1",
@@ -244,7 +244,7 @@
 		}
 	}, 
 	{
-		"pk": 22, 
+		"pk": 18, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
 			"name": "dataReplication2",

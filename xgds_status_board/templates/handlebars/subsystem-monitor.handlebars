@@ -1,27 +1,24 @@
-<div class="grid-stack-item lockAspect image_view_outer"
-		data-gs-width="3" data-gs-height="4"
-         id="{{ imageName }}">
-	<p>
-	<h3>Subsystem Status</h3>
-	<div id="subsystemStatus"></div>
-	<p />
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="1">
+	<div class="grid-stack-item-content">
+		<p>
+		<h3>Subsystem Status</h3>
+		<p />
+		Status reported at: {{ statusTimestamp }}
+		<p />
 
-	<p />
-	Status reported at: {{ statusTimestamp }}
-	<p />
-
-	<table class="subsystemStatus">
-		<tr>
-			<th class="left">Name</th>
-			<th class="left">State</th>
-			<th class="left">Last updated</th>
-		</tr>
-		{{#each subsystemStatuses}}
-		<tr>
-  			<td class="left">{{name}}</td>
- 			<td class="left">{{status}}</td>
-  			<td class="left">{{lastUpdated}}</td>
-		</tr>
-		{{/each}}
-	</table>
+		<table class="subsystemStatus">
+			<tr>
+				<th class="left">Name</th>
+				<th class="left">State</th>
+				<th class="left">Last updated</th>
+			</tr>
+			{{#each subsystemStatuses}}
+			<tr>
+				<td class="left">{{name}}</td>
+				<td class="left">{{statusColor}}</td>
+				<td class="left">{{lastUpdated}}</td>
+			</tr>
+			{{/each}}
+		</table>
+	</div>
 </div>

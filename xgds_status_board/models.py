@@ -36,6 +36,11 @@ PRIORITY_CHOICES = (
     (9, '9'),
 )
 
+#subsystem status markers
+OKAY = 1
+WARNING = 2
+ERROR = 3
+
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
@@ -85,7 +90,7 @@ class StatusboardEvent(models.Model):
         return "%s: %s" % (self.dateOfEvent, self.content)
 
 
-class SubsystemGroup(models.Model):
+class AbstractSubsystemGroup(models.Model):
     """
     EV1, EV2, Field Server, etc that groups subsystems in the monitor view.
     """
@@ -94,51 +99,88 @@ class SubsystemGroup(models.Model):
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
     
+    class Meta:
+        abstract = True
+    
     def getTitle(self):
         return self.displayName
     
     def getIcon(self):
         pass
     
-    def getStatus(self, currentTime):
+    def getStatus(self):
         pass
     
-    def toMapDict(self):
+    def getColor(self):
+        pass
+    
+    def toDict(self):
         """
         Return a reduced dictionary that will be turned to JSON
         """
         result = modelToDict(self)
         return result
-    
-    
-class Subsystem(models.Model):
+
+
+class SubsystemGroup(AbstractSubsystemGroup):
+    pass
+
+
+class AbstractSubsystem(models.Model):
     """
     Data quality, Video, etc. Each individual device.
     """
     name = models.CharField(max_length=255, blank=True, help_text='no spaces and unique')
     displayName = models.CharField(max_length=255, blank=True)
-    group = models.ForeignKey(SubsystemGroup, null=True, blank=True)
+    group = models.ForeignKey(SubsystemGroup, null=True, blank=True, related_name="subsystems")
     logFileUrl = models.CharField(max_length=765, blank=True)
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
+    refreshRate = models.IntegerField(default=1000, null=True, blank=True, help_text='in miliseconds')
+
+    class Meta:
+        abstract = True
     
     def getTitle(self):
         return self.displayName
     
     def getStatus(self):
-        # compare the current time to the cached time.
+        lastUpdated = cache.get(self.name)
         currentTime = datetime.datetime.utcnow()
-        lastUpdatedTime = cache.get(self.name)
-        if currentTime > lastUpdatedTime:
-            return "GREEN"
+        elapsed = currentTime - lastUpdated
+        elapsedMiliSec = elapsed.seconds * 1000 
+        if elapsedMiliSec < self.warningThreshold:
+            return OKAY
+        elif (elapsedMiliSec < self.failureThreshold) and (elapsedMiliSec > self.warningThreshold):
+            return WARNING
         else: 
-            return "RED"
-            
+            return ERROR
+
     
-    def toMapDict(self):
+    def getColor(self):
+        if self.getStatus() == OKAY:
+            return '#00ff00'
+        elif self.getStatus() == WARNING:
+            return '#ffff00'
+        else: 
+            return '#ff0000'
+    
+    
+    def getStatusJson(self):
+        lastUpdated = cache.get(self.name).strftime('%Y-%m-%d %H:%M')
+        json = {"name": self.displayName,
+                "statusColor": self.getColor(),
+                "lastUpdated": lastUpdated}
+        return json
+
+    
+    def toDict(self):
         """
         Return a reduced dictionary that will be turned to JSON
         """
         result = modelToDict(self)
         return result
     
+
+class Subsystem(AbstractSubsystem):
+    pass

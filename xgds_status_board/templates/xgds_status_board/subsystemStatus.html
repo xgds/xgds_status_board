@@ -1,27 +1,12 @@
-{% extends "dashboard_base.html" %}
+{% extends "dashboard_no_map.html" %}
 {% block siteSection %}Recorder Status{% endblock %}
 
-{% block contents %}
+{% block inDashboard %}
 <p>
 <div id="layers"></div>
 
-<h3>Server  Status</h3>
-<b>Load Average:</b>
-<table>
-  <tr>
-    <td>1 minute</td>
-    <td>5 minutes</td>
-    <td>15 minutes</td>
-  </tr>
-  <tr>
-    <td align=center bgcolor={{ load_status.load1mColor }}>{{ load_status.load1m }}</td>
-    <td align=center bgcolor={{ load_status.load5mColor }}>{{ load_status.load5m }}</td>
-    <td align=center bgcolor={{ load_status.load15mColor }}>{{ load_status.load15m }}</td>
-  </tr>
-</table>
-
 <div id="subsystemStatus"></div>
-{% endblock %}
+{% endblock inDashboard %}
 
 {% block cssExtras %}
   {{ block.super }}
