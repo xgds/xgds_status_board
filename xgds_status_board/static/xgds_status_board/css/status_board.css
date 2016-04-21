@@ -1,4 +1,9 @@
 /* status board stuff */
+
+.subsystemStatus th {
+	text-align: center;	
+}
+
 .selected {
 	background-color: #a1aec7;
 }

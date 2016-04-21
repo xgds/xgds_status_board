@@ -3,8 +3,6 @@
 		<p>
 		<h3>Subsystem Status</h3>
 		<p />
-		Status reported at: {{ statusTimestamp }}
-		<p />
 
 		<table class="subsystemStatus">
 			<tr>
@@ -15,7 +13,7 @@
 			{{#each subsystemStatuses}}
 			<tr>
 				<td class="left">{{name}}</td>
-				<td class="left">{{statusColor}}</td>
+				<td class="left" bgcolor="{{statusColor}}" style="border: 1px solid black;"></td>
 				<td class="left">{{lastUpdated}}</td>
 			</tr>
 			{{/each}}
