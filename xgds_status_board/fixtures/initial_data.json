@@ -23,7 +23,7 @@
 		"pk": 3, 
 		"model": "xgds_status_board.SubsystemGroup", 
 		"fields": {
-			"name": "BaseCamp",
+			"name": "baseCamp",
 			"displayName": "Base Camp Services",
 			"warningThreshold": 5,
 			"failureThreshold": 10
@@ -33,7 +33,7 @@
 		"pk": 4, 
 		"model": "xgds_status_board.SubsystemGroup", 
 		"fields": {
-			"name": "Field",
+			"name": "field",
 			"displayName": "Field Services",
 			"warningThreshold": 5,
 			"failureThreshold": 10
@@ -43,7 +43,7 @@
 		"pk": 1, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
-			"name": "GPScontroller1",
+			"name": "gpsController1",
 			"displayName": "GPS Controller",
 			"group": 1,
 			"logFileUrl": "",
@@ -55,7 +55,7 @@
 		"pk": 2, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
-			"name": "GPScontroller2",
+			"name": "gpsController2",
 			"displayName": "GPS Controller",
 			"group": 2,
 			"logFileUrl": "",
@@ -67,7 +67,7 @@
 		"pk": 3, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
-			"name": "GPSDataQuality1",
+			"name": "gpsDataQuality1",
 			"displayName": "GPS Data Quality",
 			"group": 1,
 			"logFileUrl": "",
@@ -79,7 +79,7 @@
 		"pk": 4, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
-			"name": "GPSDataQuality2",
+			"name": "gpsDataQuality2",
 			"displayName": "GPS Data Quality",
 			"group": 2,
 			"logFileUrl": "",
@@ -175,7 +175,7 @@
 		"pk": 12, 
 		"model": "xgds_status_board.Subsystem", 
 		"fields": {
-			"name": "SAcamera",
+			"name": "saCamera",
 			"displayName": "SA Camera",
 			"group": 4,
 			"logFileUrl": "",

@@ -1,13 +1,6 @@
 {% extends "dashboard_no_map.html" %}
 {% block siteSection %}Recorder Status{% endblock %}
 
-{% block inDashboard %}
-<p>
-<div id="layers"></div>
-
-<div id="subsystemStatus"></div>
-{% endblock inDashboard %}
-
 {% block cssExtras %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xgds_status_board/css/status_board.css"></link>
@@ -31,6 +24,10 @@
   };
 {% endblock %}
 
+{% block preLayout %}
+	constructSubsystemMonitorView();
+{% endblock %}
+
 {% block jsInit %}
   {{ block.super }}
   $(function() {
@@ -38,3 +35,7 @@
       widget.update();
   });
 {% endblock %}
+
+{% block inDashboard %}
+	<div id="layers"></div>
+{% endblock inDashboard %}

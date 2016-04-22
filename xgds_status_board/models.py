@@ -20,6 +20,7 @@ from django.db import models
 from geocamUtil.modelJson import modelToDict
 from django.core.cache import cache  
 
+
 # pylint: disable=C1001
 
 # Create your models here.
@@ -147,15 +148,13 @@ class AbstractSubsystem(models.Model):
     def getStatus(self):
         lastUpdated = cache.get(self.name)
         currentTime = datetime.datetime.utcnow()
-        elapsed = currentTime - lastUpdated
-        elapsedMiliSec = elapsed.seconds * 1000 
-        if elapsedMiliSec < self.warningThreshold:
+        elapsed = (currentTime - lastUpdated).seconds
+        if elapsed < self.warningThreshold:
             return OKAY
-        elif (elapsedMiliSec < self.failureThreshold) and (elapsedMiliSec > self.warningThreshold):
+        elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
             return WARNING
         else: 
             return ERROR
-
     
     def getColor(self):
         if self.getStatus() == OKAY:
@@ -168,7 +167,7 @@ class AbstractSubsystem(models.Model):
     
     def getStatusJson(self):
         lastUpdated = cache.get(self.name).strftime('%Y-%m-%d %H:%M')
-        json = {"name": self.displayName,
+        json = {"name": self.name,
                 "statusColor": self.getColor(),
                 "lastUpdated": lastUpdated}
         return json

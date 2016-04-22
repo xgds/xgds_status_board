@@ -1,22 +1,87 @@
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="1">
-	<div class="grid-stack-item-content">
-		<p>
-		<h3>Subsystem Status</h3>
-		<p />
+<!--  make sure subsystem tr id matches the subsystem name -->
 
-		<table class="subsystemStatus">
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+	<div class="grid-stack-item-content">
+		<h3>EV1</h3>
+		<div><img src="{{ ev1_icon }}" style="width:200px;height:200px;"></div>
+		<table class="ev1Status">
 			<tr>
-				<th class="left">Name</th>
-				<th class="left">State</th>
-				<th class="left">Last updated</th>
+				<th class="left"><strong>Subsystem</strong></th>
+				<th class="left"><strong>Status</strong></th>
+				<th class="left"><strong>Last updated</strong></th>
 			</tr>
-			{{#each subsystemStatuses}}
-			<tr>
-				<td class="left">{{name}}</td>
-				<td class="left" bgcolor="{{statusColor}}" style="border: 1px solid black;"></td>
-				<td class="left">{{lastUpdated}}</td>
+			<tr id="gpsController1">
+				<td class="left subsystemName">GPS Controller</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
 			</tr>
-			{{/each}}
+			<tr id="gpsDataQuality1">
+				<td class="left subsystemName">GPS Data Quality</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="telemetryListener1">
+				<td class="left subsystemName">Telemetry Listener</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="video1">
+				<td class="left subsystemName">Video</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="FTIR">
+				<td class="left subsystemName">FTIR</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>			
 		</table>
 	</div>
-</div>
+</div> 
+
+
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+	<div class="grid-stack-item-content">
+		<h3>EV2</h3>
+		<div><img src="{{ ev2_icon }}" style="width:200px;height:200px;"></div>
+		<table class="ev2Status">
+			<tr>
+				<th class="left"><strong>Subsystem</strong></th>
+				<th class="left"><strong>Status</strong></th>
+				<th class="left"><strong>Last updated</strong></th>
+			</tr>
+			<tr id="gpsController2">
+				<td class="left subsystemName">GPS Controller</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="gpsDataQuality2">
+				<td class="left subsystemName">GPS Data Quality</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="telemetryListener2">
+				<td class="left subsystemName">Telemetry Listener</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="video2">
+				<td class="left subsystemName">Video</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>
+			<tr id="ASD">
+				<td class="left subsystemName">ASD Spectrometer</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>			
+			<tr id="redCamera">
+				<td class="left subsystemName">Red Camera</td>
+				<td class="left status" style="border: 1px solid black;"></td>
+				<td class="left updatedTime"></td>
+			</tr>		
+		</table>
+	</div>
+</div> 
+
+<!-- $( "tr" ).css( "background", "red" ); -->

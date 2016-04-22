@@ -1,4 +1,18 @@
 var xgds_status_board = xgds_status_board || {};
+
+$container = $('#container');
+
+// renders the handlebars widget
+function constructSubsystemMonitorView() {
+	var rawTemplate = $('#template-subsystem-monitor').html();
+	var compiledTemplate = Handlebars.compile(rawTemplate);
+	var newDiv = compiledTemplate({'ev1_icon': 'https://placekitten.com/200/200',
+									'ev2_icon': 'https://placekitten.com/200/200'});
+	var subsystemMonitorTemplate = $(newDiv);
+	$container.append(subsystemMonitorTemplate);
+}
+
+// polls server for updates
 $(function() {
 	function getStatusTd(serviceInfo) {
 		if (serviceInfo.status == 'running') {
@@ -15,7 +29,7 @@ $(function() {
 
 	Widget.prototype.update = function() {
 		var self = this;
-		var subsystemNames = {ASD: "ASD", FTIR:"FTIR", video1:"video1"}; // list of subsystems to update status.
+		var subsystemNames = {ASD: 'ASD', FTIR:'FTIR', video1:'video1'}; // list of subsystems to update status.
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
 		}
@@ -23,10 +37,13 @@ $(function() {
 	};
 
 	Widget.prototype.render = function(data) {
-		var rawTemplate = $('#template-subsystem-monitor').html();
-		var compiledTemplate = Handlebars.compile(rawTemplate);
-		var newDiv = compiledTemplate({'subsystemStatuses': data});
-		this.domElement.html(newDiv);
+		// get the data, update the matching id's status and color
+		$.each(data, function( index, subsystem ) {
+			// set status color
+			$('#'+subsystem['name']).find('td.status').css('background', subsystem['statusColor']);
+			// set last updated time 
+			$('#'+subsystem['name']).find('td.updatedTime').html(subsystem['lastUpdated']);
+		});
 	};
 
 	// export
