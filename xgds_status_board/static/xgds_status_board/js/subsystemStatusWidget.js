@@ -29,7 +29,27 @@ $(function() {
 
 	Widget.prototype.update = function() {
 		var self = this;
-		var subsystemNames = {ASD: 'ASD', FTIR:'FTIR', video1:'video1'}; // list of subsystems to update status.
+		var subsystemNames = {gpsController1: 'gpsController1', 
+							  gpsController2: 'gpsController2', 
+							  gpsDataQuality1: 'gpsDataQuality1', 
+							  gpsDataQuality2: 'gpsDataQuality2', 
+							  telemetryListener1: 'telemetryListener1', 
+							  telemetryListener2: 'telemetryListener2', 
+							  videoRecorder1: 'videoRecorder1', 
+							  videoRecorder2: 'videoRecorder2', 
+							  FTIR: 'FTIR', 
+							  ASD: 'ASD', 
+							  redCamera: 'redCamera',  
+							  saCamera: 'saCamera', 
+							  video1: 'video1', 
+							  video2: 'video2', 
+							  telemetryCleanup1: 'telemetryCleanup1', 
+							  telemetryCleanup2: 'telemetryCleanup2', 
+							  dataReplication1: 'dataReplication1', 
+							  dataReplication2: 'dataReplication2'}; // list of subsystems to update status.
+		
+		
+		
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
 		}
@@ -42,7 +62,10 @@ $(function() {
 			// set status color
 			$('#'+subsystem['name']).find('td.status').css('background', subsystem['statusColor']);
 			// set last updated time 
-			$('#'+subsystem['name']).find('td.updatedTime').html(subsystem['lastUpdated']);
+			var updatedTime = $('#'+subsystem['name']).find('td.updatedTime');
+			if (updatedTime.length) {
+				updatedTime.html(subsystem['lastUpdated']);	
+			}
 		});
 	};
 

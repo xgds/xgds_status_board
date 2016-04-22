@@ -1,6 +1,6 @@
 <!--  make sure subsystem tr id matches the subsystem name -->
 
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="1" data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
 		<h3>EV1</h3>
 		<div><img src="{{ ev1_icon }}" style="width:200px;height:200px;"></div>
@@ -40,7 +40,7 @@
 </div> 
 
 
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="2" data-gs-y="1" data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
 		<h3>EV2</h3>
 		<div><img src="{{ ev2_icon }}" style="width:200px;height:200px;"></div>
@@ -84,4 +84,145 @@
 	</div>
 </div> 
 
-<!-- $( "tr" ).css( "background", "red" ); -->
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+	<div class="grid-stack-item-content">
+		<h2>Field Services</h3>
+		<!-- put overall field services status here -->
+
+		<div class="fieldServicesDivLeft">
+			<label for="videoRecorderTable1">Video Recorder</label>
+			<table id="videoRecorderTable1">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+				</tr>
+				<tr id="videoRecorder1">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDivRight">
+			<label for="saCameraTable">SA Camera</label>
+			<table id="saCameraTable">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Last updated</strong></th>
+				</tr>
+				<tr id="saCamera">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left updatedTime"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDiv">
+			<label for="telemetryCleanupTable1">Telemetry Cleanup</label>
+			<table id="telemetryCleanupTable1">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+					<th class="left"><strong>Last updated</strong></th>
+				</tr>
+				<tr id="telemetryCleanup1">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+					<td class="left updatedTime"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDivLeft">
+			<label for="loadAverageTable1">Load Average</label>
+			<table id="loadAverageTable1">
+				<tr>
+					<th class="left"><strong>1 min</strong></th>
+					<th class="left"><strong>5 min</strong></th>
+				</tr>
+				<tr id="loadAverage1">
+					<td class="left status1" style="border: 1px solid black;"></td>
+					<td class="left status2" style="border: 1px solid black;"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDivRight">
+			<label for="dataReplicationTable1">Data Replication</label>
+			<table id="dataReplicationTable1">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+				</tr>
+				<tr id="dataReplication1">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div> 
+
+<div class="grid-stack-item" data-gs-x="2" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+	<div class="grid-stack-item-content">
+		<h2>Basecamp Services</h3>
+		<!-- put overall field services status here -->
+
+		<div class="fieldServicesDivLeft">
+			<label for="videoRecorderTable2">Video Recorder</label>
+			<table id="videoRecorderTable2">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+				</tr>
+				<tr id="videoRecorder2">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="fieldServicesDiv">
+			<label for="telemetryCleanupTable2">Telemetry Cleanup</label>
+			<table id="telemetryCleanupTable2">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+					<th class="left"><strong>Last updated</strong></th>
+				</tr>
+				<tr id="telemetryCleanup2">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+					<td class="left updatedTime"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDivLeft">
+			<label for="loadAverageTable2">Load Average</label>
+			<table id="loadAverageTable2">
+				<tr>
+					<th class="left"><strong>1 min</strong></th>
+					<th class="left"><strong>5 min</strong></th>
+				</tr>
+				<tr id="loadAverage2">
+					<td class="left status1" style="border: 1px solid black;"></td>
+					<td class="left status2" style="border: 1px solid black;"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDivRight">
+			<label for="dataReplicationTable2">Data Replication</label>
+			<table id="dataReplicationTable2">
+				<tr>
+					<th class="left"><strong>Status</strong></th>
+					<th class="left"><strong>Log</strong></th>
+				</tr>
+				<tr id="dataReplication2">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div> 

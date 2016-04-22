@@ -1,5 +1,17 @@
 /* status board stuff */
 
+.fieldServicesDivLeft {
+	float:left;
+	padding-right: 50px;
+}
+
+.fieldServicesDivRight {
+}
+
+.fieldServicesDiv {
+	display: block;
+}
+
 .subsystemStatus th {
 	text-align: center;	
 }
