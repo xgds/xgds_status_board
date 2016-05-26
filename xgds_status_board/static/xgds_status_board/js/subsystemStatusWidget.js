@@ -48,8 +48,6 @@ $(function() {
 							  dataReplication1: 'dataReplication1', 
 							  dataReplication2: 'dataReplication2'}; // list of subsystems to update status.
 		
-		
-		
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
 		}
