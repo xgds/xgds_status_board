@@ -187,7 +187,6 @@ def statusBoardAnnouncementsJSON(request):
     announcementList = StatusboardAnnouncement.objects.\
         filter(visible=True).order_by('-dateCreated')
     jsonList = []
-
     for announcement in announcementList:
         jsonList.append({'id': announcement.id,
                          'priority': announcement.priority,
@@ -196,7 +195,6 @@ def statusBoardAnnouncementsJSON(request):
                          'content': announcement.content,
                          'utcDateCreated': announcement.dateOfAnnouncement.isoformat() + 'Z',
                          })
-
     stuff = json.dumps(jsonList)
     return HttpResponse(stuff, content_type='text/plain')
 

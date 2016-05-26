@@ -20,6 +20,10 @@ from django.db import models
 from geocamUtil.modelJson import modelToDict
 from django.core.cache import cache  
 
+#subsystem status markers
+OKAY = 1
+WARNING = 2
+ERROR = 3
 
 # pylint: disable=C1001
 
@@ -36,12 +40,6 @@ PRIORITY_CHOICES = (
     (8, '8'),
     (9, '9'),
 )
-
-#subsystem status markers
-OKAY = 1
-WARNING = 2
-ERROR = 3
-
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
@@ -146,15 +144,21 @@ class AbstractSubsystem(models.Model):
         return self.displayName
     
     def getStatus(self):
-        lastUpdated = cache.get(self.name)
-        currentTime = datetime.datetime.utcnow()
-        elapsed = (currentTime - lastUpdated).seconds
-        if elapsed < self.warningThreshold:
-            return OKAY
-        elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
-            return WARNING
-        else: 
-            return ERROR
+        # this might be a data quality: 
+        if (self.name == 'gpsDataQuality1') or (self.name == 'gpsDataQuality2'):
+            return cache.get(self.name)
+        else:
+            lastUpdated = cache.get(self.name)
+            if not lastUpdated:
+                return ERROR
+            currentTime = datetime.datetime.utcnow()
+            elapsed = (currentTime - lastUpdated).seconds
+            if elapsed < self.warningThreshold:
+                return OKAY
+            elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
+                return WARNING
+            else: 
+                return ERROR
     
     def getColor(self):
         if self.getStatus() == OKAY:
@@ -164,9 +168,11 @@ class AbstractSubsystem(models.Model):
         else: 
             return '#ff0000'
     
-    
     def getStatusJson(self):
-        lastUpdated = cache.get(self.name).strftime('%Y-%m-%d %H:%M')
+        try: 
+            lastUpdated = cache.get(self.name).strftime('%Y-%m-%d %H:%M')
+        except: 
+            lastUpdated = ""
         json = {"name": self.name,
                 "statusColor": self.getColor(),
                 "lastUpdated": lastUpdated}
