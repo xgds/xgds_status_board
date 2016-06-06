@@ -5,8 +5,8 @@
 		"fields": {
 			"name": "EV1",
 			"displayName": "EV1",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -15,8 +15,8 @@
 		"fields": {
 			"name": "EV2",
 			"displayName": "EV2",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -25,8 +25,8 @@
 		"fields": {
 			"name": "baseCamp",
 			"displayName": "Base Camp Services",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -35,8 +35,8 @@
 		"fields": {
 			"name": "field",
 			"displayName": "Field Services",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -47,8 +47,8 @@
 			"displayName": "GPS Controller",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -59,8 +59,8 @@
 			"displayName": "GPS Controller",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -71,8 +71,8 @@
 			"displayName": "GPS Data Quality",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -83,8 +83,8 @@
 			"displayName": "GPS Data Quality",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -95,8 +95,8 @@
 			"displayName": "Telemetry Listener",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -107,8 +107,8 @@
 			"displayName": "Telemetry Listener",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -119,8 +119,8 @@
 			"displayName": "VideoRecorder",
 			"group": 3,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -131,8 +131,8 @@
 			"displayName": "VideoRecorder",
 			"group": 4,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -143,8 +143,8 @@
 			"displayName": "FTIR",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},	
 	{
@@ -155,8 +155,8 @@
 			"displayName": "ASD Spectrometer",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -167,8 +167,8 @@
 			"displayName": "Red Camera",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -179,8 +179,8 @@
 			"displayName": "SA Camera",
 			"group": 4,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	},
 	{
@@ -191,8 +191,8 @@
 			"displayName": "Video 1",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -203,8 +203,8 @@
 			"displayName": "Video 2",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 	
 	{
@@ -215,8 +215,8 @@
 			"displayName": "Telemetry Cleanup",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -227,8 +227,8 @@
 			"displayName": "Telemetry Cleanup",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 	
 	{
@@ -239,8 +239,8 @@
 			"displayName": "Data Replication",
 			"group": 1,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}, 
 	{
@@ -251,8 +251,8 @@
 			"displayName": "Data Replication",
 			"group": 2,
 			"logFileUrl": "",
-			"warningThreshold": 2,
-			"failureThreshold": 5
+			"warningThreshold": 5,
+			"failureThreshold": 10
 		}
 	}
 ]
