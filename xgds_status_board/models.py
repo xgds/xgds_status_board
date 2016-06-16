@@ -18,7 +18,8 @@ import datetime
 
 from django.db import models
 from geocamUtil.modelJson import modelToDict
-from django.core.cache import cache  
+from xgds_core.models import Constant
+from django.core.cache import caches  
 
 #subsystem status markers
 OKAY = 1
@@ -40,6 +41,8 @@ PRIORITY_CHOICES = (
     (8, '8'),
     (9, '9'),
 )
+
+_cache = caches['default']
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
@@ -146,19 +149,46 @@ class AbstractSubsystem(models.Model):
     def getStatus(self):
         # this might be a data quality: 
         if (self.name == 'gpsDataQuality1') or (self.name == 'gpsDataQuality2'):
-            return cache.get(self.name)
+            return _cache.get(self.name)
         else:
-            lastUpdated = cache.get(self.name)
+            lastUpdated = _cache.get(self.name)
             if not lastUpdated:
                 return ERROR
             currentTime = datetime.datetime.utcnow()
-            elapsed = (currentTime - lastUpdated).seconds
+            elapsed = (currentTime - lastUpdated).total_seconds()
             if elapsed < self.warningThreshold:
                 return OKAY
             elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
                 return WARNING
             else: 
                 return ERROR
+        
+            
+    def getConstantName(self):
+        """
+        Name of the 'Constant' object under which this subsystem is stored. 
+        """
+        if self.name == 'gpsController1': 
+            return 'EV1_TRACKING_IP'
+        elif self.name == 'gpsController2':
+            return 'EV2_TRACKING_IP'
+        elif self.name == 'redCamera': 
+            return 'RED_CAMERA_IP'
+        elif self.name == 'FTIR': 
+            return 'FTIR_IP'
+        elif self.name == 'video1':
+            return 'EV1_CAMERA_IP'
+        elif self.name == 'video2':
+            return 'EV2_CAMERA_IP'
+        elif self.name == 'saCamera':
+            return 'SA_CAMERA_IP'
+    
+    def getHostname(self):
+        """
+        Returns the IP Address of the subsystem.
+        """
+        constant = Constant.objects.get(name = self.getConstantName())
+        return constant.value
     
     def getColor(self):
         if self.getStatus() == OKAY:
@@ -170,7 +200,7 @@ class AbstractSubsystem(models.Model):
     
     def getStatusJson(self):
         try: 
-            lastUpdated = cache.get(self.name).strftime('%Y-%m-%d %H:%M')
+            lastUpdated = _cache.get(self.name).strftime('%Y-%m-%d %H:%M:%S')
         except: 
             lastUpdated = ""
         json = {"name": self.name,

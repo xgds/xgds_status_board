@@ -43,8 +43,7 @@ $(function() {
 							  saCamera: 'saCamera', 
 							  video1: 'video1', 
 							  video2: 'video2', 
-							  telemetryCleanup1: 'telemetryCleanup1', 
-							  telemetryCleanup2: 'telemetryCleanup2', 
+							  telemetryCleanup: 'telemetryCleanup', 
 							  dataReplication1: 'dataReplication1', 
 							  dataReplication2: 'dataReplication2'}; // list of subsystems to update status.
 		
