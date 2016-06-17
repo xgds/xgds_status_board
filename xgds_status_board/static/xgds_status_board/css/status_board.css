@@ -5,12 +5,66 @@
 	padding-right: 50px;
 }
 
+h1 {
+	padding-bottom: 30px;
+}
+
 .fieldServicesDiv {
 	display: block;
 }
 
-th.left {
+tr#fieldLoadAverage td.oneMin {
+	font-size: 20px;
+}
+
+tr#fieldLoadAverage td.fiveMin {
+	font-size: 20px;
+}
+
+tr#basecampLoadAverage td.oneMin {
+	font-size: 20px;
+}
+
+tr#basecampLoadAverage td.fiveMin {
+	font-size: 20px;
+}
+
+table.loadAverageTable {
+	width: 100%;
+}
+
+table.ev1Status th.left {
 	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+table.ev2Status th.left {
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+
+tr td.left {padding-top: 5px; padding-bottom:5px}
+
+td.subsystemName {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+table.ev1Status {
+	width: 100%;
+}
+
+table.ev2status {
+	width: 100%;
+}
+
+.service {
+	padding-bottom: 20px;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 .subsystemStatus th {

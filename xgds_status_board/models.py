@@ -172,12 +172,16 @@ class AbstractSubsystem(models.Model):
     
     def getLoadAverage(self):
         subsystemStatus = _cache.get(self.name)
+        noData = {'name': self.name,
+                  'oneMin': 'no data',
+                  'fiveMin': 'no data',
+                  'lastUpdated': ''}
         if subsystemStatus is None:
-            return {'name': self.name,
-                    'oneMin': 'no data', 
-                    'fiveMin': 'no data',
-                    'lastUpdated': ''}
-        jsonDict = json.loads(subsystemStatus)
+            return noData
+        try: 
+            jsonDict = json.loads(subsystemStatus)
+        except: 
+            return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
         displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
@@ -189,11 +193,15 @@ class AbstractSubsystem(models.Model):
     
     def getDataQuality(self):
         subsystemStatus = _cache.get(self.name)
+        noData = {'name': self.name,
+                  'statusColor': ERROR,
+                  'lastUpdated': ''}
         if subsystemStatus is None:
-            return {'name': self.name,
-                    'statusColor': ERROR,
-                    'lastUpdated': ''}
-        jsonDict = json.loads(subsystemStatus)
+            return noData
+        try: 
+            jsonDict = json.loads(subsystemStatus)
+        except: 
+            return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
         displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
@@ -205,11 +213,15 @@ class AbstractSubsystem(models.Model):
     def getStatus(self):
         subsystemName = self.name
         subsystemStatus = _cache.get(subsystemName)
+        noData = {'name': subsystemName,
+                  'statusColor': ERROR,
+                  'lastUpdated': ''}
         if subsystemStatus is None:
-            return {'name': subsystemName,
-                    'statusColor': ERROR,
-                    'lastUpdated': ''}
-        jsonDict = json.loads(subsystemStatus)
+            return noData
+        try: 
+            jsonDict = json.loads(subsystemStatus)
+        except: 
+            return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
         displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')

@@ -2,13 +2,13 @@
 
 <div class="grid-stack-item" data-gs-x="0" data-gs-y="1" data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
-		<h3>EV1</h3>
+		<h1>EV1</h1>
 		<!-- <div><img src="{{ ev1_icon }}" style="width:200px;height:200px;"></div> -->
 		<table class="ev1Status">
 			<tr>
-				<th class="left"><strong>Subsystem</strong></th>
-				<th class="left"><strong>Status</strong></th>
-				<th class="left"><strong>Last updated</strong></th>
+				<th class="left">Subsystem</th>
+				<th class="left">Status</th>
+				<th class="left">Last updated</th>
 			</tr>
 			<tr id="gpsController1">
 				<td class="left subsystemName">GPS Controller</td>
@@ -42,13 +42,13 @@
 
 <div class="grid-stack-item" data-gs-x="2" data-gs-y="1" data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
-		<h3>EV2</h3>
+		<h1>EV2</h1>
 		<!-- <div><img src="{{ ev2_icon }}" style="width:200px;height:200px;"></div>  -->
 		<table class="ev2Status">
 			<tr>
-				<th class="left"><strong>Subsystem</strong></th>
-				<th class="left"><strong>Status</strong></th>
-				<th class="left"><strong>Last updated</strong></th>
+				<th class="left">Subsystem</th>
+				<th class="left">Status</th>
+				<th class="left">Last updated</th>
 			</tr>
 			<tr id="gpsController2">
 				<td class="left subsystemName">GPS Controller</td>
@@ -84,33 +84,32 @@
 	</div>
 </div> 
 
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="2" data-gs-width="3" data-gs-height="2">
 	<div class="grid-stack-item-content">
-		<h2>Field Services</h3>
+		<h1>Field Services</h1>
 		<!-- put overall field services status here -->
-
-		<div class="fieldServicesDivLeft">
+		<div class="fieldServicesDivLeft service">
 			<label for="videoRecorderTable1">Video Recorder</label>
 			<table id="videoRecorderTable1">
 				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Log</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
+					<th class="left">Log</th>
 				</tr>
 				<tr id="fieldVideoRecorder">
 					<td class="left status" style="border: 1px solid black;"></td>
-					<td class="left log"></td>
 					<td class="left updatedTime"></td>
+					<td class="left log"></td>
 				</tr>
 			</table>
 		</div>
 		
-		<div class="fieldServicesDivRight">
+		<div class="fieldServicesDivRight service">
 			<label for="saCameraTable">SA Camera</label>
 			<table id="saCameraTable">
 				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
 				</tr>
 				<tr id="saCamera">
 					<td class="left status" style="border: 1px solid black;"></td>
@@ -119,29 +118,45 @@
 			</table>
 		</div>
 		
-		<div class="fieldServicesDiv">
+		<div class="fieldServicesDivLeft service">
 			<label for="telemetryCleanupTable">Telemetry Cleanup</label>
 			<table id="telemetryCleanupTable">
 				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Log</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
+					<th class="left">Log</th>
 				</tr>
 				<tr id="telemetryCleanup">
 					<td class="left status" style="border: 1px solid black;"></td>
-					<td class="left log"></td>
 					<td class="left updatedTime"></td>
+					<td class="left log"></td>
 				</tr>
 			</table>
 		</div>
 		
-		<div class="fieldServicesDivLeft">
-			<label for="loadAverageTable1">Load Average</label>
-			<table id="loadAverageTable1">
+		<div class="fieldServicesDivRight service">
+			<label for="dataReplicationTable1">Data Replication</label>
+			<table id="dataReplicationTable1">
 				<tr>
-					<th class="left"><strong>1 min</strong></th>
-					<th class="left"><strong>5 min</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
+					<th class="left">Log</th>
+				</tr>
+				<tr id="fieldDataReplication">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left updatedTime"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="fieldServicesDiv service">
+			<label for="fieldLoadAverageTable">Load Average</label>
+			<table class="loadAverageTable" id="fieldLoadAverageTable">
+				<tr>
+					<th class="left">1 min</th>
+					<th class="left">5 min</th>
+					<th class="left">Last updated</th>
 				</tr>
 				<tr id="fieldLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
@@ -151,52 +166,53 @@
 			</table>
 		</div>
 		
-		<div class="fieldServicesDivLeft">
-			<label for="dataReplicationTable1">Data Replication</label>
-			<table id="dataReplicationTable1">
-				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Log</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
-				</tr>
-				<tr id="fieldDataReplication">
-					<td class="left status" style="border: 1px solid black;"></td>
-					<td class="left log"></td>
-					<td class="left updatedTime"></td>
-				</tr>
-			</table>
-		</div>
 	</div>
 </div> 
 
-<div class="grid-stack-item" data-gs-x="2" data-gs-y="0" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="3" data-gs-y="2" data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
-		<h2>Basecamp Services</h3>
+		<h1>Basecamp Services</h1>
 		<!-- put overall field services status here -->
 
-		<div class="basecampServicesDivLeft">
+		<div class="basecampServicesDiv service">
 			<label for="videoRecorderTable2">Video Recorder</label>
 			<table id="videoRecorderTable2">
 				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Log</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
+					<th class="left">Log</th>
 				</tr>
 				<tr id="basecampVideoRecorder">
 					<td class="left status" style="border: 1px solid black;"></td>
-					<td class="left log"></td>
 					<td class="left updatedTime"></td>
+					<td class="left log"></td>
 				</tr>
 			</table>
 		</div>
 		
-		<div class="basecampServicesDivLeft">
-			<label for="loadAverageTable2">Load Average</label>
-			<table id="loadAverageTable2">
+		<div class="basecampServicesDiv service">
+			<label for="dataReplicationTable2">Data Replication</label>
+			<table id="dataReplicationTable2">
 				<tr>
-					<th class="left"><strong>1 min</strong></th>
-					<th class="left"><strong>5 min</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
+					<th class="left">Status</th>
+					<th class="left">Last updated</th>
+					<th class="left">Log</th>
+				</tr>
+				<tr id="basecampDataReplication">
+					<td class="left status" style="border: 1px solid black;"></td>
+					<td class="left updatedTime"></td>
+					<td class="left log"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="basecampServicesDiv service">
+			<label for="basecampLoadAverageTable">Load Average</label>
+			<table class="loadAverageTable" id="basecampLoadAverageTable">
+				<tr>
+					<th class="left">1 min</th>
+					<th class="left">5 min</th>
+					<th class="left">Last updated</th>
 				</tr>
 				<tr id="basecampLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
@@ -206,20 +222,5 @@
 			</table>
 		</div>
 		
-		<div class="basecampServicesDivLeft">
-			<label for="dataReplicationTable2">Data Replication</label>
-			<table id="dataReplicationTable2">
-				<tr>
-					<th class="left"><strong>Status</strong></th>
-					<th class="left"><strong>Log</strong></th>
-					<th class="left"><strong>Last updated</strong></th>
-				</tr>
-				<tr id="basecampDataReplication">
-					<td class="left status" style="border: 1px solid black;"></td>
-					<td class="left log"></td>
-					<td class="left updatedTime"></td>
-				</tr>
-			</table>
-		</div>
 	</div>
 </div> 
