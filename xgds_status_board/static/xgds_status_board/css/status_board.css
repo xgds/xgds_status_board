@@ -5,11 +5,12 @@
 	padding-right: 50px;
 }
 
-.fieldServicesDivRight {
-}
-
 .fieldServicesDiv {
 	display: block;
+}
+
+th.left {
+	text-align: center;
 }
 
 .subsystemStatus th {
@@ -19,6 +20,7 @@
 .selected {
 	background-color: #a1aec7;
 }
+
 .TightSpacePara {
 	vertical-align: baseline;
 	margin: 3px;

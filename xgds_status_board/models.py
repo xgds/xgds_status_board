@@ -15,6 +15,8 @@
 # __END_LICENSE__
 
 import datetime
+import json
+import dateutil.parser
 
 from django.db import models
 from geocamUtil.modelJson import modelToDict
@@ -22,9 +24,10 @@ from xgds_core.models import Constant
 from django.core.cache import caches  
 
 #subsystem status markers
-OKAY = 1
-WARNING = 2
-ERROR = 3
+OKAY = '#00ff00'
+WARNING = '#ffff00'
+ERROR = '#ff0000'
+    
 
 # pylint: disable=C1001
 
@@ -113,9 +116,6 @@ class AbstractSubsystemGroup(models.Model):
     def getStatus(self):
         pass
     
-    def getColor(self):
-        pass
-    
     def toDict(self):
         """
         Return a reduced dictionary that will be turned to JSON
@@ -139,6 +139,7 @@ class AbstractSubsystem(models.Model):
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
     refreshRate = models.IntegerField(default=1000, null=True, blank=True, help_text='in miliseconds')
+    constantName = models.CharField(max_length=255, null=True, blank=True, help_text='constant name to look up the hostname')
 
     class Meta:
         abstract = True
@@ -146,69 +147,78 @@ class AbstractSubsystem(models.Model):
     def getTitle(self):
         return self.displayName
     
-    def getStatus(self):
-        # this might be a data quality: 
-        if (self.name == 'gpsDataQuality1') or (self.name == 'gpsDataQuality2'):
-            return _cache.get(self.name)
-        else:
-            lastUpdated = _cache.get(self.name)
-            if not lastUpdated:
-                return ERROR
-            currentTime = datetime.datetime.utcnow()
-            elapsed = (currentTime - lastUpdated).total_seconds()
-            if elapsed < self.warningThreshold:
-                return OKAY
-            elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
-                return WARNING
-            else: 
-                return ERROR
-        
-            
-    def getConstantName(self):
-        """
-        Name of the 'Constant' object under which this subsystem is stored. 
-        """
-        if self.name == 'gpsController1': 
-            return 'EV1_TRACKING_IP'
-        elif self.name == 'gpsController2':
-            return 'EV2_TRACKING_IP'
-        elif self.name == 'redCamera': 
-            return 'RED_CAMERA_IP'
-        elif self.name == 'FTIR': 
-            return 'FTIR_IP'
-        elif self.name == 'video1':
-            return 'EV1_CAMERA_IP'
-        elif self.name == 'video2':
-            return 'EV2_CAMERA_IP'
-        elif self.name == 'saCamera':
-            return 'SA_CAMERA_IP'
-    
     def getHostname(self):
         """
         Returns the IP Address of the subsystem.
         """
-        constant = Constant.objects.get(name = self.getConstantName())
+        constant = Constant.objects.get(name = self.constantName)
         return constant.value
     
-    def getColor(self):
-        if self.getStatus() == OKAY:
-            return '#00ff00'
-        elif self.getStatus() == WARNING:
-            return '#ffff00'
+    def getColorLevel(self, lastUpdated):
+        """
+        interval = (CurrenTime - LastUpdatedTime)
+        compare interval to thresholds and return color level (OKAY,WARNING,ERROR)
+        """
+        if not lastUpdated:
+            return ERROR
+        currentTime = datetime.datetime.utcnow()
+        elapsed = (currentTime - lastUpdated).total_seconds()
+        if elapsed < self.warningThreshold:
+            return OKAY
+        elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
+            return WARNING
         else: 
-            return '#ff0000'
+            return ERROR
     
-    def getStatusJson(self):
-        try: 
-            lastUpdated = _cache.get(self.name).strftime('%Y-%m-%d %H:%M:%S')
-        except: 
-            lastUpdated = ""
-        json = {"name": self.name,
-                "statusColor": self.getColor(),
-                "lastUpdated": lastUpdated}
-        return json
-
+    def getLoadAverage(self):
+        subsystemStatus = _cache.get(self.name)
+        if subsystemStatus is None:
+            return {'name': self.name,
+                    'oneMin': 'no data', 
+                    'fiveMin': 'no data',
+                    'lastUpdated': ''}
+        jsonDict = json.loads(subsystemStatus)
+        timestampString = jsonDict['lastUpdated']
+        lastUpdated = dateutil.parser.parse(timestampString)
+        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        retval = {'name': self.name,
+                  'oneMin': jsonDict['oneMin'], 
+                  'fiveMin': jsonDict['fiveMin'],
+                  'lastUpdated': displayTimeString}
+        return retval
     
+    def getDataQuality(self):
+        subsystemStatus = _cache.get(self.name)
+        if subsystemStatus is None:
+            return {'name': self.name,
+                    'statusColor': ERROR,
+                    'lastUpdated': ''}
+        jsonDict = json.loads(subsystemStatus)
+        timestampString = jsonDict['lastUpdated']
+        lastUpdated = dateutil.parser.parse(timestampString)
+        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        retval ={'name': self.name,
+                 'statusColor': jsonDict['dataQuality'],
+                 'lastUpdated': displayTimeString}
+        return retval
+    
+    def getStatus(self):
+        subsystemName = self.name
+        subsystemStatus = _cache.get(subsystemName)
+        if subsystemStatus is None:
+            return {'name': subsystemName,
+                    'statusColor': ERROR,
+                    'lastUpdated': ''}
+        jsonDict = json.loads(subsystemStatus)
+        timestampString = jsonDict['lastUpdated']
+        lastUpdated = dateutil.parser.parse(timestampString)
+        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        level = self.getColorLevel(lastUpdated)
+        retval = {'name': subsystemName,
+                  'statusColor': level, 
+                  'lastUpdated': displayTimeString}
+        return retval
+                
     def toDict(self):
         """
         Return a reduced dictionary that will be turned to JSON

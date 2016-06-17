@@ -30,6 +30,6 @@ urlpatterns = [
     url(r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
     url(r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
     url(r'^getAnnouncementTS$', views.getAnnouncementTS, {'readOnly': True}, "getAnnouncementTS"),
-    url(r'^subsystemStatus/$', views.showSubsystemStatus, {}, 'xgds_status_board_showSubsystemStatus'),
+    url(r'^subsystemStatus/$', views.showSubsystemStatus, {'loginRequired': False}, 'xgds_status_board_showSubsystemStatus'),
     url(r'^subsystemStatus\.json$', views.subsystemStatusJson, {}, 'xgds_status_board_subsystemStatusJson')
 ]

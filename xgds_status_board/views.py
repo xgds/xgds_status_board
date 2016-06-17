@@ -30,6 +30,7 @@ from django.core.urlresolvers import reverse
 
 from geocamUtil import anyjson as json
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
+from geocamUtil.loader import LazyGetModelByName
 
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, Subsystem, SubsystemGroup
 from xgds_status_board import settings
@@ -254,11 +255,15 @@ def showSubsystemStatus(request):
 
 
 def subsystemStatusJson(request):
-    handlebarsData = []
+    dataToRender = []
     for name in request.GET:
         subsystem = Subsystem.objects.get(name=name)
-        jsonObjs = subsystem.getStatusJson()
-        handlebarsData.append(jsonObjs)
-    return HttpResponse(json.dumps(handlebarsData, indent=4, sort_keys=True),
+        if 'DataQuality' in name: 
+            statusJson = subsystem.getDataQuality()
+        elif 'LoadAverage' in name:
+            statusJson = subsystem.getLoadAverage()
+        else:
+            statusJson = subsystem.getStatus()
+        dataToRender.append(statusJson)
+    return HttpResponse(json.dumps(dataToRender, indent=4, sort_keys=True),
                         content_type='application/json')
-
