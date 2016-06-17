@@ -65,9 +65,9 @@ $(function() {
 				$('#'+subsystem['name']).find('td.status').css('background', subsystem['statusColor']);
 				// set last updated time 
 			}
-			var updatedTime = $('#'+subsystem['name']).find('td.updatedTime');
+			var updatedTime = $('#'+subsystem['name']).find('td.elapsedTime');
 			if (updatedTime.length) {
-				updatedTime.html(subsystem['lastUpdated']);	
+				updatedTime.html(subsystem['elapsedTime']);	
 			}			
 		});
 	};

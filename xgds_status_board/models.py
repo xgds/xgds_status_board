@@ -154,6 +154,16 @@ class AbstractSubsystem(models.Model):
         constant = Constant.objects.get(name = self.constantName)
         return constant.value
     
+    def getElapsedSeconds(self, lastUpdated):
+        currentTime = datetime.datetime.utcnow()
+        elapsed = (currentTime - lastUpdated).total_seconds()
+        return elapsed
+    
+    def getElapsedTimeString(self, seconds):
+        m, s = divmod(seconds, 60)
+        h, m = divmod(m, 60)
+        return "%d:%02d:%02d" % (h, m, s)
+    
     def getColorLevel(self, lastUpdated):
         """
         interval = (CurrenTime - LastUpdatedTime)
@@ -161,8 +171,7 @@ class AbstractSubsystem(models.Model):
         """
         if not lastUpdated:
             return ERROR
-        currentTime = datetime.datetime.utcnow()
-        elapsed = (currentTime - lastUpdated).total_seconds()
+        elapsed = self.getElapsedSeconds(lastUpdated)
         if elapsed < self.warningThreshold:
             return OKAY
         elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
@@ -175,7 +184,7 @@ class AbstractSubsystem(models.Model):
         noData = {'name': self.name,
                   'oneMin': 'no data',
                   'fiveMin': 'no data',
-                  'lastUpdated': ''}
+                  'elapsedTime': ''}
         if subsystemStatus is None:
             return noData
         try: 
@@ -184,18 +193,19 @@ class AbstractSubsystem(models.Model):
             return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
-        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
+        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
         retval = {'name': self.name,
                   'oneMin': jsonDict['oneMin'], 
                   'fiveMin': jsonDict['fiveMin'],
-                  'lastUpdated': displayTimeString}
+                  'elapsedTime': elapsedTimeStr}
         return retval
     
     def getDataQuality(self):
         subsystemStatus = _cache.get(self.name)
         noData = {'name': self.name,
                   'statusColor': ERROR,
-                  'lastUpdated': ''}
+                  'elapsedTime': ''}
         if subsystemStatus is None:
             return noData
         try: 
@@ -204,10 +214,11 @@ class AbstractSubsystem(models.Model):
             return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
-        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
+        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
         retval ={'name': self.name,
                  'statusColor': jsonDict['dataQuality'],
-                 'lastUpdated': displayTimeString}
+                 'elapsedTime': elapsedTimeStr}
         return retval
     
     def getStatus(self):
@@ -215,7 +226,7 @@ class AbstractSubsystem(models.Model):
         subsystemStatus = _cache.get(subsystemName)
         noData = {'name': subsystemName,
                   'statusColor': ERROR,
-                  'lastUpdated': ''}
+                  'elapsedTime': ''}
         if subsystemStatus is None:
             return noData
         try: 
@@ -224,11 +235,12 @@ class AbstractSubsystem(models.Model):
             return noData
         timestampString = jsonDict['lastUpdated']
         lastUpdated = dateutil.parser.parse(timestampString)
-        displayTimeString = lastUpdated.strftime('%Y-%m-%d %H:%M:%S')
+        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
+        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
         level = self.getColorLevel(lastUpdated)
         retval = {'name': subsystemName,
                   'statusColor': level, 
-                  'lastUpdated': displayTimeString}
+                  'elapsedTime': elapsedTimeStr}
         return retval
                 
     def toDict(self):

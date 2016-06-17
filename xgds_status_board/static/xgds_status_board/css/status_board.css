@@ -57,8 +57,12 @@ table.ev1Status {
 	width: 100%;
 }
 
-table.ev2status {
+table.ev2Status {
 	width: 100%;
+}
+
+td.elapsedTime {
+	font-size: 18px;
 }
 
 .service {
