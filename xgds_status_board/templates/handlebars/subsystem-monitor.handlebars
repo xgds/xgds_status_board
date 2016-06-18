@@ -10,7 +10,10 @@
 				<th class="left">Elapsed Time</th>
 			</tr>
 			<tr id="gpsController1">
-				<td class="left subsystemName">GPS Controller</td>
+				<td class="left subsystemName">
+				 GPS Controller &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <a class="button" href="{{dataUrl}}pyraptord/gpsController1_latest.txt" target="_blank"> Log </a>
+				</td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="gpsDataQuality1">
@@ -22,11 +25,17 @@
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="video1">
-				<td class="left subsystemName">Video</td>
+				<td class="left subsystemName">Video
+				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <a class="button" href="{{dataUrl}}pyraptord/video1_latest.txt" target="_blank"> Log </a>
+				</td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="FTIR">
-				<td class="left subsystemName">FTIR</td>
+				<td class="left subsystemName">FTIR
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <a class="button" href="{{dataUrl}}pyraptord/FTIR_latest.txt" target="_blank"> Log </a>
+				 </td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>			
 		</table>
@@ -44,7 +53,9 @@
 				<th class="left">Elapsed Time</th>
 			</tr>
 			<tr id="gpsController2">
-				<td class="left subsystemName">GPS Controller</td>
+				<td class="left subsystemName">GPS Controller &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <a class="button" href="{{dataUrl}}pyraptord/gpsController2_latest.txt" target="_blank"> Log </a>
+				 </td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="gpsDataQuality2">
@@ -56,7 +67,10 @@
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="video2">
-				<td class="left subsystemName">Video</td>
+				<td class="left subsystemName">Video
+				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				 <a class="button" href="{{dataUrl}}pyraptord/video2_latest.txt" target="_blank"> Log </a>
+				</td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>
 			<tr id="ASD">
@@ -64,8 +78,12 @@
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
 			</tr>			
 			<tr id="redCamera">
-				<td class="left subsystemName">Red Camera</td>
+				<td class="left subsystemName">Red Camera
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a class="button" href="{{dataUrl}}pyraptord/redCamera_latest.txt" target="_blank"> Log </a>
+				</td>
 				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
+
 			</tr>		
 		</table>
 	</div>
@@ -80,11 +98,9 @@
 			<table id="videoRecorderTable1">
 				<tr>
 					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
 				</tr>
 				<tr id="fieldVideoRecorder">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log"><button class="small" type="button">log</button></td>
 				</tr>
 			</table>
 		</div>
@@ -97,6 +113,7 @@
 				</tr>
 				<tr id="saCamera">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
+					<td><a class="button" href="{{dataUrl}}pyraptord/saCamera_latest.txt" target="_blank"> Log </a></td>
 				</tr>
 			</table>
 		</div>
@@ -110,7 +127,9 @@
 				</tr>
 				<tr id="telemetryCleanup">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log"><button class="small" type="button">log</button></td>
+					<td class="left log">
+						<a class="button" href="{{dataUrl}}pyraptord/evaTrackTelemetryCleanup_latest.txt" target="_blank"> Log </a>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -124,23 +143,25 @@
 				</tr>
 				<tr id="fieldDataReplication">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log"><button class="small" type="button">log</button></td>
 				</tr>
 			</table>
 		</div>
-		
+		<br>		
 		<div class="fieldServicesDiv service">
-			<label for="fieldLoadAverageTable">Load Average</label>
+			<label for="fieldLoadAverageTable">Load Average 
+			</label>
 			<table class="loadAverageTable" id="fieldLoadAverageTable">
 				<tr>
 					<th class="left">1 min</th>
 					<th class="left">5 min</th>
 					<th class="left">Elapsed Time</th>
+					<th class="left"></th>
 				</tr>
 				<tr id="fieldLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
 					<td class="left fiveMin status" style="border: 1px solid black;"></td>
 					<td class="left elapsedTime"></td>
+					<td class="left"><a class="button" href="{{dataUrl}}pyraptord/fieldLoadAvg_latest.txt" target="_blank"> Log </a></td>
 				</tr>
 			</table>
 		</div>
@@ -157,11 +178,9 @@
 			<table id="videoRecorderTable2">
 				<tr>
 					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
 				</tr>
 				<tr id="basecampVideoRecorder">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log"><button class="small" type="button">log</button></td>
 				</tr>
 			</table>
 		</div>
@@ -171,27 +190,28 @@
 			<table id="dataReplicationTable2">
 				<tr>
 					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
 				</tr>
 				<tr id="basecampDataReplication">
 					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log"><button class="small" type="button">log</button></td>
 				</tr>
 			</table>
 		</div>
 		
 		<div class="basecampServicesDiv service">
-			<label for="basecampLoadAverageTable">Load Average</label>
+			<label for="basecampLoadAverageTable">Load Average 
+			</label>
 			<table class="loadAverageTable" id="basecampLoadAverageTable">
 				<tr>
 					<th class="left">1 min</th>
 					<th class="left">5 min</th>
 					<th class="left">Elapsed Time</th>
+					<th></th>
 				</tr>
 				<tr id="basecampLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
 					<td class="left fiveMin status" style="border: 1px solid black;"></td>
 					<td class="left elapsedTime"></td>
+					<td class="left"><a class="button" href="{{dataUrl}}pyraptord/basecampLoadAvg_latest.txt" target="_blank"> Log </a></td>
 				</tr>
 			</table>
 		</div>

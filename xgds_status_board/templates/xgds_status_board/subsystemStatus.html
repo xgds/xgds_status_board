@@ -20,7 +20,8 @@
 {% block jsSetVars %}
   {{ block.super }}
   var settings = {
-      'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '{{ XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL }}'
+      'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '{{ XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL }}',
+      'dataUrl': '{{settings.DATA_URL}}'
   };
 {% endblock %}
 

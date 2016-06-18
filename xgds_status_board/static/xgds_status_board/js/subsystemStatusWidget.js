@@ -7,7 +7,8 @@ function constructSubsystemMonitorView() {
 	var rawTemplate = $('#template-subsystem-monitor').html();
 	var compiledTemplate = Handlebars.compile(rawTemplate);
 	var newDiv = compiledTemplate({'ev1_icon': 'https://placekitten.com/200/200',
-									'ev2_icon': 'https://placekitten.com/200/200'});
+									'ev2_icon': 'https://placekitten.com/200/200',
+									'dataUrl': settings.dataUrl});
 	var subsystemMonitorTemplate = $(newDiv);
 	$container.append(subsystemMonitorTemplate);
 }
