@@ -216,8 +216,13 @@ class AbstractSubsystem(models.Model):
         lastUpdated = dateutil.parser.parse(timestampString)
         elapsedSeconds = self.getElapsedSeconds(lastUpdated)
         elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
+        level = self.getColorLevel(lastUpdated)
+        if (level != ERROR) and (jsonDict['dataQuality'] == OKAY):
+            statusColor = OKAY
+        else: 
+            statusColor = ERROR
         retval ={'name': self.name,
-                 'statusColor': jsonDict['dataQuality'],
+                 'statusColor': statusColor,
                  'elapsedTime': elapsedTimeStr}
         return retval
     
