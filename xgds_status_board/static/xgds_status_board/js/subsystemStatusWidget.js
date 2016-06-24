@@ -36,10 +36,10 @@ $(function() {
 							  gpsDataQuality2: 'gpsDataQuality2', 
 							  telemetryListener1: 'telemetryListener1', 
 							  telemetryListener2: 'telemetryListener2', 
-							  basecampVideoRecorder: 'basecampVideoRecorder', 
-							  fieldVideoRecorder: 'fieldVideoRecorder', 
+							  // basecampVideoRecorder: 'basecampVideoRecorder', 
+							  // fieldVideoRecorder: 'fieldVideoRecorder', 
 							  FTIR: 'FTIR', 
-							  ASD: 'ASD', 
+							  // ASD: 'ASD', 
 							  redCamera: 'redCamera',  
 							  saCamera: 'saCamera', 
 							  video1: 'video1', 
@@ -48,7 +48,9 @@ $(function() {
 							  fieldDataReplication: 'fieldDataReplication', 
 							  basecampDataReplication: 'basecampDataReplication',
 							  fieldLoadAverage: 'fieldLoadAverage', 
-							  basecampLoadAverage: 'basecampLoadAverage'}; // list of subsystems to update status.
+							  basecampLoadAverage: 'basecampLoadAverage',
+							  physioTablet1: 'physioTablet1',
+							  physioTablet2: 'physioTablet2'}; // list of subsystems to update status.
 		
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
