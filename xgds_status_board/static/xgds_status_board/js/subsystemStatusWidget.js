@@ -50,7 +50,9 @@ $(function() {
 							  fieldLoadAverage: 'fieldLoadAverage', 
 							  basecampLoadAverage: 'basecampLoadAverage',
 							  physioTablet1: 'physioTablet1',
-							  physioTablet2: 'physioTablet2'}; // list of subsystems to update status.
+							  physioTablet2: 'physioTablet2',
+							  wrist1: 'wrist1',
+							  wrist2: 'wrist2'}; // list of subsystems to update status.
 		
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
