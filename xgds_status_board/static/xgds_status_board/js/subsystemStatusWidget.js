@@ -41,6 +41,7 @@ $(function() {
 							  FTIR: 'FTIR', 
 							  // ASD: 'ASD', 
 							  redCamera: 'redCamera',  
+							  redMipCamera: 'redMipCamera',  
 							  saCamera: 'saCamera', 
 							  video1: 'video1', 
 							  video2: 'video2', 
