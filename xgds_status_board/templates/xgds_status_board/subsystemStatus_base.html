@@ -24,15 +24,3 @@
       'dataUrl': '{{settings.DATA_URL}}'
   };
 {% endblock %}
-
-{% block preLayout %}
-	constructSubsystemMonitorView();
-{% endblock %}
-
-{% block jsInit %}
-  {{ block.super }}
-  $(function() {
-      var widget = new xgds_status_board.SubsystemStatusWidget($('#subsystemStatus'));
-      widget.update();
-  });
-{% endblock %}

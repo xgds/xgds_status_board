@@ -1,242 +1,93 @@
-<!--  make sure subsystem tr id matches the subsystem name -->
-
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="1" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="0" data-gs-y="1"
+	data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
 		<h1>EV1</h1>
-		<!-- <div><img src="{{ ev1_icon }}" style="width:200px;height:200px;"></div> -->
-		<table class="ev1Status">
-			<tr>
-				<th class="left">Subsystem</th>
-				<th class="left">Elapsed Time</th>
-			</tr>
-			<tr id="gpsController1">
-				<td class="left subsystemName">
-				 GPS Controller &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <a class="button" href="{{dataUrl}}pyraptord/gpsController1_latest.txt" target="_blank"> Log </a>
-				</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="gpsDataQuality1">
-				<td class="left subsystemName">GPS Data Quality</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="telemetryListener1">
-				<td class="left subsystemName">Telemetry Listener</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="video1">
-				<td class="left subsystemName">Video
-				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <a class="button" href="{{dataUrl}}pyraptord/video1_latest.txt" target="_blank"> Log </a>
-				</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="FTIR">
-				<td class="left subsystemName">FTIR
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <a class="button" href="{{dataUrl}}pyraptord/FTIR_latest.txt" target="_blank"> Log </a>
-				 </td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="physioTablet1">
-				<td class="left subsystemName">Physio Tablet</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="wrist1">
-				<td class="left subsystemName">Wrist Display</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>	
+		<table>
+			<thead>
+				<th>Subsystem</th>
+				<th>Elapsed Time</th>
+			</thead>
+			<tbody>
+				{{#EV1}}
+				<tr>
+					<td class="left subsystemName">{{displayName}}</td>
+					<td class="left status elapsedTime" id="EV1_{{name}}_status">{{elapsedTime}}</td>
+				</tr>
+				{{/EV1}}
+			</tbody>
 		</table>
 	</div>
-</div> 
+</div>
 
-
-<div class="grid-stack-item" data-gs-x="2" data-gs-y="1" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="2" data-gs-y="1"
+	data-gs-width="2" data-gs-height="3">
 	<div class="grid-stack-item-content">
 		<h1>EV2</h1>
-		<!-- <div><img src="{{ ev2_icon }}" style="width:200px;height:200px;"></div>  -->
-		<table class="ev2Status">
-			<tr>
-				<th class="left">Subsystem</th>
-				<th class="left">Elapsed Time</th>
-			</tr>
-			<tr id="gpsController2">
-				<td class="left subsystemName">GPS Controller &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <a class="button" href="{{dataUrl}}pyraptord/gpsController2_latest.txt" target="_blank"> Log </a>
-				 </td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="gpsDataQuality2">
-				<td class="left subsystemName">GPS Data Quality</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="telemetryListener2">
-				<td class="left subsystemName">Telemetry Listener</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="video2">
-				<td class="left subsystemName">Video
-				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				 <a class="button" href="{{dataUrl}}pyraptord/video2_latest.txt" target="_blank"> Log </a>
-				</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-<!-- 			<tr id="ASD">
-				<td class="left subsystemName">ASD Spectrometer</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>		 -->	
-			<tr id="redCamera">
-				<td class="left subsystemName">Red Camera
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="button" href="{{dataUrl}}pyraptord/redCamera_latest.txt" target="_blank"> Log </a>
-				</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="redMipCamera">
-				<td class="left subsystemName">MIP Red Camera
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="button" href="{{dataUrl}}pyraptord/redMipCamera_latest.txt" target="_blank"> Log </a>
-				</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>
-			<tr id="physioTablet2">
-				<td class="left subsystemName">Physio Tablet</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>	
-			<tr id="wrist2">
-				<td class="left subsystemName">Wrist Display</td>
-				<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-			</tr>		
+		<table>
+			<thead>
+				<th>Subsystem</th>
+				<th>Elapsed Time</th>
+			</thead>
+			<tbody>
+				{{#EV2}}
+				<tr>
+					<td class="left subsystemName">{{displayName}}</td>
+					<td class="left status elapsedTime" id="EV2_{{name}}_status">{{elapsedTime}}</td>
+				</tr>
+				{{/EV2}}
+			</tbody>
 		</table>
 	</div>
-</div> 
+</div>
 
-<div class="grid-stack-item" data-gs-x="0" data-gs-y="2" data-gs-width="3" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x=8" data-gs-y="1"
+	data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
 		<h1>Field Services</h1>
-		<!-- put overall field services status here -->
-		<div class="fieldServicesDivLeft service">
-			<label for="videoRecorderTable1">Video Recorder</label>
-			<table id="videoRecorderTable1">
+		<table>
+			<thead>
+				<th>Subsystem</th>
+				<th>Elapsed Time</th>
+			</thead>
+			<tbody>
+				{{#field}}
 				<tr>
-					<th class="left">Elapsed Time</th>
+					<td class="left subsystemName">{{displayName}}</td>
+					<td class="left status elapsedTime" id="field_{{name}}_status">{{elapsedTime}}</td>
 				</tr>
-				<tr id="fieldVideoRecorder">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="fieldServicesDiv service">
-			<label for="saCameraTable">SA Camera</label>
-			<table id="saCameraTable">
-				<tr>
-					<th class="left">Elapsed Time</th>
-				</tr>
-				<tr id="saCamera">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td><a class="button" href="{{dataUrl}}pyraptord/saCamera_latest.txt" target="_blank"> Log </a></td>
-				</tr>
-			</table>
-		</div>
-		<br>
-		<div class="fieldServicesDivLeft service">
-			<label for="telemetryCleanupTable">Telemetry Cleanup</label>
-			<table id="telemetryCleanupTable">
-				<tr>
-					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
-				</tr>
-				<tr id="telemetryCleanup">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-					<td class="left log">
-						<a class="button" href="{{dataUrl}}pyraptord/evaTrackTelemetryCleanup_latest.txt" target="_blank"> Log </a>
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="fieldServicesDiv service">
-			<label for="dataReplicationTable1">Data Replication</label>
-			<table id="dataReplicationTable1">
-				<tr>
-					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
-				</tr>
-				<tr id="fieldDataReplication">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-				</tr>
-			</table>
-		</div>
-		<br>		
-		<div class="fieldServicesDiv service">
-			<label for="fieldLoadAverageTable">Load Average 
-			</label>
-			<table class="loadAverageTable" id="fieldLoadAverageTable">
-				<tr>
-					<th class="left">1 min</th>
-					<th class="left">5 min</th>
-					<th class="left">Elapsed Time</th>
-					<th class="left"></th>
-				</tr>
+				{{/field}}
 				<tr id="fieldLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
 					<td class="left fiveMin status" style="border: 1px solid black;"></td>
 					<td class="left elapsedTime"></td>
-					<td class="left"><a class="button" href="{{dataUrl}}pyraptord/fieldLoadAvg_latest.txt" target="_blank"> Log </a></td>
 				</tr>
-			</table>
-		</div>
-		
+			</tbody>
+		</table>
 	</div>
-</div> 
+</div>
 
-<div class="grid-stack-item" data-gs-x="3" data-gs-y="2" data-gs-width="2" data-gs-height="2">
+<div class="grid-stack-item" data-gs-x="8" data-gs-y="2"
+	data-gs-width="2" data-gs-height="2">
 	<div class="grid-stack-item-content">
 		<h1>Basecamp Services</h1>
-		<!-- put overall field services status here -->
-		<div class="basecampServicesDiv service">
-			<label for="videoRecorderTable2">Video Recorder</label>
-			<table id="videoRecorderTable2">
+		<table>
+			<thead>
+				<th>Subsystem</th>
+				<th>Elapsed Time</th>
+			</thead>
+			<tbody>
+				{{#baseCamp}}
 				<tr>
-					<th class="left">Elapsed Time</th>
+					<td class="left subsystemName">{{displayName}}</td>
+					<td class="left status elapsedTime" id="baseCamp_{{name}}_status">{{elapsedTime}}</td>
 				</tr>
-				<tr id="basecampVideoRecorder">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="basecampServicesDiv service">
-			<label for="dataReplicationTable2">Data Replication</label>
-			<table id="dataReplicationTable2">
-				<tr>
-					<th class="left">Elapsed Time</th>
-				</tr>
-				<tr id="basecampDataReplication">
-					<td class="left status elapsedTime" style="border: 1px solid black;"></td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="basecampServicesDiv service">
-			<label for="basecampLoadAverageTable">Load Average 
-			</label>
-			<table class="loadAverageTable" id="basecampLoadAverageTable">
-				<tr>
-					<th class="left">1 min</th>
-					<th class="left">5 min</th>
-					<th class="left">Elapsed Time</th>
-					<th></th>
-				</tr>
+				{{/baseCamp}}
 				<tr id="basecampLoadAverage">
 					<td class="left oneMin status" style="border: 1px solid black;"></td>
 					<td class="left fiveMin status" style="border: 1px solid black;"></td>
 					<td class="left elapsedTime"></td>
-					<td class="left"><a class="button" href="{{dataUrl}}pyraptord/basecampLoadAvg_latest.txt" target="_blank"> Log </a></td>
 				</tr>
-			</table>
-		</div>
-		
+			</tbody>
+		</table>
 	</div>
-</div> 
+</div>

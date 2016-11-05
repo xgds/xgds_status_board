@@ -115,7 +115,7 @@ class AbstractSubsystemGroup(models.Model):
     
     def getStatus(self):
         pass
-    
+        
     def toDict(self):
         """
         Return a reduced dictionary that will be turned to JSON
@@ -182,6 +182,7 @@ class AbstractSubsystem(models.Model):
     def getLoadAverage(self):
         subsystemStatus = _cache.get(self.name)
         noData = {'name': self.name,
+                  'displayName': self.displayName,
                   'oneMin': 'no data',
                   'fiveMin': 'no data',
                   'elapsedTime': ''}
@@ -204,8 +205,9 @@ class AbstractSubsystem(models.Model):
     def getDataQuality(self):
         subsystemStatus = _cache.get(self.name)
         noData = {'name': self.name,
-                  'statusColor': ERROR,
-                  'elapsedTime': ''}
+                'displayName': self.displayName,
+                'statusColor': ERROR,
+                'elapsedTime': ''}
         if subsystemStatus is None:
             return noData
         try: 
@@ -230,6 +232,7 @@ class AbstractSubsystem(models.Model):
         subsystemName = self.name
         subsystemStatus = _cache.get(subsystemName)
         noData = {'name': subsystemName,
+                  'displayName': self.displayName,
                   'statusColor': ERROR,
                   'elapsedTime': ''}
         if subsystemStatus is None:

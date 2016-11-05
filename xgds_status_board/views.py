@@ -47,14 +47,7 @@ timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
 
 #print 'CALCULATING TIMEZONES WE HAVE %d' % len(timezones)
 for timezone in timezones:
-#    print 'looking up %s' % timezone.code
     timezone.tzobject = pytz.timezone(timezone.code)
-#    if str(timezone.code) == str(settings.STATUS_BOARD_DATE_TIMEZONE['code']):
-#    if timezone == settings.STATUS_BOARD_DATE_TIMEZONE:
-#        default_timezone_offset = timezone.tzobject.utcoffset()
-#       print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
-#default_timezone_offset = timezone[0].tzobject.utcoffset()
-#print 'DEFAULT TIMEZONE OFFSET %d' % default_timezone_offset
 
 
 def getMultiTimezones(time):
@@ -247,23 +240,33 @@ def getServerDatetimeJSON(request):
     return HttpResponse(datejson, content_type='application/json')
 
 
+def getSubsystemGroupJson():
+    subsystemStatus = {}
+    subsystemGroups = SubsystemGroup.objects.all()
+    for subsystemGroup in subsystemGroups:
+        subsystemStatus[subsystemGroup.name] = []
+        subsystems = Subsystem.objects.filter(group = subsystemGroup)
+        for subsystem in subsystems: 
+            if "LoadAverage" in subsystem.name:
+                subsystemStatus[subsystemGroup.name].append(subsystem.getLoadAverage())
+            elif "DataQuality" in subsystem.name:
+                subsystemStatus[subsystemGroup.name].append(subsystem.getDataQuality())
+            else: 
+                subsystemStatus[subsystemGroup.name].append(subsystem.getStatus())
+    subsystemStatusJson = json.dumps(subsystemStatus, indent=4, sort_keys=True)
+    return subsystemStatusJson
+
+
 def showSubsystemStatus(request):
+    subsystemStatusJson = getSubsystemGroupJson()
     return render_to_response("xgds_status_board/subsystemStatus.html",
                               {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
+                               'subsystemStatusJson': subsystemStatusJson,
                                'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
                               context_instance=RequestContext(request))
 
 
 def subsystemStatusJson(request):
-    dataToRender = []
-    for name in request.GET:
-        subsystem = Subsystem.objects.get(name=name)
-        if 'DataQuality' in name: 
-            statusJson = subsystem.getDataQuality()
-        elif 'LoadAverage' in name:
-            statusJson = subsystem.getLoadAverage()
-        else:
-            statusJson = subsystem.getStatus()
-        dataToRender.append(statusJson)
-    return HttpResponse(json.dumps(dataToRender, indent=4, sort_keys=True),
+    subsystemStatusJson = getSubsystemGroupJson()
+    return HttpResponse(subsystemStatusJson, 
                         content_type='application/json')

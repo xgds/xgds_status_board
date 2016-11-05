@@ -1,80 +1,47 @@
 var xgds_status_board = xgds_status_board || {};
-
 $container = $('#container');
 
+
 // renders the handlebars widget
-function constructSubsystemMonitorView() {
+function constructSubsystemMonitorView(subsystemStatusJson) {
 	var rawTemplate = $('#template-subsystem-monitor').html();
 	var compiledTemplate = Handlebars.compile(rawTemplate);
-	var newDiv = compiledTemplate({'ev1_icon': 'https://placekitten.com/200/200',
-									'ev2_icon': 'https://placekitten.com/200/200',
-									'dataUrl': settings.dataUrl});
+	var newDiv = compiledTemplate(subsystemStatusJson);
 	var subsystemMonitorTemplate = $(newDiv);
 	$container.append(subsystemMonitorTemplate);
 }
 
+
 // polls server for updates
 $(function() {
-	function getStatusTd(serviceInfo) {
-		if (serviceInfo.status == 'running') {
-			return '    <td class="center ok">' + serviceInfo.procStatus + '</td>\n';
-		} else {
-			return '    <td class="center error">' + serviceInfo.procStatus +  '</td>\n';
-		}
-	}
-
 	function Widget(domElement) {
 		this.domElement = domElement;
 		return this;
 	}
-
+	
 	Widget.prototype.update = function() {
 		var self = this;
-		var subsystemNames = {gpsController1: 'gpsController1', 
-							  gpsController2: 'gpsController2', 
-							  gpsDataQuality1: 'gpsDataQuality1', 
-							  gpsDataQuality2: 'gpsDataQuality2', 
-							  telemetryListener1: 'telemetryListener1', 
-							  telemetryListener2: 'telemetryListener2', 
-							  // basecampVideoRecorder: 'basecampVideoRecorder', 
-							  // fieldVideoRecorder: 'fieldVideoRecorder', 
-							  FTIR: 'FTIR', 
-							  // ASD: 'ASD', 
-							  redCamera: 'redCamera',  
-							  redMipCamera: 'redMipCamera',  
-							  saCamera: 'saCamera', 
-							  video1: 'video1', 
-							  video2: 'video2', 
-							  telemetryCleanup: 'telemetryCleanup', 
-							  fieldDataReplication: 'fieldDataReplication', 
-							  basecampDataReplication: 'basecampDataReplication',
-							  fieldLoadAverage: 'fieldLoadAverage', 
-							  basecampLoadAverage: 'basecampLoadAverage',
-							  physioTablet1: 'physioTablet1',
-							  physioTablet2: 'physioTablet2',
-							  wrist1: 'wrist1',
-							  wrist2: 'wrist2'}; // list of subsystems to update status.
-		
 		function updateData() {
-			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, subsystemNames, function(data) { self.render(data) });
+			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, function(data) { self.render(data) });
 		}
 		setInterval(updateData, 1000);
 	};
 
 	Widget.prototype.render = function(data) {
-		// get the data, update the matching id's status and color
-		$.each(data, function( index, subsystem ) {
-			if (subsystem['name'].includes('LoadAverage')) {
-				$('#'+subsystem['name']).find('td.oneMin').html(subsystem['oneMin']);
-				$('#'+subsystem['name']).find('td.fiveMin').html(subsystem['fiveMin']);
-			} else {
-				$('#'+subsystem['name']).find('td.status').css('background', subsystem['statusColor']);
-				// set last updated time 
-			}
-			var updatedTime = $('#'+subsystem['name']).find('td.elapsedTime');
-			if (updatedTime.length) {
-				updatedTime.html(subsystem['elapsedTime']);	
-			}			
+		// update the colors based on data.
+		console.log("data is ", data);
+		$.each(data, function(group, subsystems) {
+			data2 = data;
+			$.each(subsystems, function(index, sub) {
+				// set the status colors
+				var statusId = group + "_" + sub['name'] + "_status";
+				$('#' + statusId).css('background', sub['statusColor']);
+				$('#' + statusId).html(sub['elapsedTime']);
+				if (sub['name'].includes('LoadAverage')) {
+					$('#' + sub['name']).find('td.oneMin').html(sub['oneMin']);
+					$('#' + sub['name']).find('td.fiveMin').html(sub['fiveMin']);
+				}
+			});
 		});
 	};
 

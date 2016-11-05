@@ -144,6 +144,11 @@ table.display tr.odd.row_selected td {
     background-color: #9FAFD1;
 }
 
+.elapsedTime {
+	border: 1px solid black;
+}
+
+
 /* end status board */
 
 /* __BEGIN_LICENSE__
