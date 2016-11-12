@@ -17,16 +17,19 @@
 import datetime
 import json
 import dateutil.parser
+import os, os.path
+import subprocess
 
 from django.db import models
+from django.conf import settings
 from geocamUtil.modelJson import modelToDict
 from xgds_core.models import Constant
 from django.core.cache import caches  
+from xgds_video.util import getSegmentPath
+from geocamUtil.loader import LazyGetModelByName, getClassByName
 
-#subsystem status markers
-OKAY = '#00ff00'
-WARNING = '#ffff00'
-ERROR = '#ff0000'
+
+ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER2_ACTIVE_FLIGHT_MODEL)
     
 
 # pylint: disable=C1001
@@ -46,6 +49,81 @@ PRIORITY_CHOICES = (
 )
 
 _cache = caches['default']
+
+
+class SubsystemStatus():
+    OKAY = '#00ff00'
+    WARNING = '#ffff00'
+    ERROR = '#ff0000'
+    NO_DATA = 'grey'
+    # get default
+    # update one value of subsystem status
+    # update subsystem status with json
+    def __init__(self, subsystemName):
+        self.cache = caches['default']
+        self.subsystem = Subsystem.objects.get(name=subsystemName)
+        self.name = self.subsystem.name
+        self.displayName = self.subsystem.displayName
+        if not self.cache.get(self.name):
+            defaultStatus = self.getDefaultStatus()
+            self.setStatus(defaultStatus)
+    
+    def getDefaultStatus(self):
+        return {"name": self.name, 
+                  "displayName": self.displayName, 
+                  "elapsedTime": "",
+                  "statusColor": self.NO_DATA,
+                  "oneMin": "", 
+                  "fiveMin": "", 
+                  "indexFileExists": 0,
+                  "lastUpdated": "",
+                  "segNumber": 0,
+                  "tsCount": 0,
+                  "flight": "" 
+                  }
+    
+    def getStatus(self):
+        return json.loads(self.cache.get(self.name))
+    
+    def setStatus(self, statusJson):
+        self.cache.set(self.name, json.dumps(statusJson))
+    
+    def getColorLevel(self, lastUpdated):
+        """
+        interval = (CurrentTime - LastUpdatedTime)
+        compare interval to thresholds and return color level (OKAY,WARNING,ERROR)
+        """
+        if not lastUpdated:
+            return self.ERROR
+        currentTime = datetime.datetime.utcnow()
+        elapsed = (currentTime - lastUpdated).total_seconds()
+        if elapsed < self.subsystem.warningThreshold:
+            return self.OKAY
+        elif (elapsed < self.subsystem.failureThreshold) and (elapsed > self.subsystem.warningThreshold):
+            return self.WARNING
+        else: 
+            return self.ERROR
+        
+    def getElapsedTimeSeconds(self, lastUpdated):
+        if not lastUpdated:
+            return ""
+        currentTime = datetime.datetime.utcnow()
+        return (currentTime - lastUpdated).total_seconds()
+        
+    def getElapsedTimeString (self, lastUpdated):
+        elapsedSeconds = self.getElapsedTimeSeconds(lastUpdated)
+        m, s = divmod(elapsedSeconds, 60)
+        h, m = divmod(m, 60)
+        return "%d:%02d:%02d" % (h, m, s)
+        
+    def runRemoteCommand(self, HOST, COMMAND):
+        ssh = subprocess.Popen(["ssh", "%s" % HOST, COMMAND],
+                               shell=False,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        result = ssh.stdout.readlines()
+        return result
+
 
 class StatusboardAnnouncement(models.Model):
     id = models.AutoField(primary_key=True)
@@ -128,6 +206,7 @@ class SubsystemGroup(AbstractSubsystemGroup):
     pass
 
 
+
 class AbstractSubsystem(models.Model):
     """
     Data quality, Video, etc. Each individual device.
@@ -138,8 +217,9 @@ class AbstractSubsystem(models.Model):
     logFileUrl = models.CharField(max_length=765, blank=True)
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
-    refreshRate = models.IntegerField(default=1000, null=True, blank=True, help_text='in miliseconds')
+    refreshRate = models.IntegerField(default=1, null=True, blank=True, help_text='in seconds')
     constantName = models.CharField(max_length=255, null=True, blank=True, help_text='constant name to look up the hostname')
+    active = models.BooleanField(null=False, blank=True, default=True)
 
     class Meta:
         abstract = True
@@ -153,103 +233,12 @@ class AbstractSubsystem(models.Model):
         """
         constant = Constant.objects.get(name = self.constantName)
         return constant.value
-    
-    def getElapsedSeconds(self, lastUpdated):
-        currentTime = datetime.datetime.utcnow()
-        elapsed = (currentTime - lastUpdated).total_seconds()
-        return elapsed
-    
-    def getElapsedTimeString(self, seconds):
-        m, s = divmod(seconds, 60)
-        h, m = divmod(m, 60)
-        return "%d:%02d:%02d" % (h, m, s)
-    
-    def getColorLevel(self, lastUpdated):
-        """
-        interval = (CurrenTime - LastUpdatedTime)
-        compare interval to thresholds and return color level (OKAY,WARNING,ERROR)
-        """
-        if not lastUpdated:
-            return ERROR
-        elapsed = self.getElapsedSeconds(lastUpdated)
-        if elapsed < self.warningThreshold:
-            return OKAY
-        elif (elapsed < self.failureThreshold) and (elapsed > self.warningThreshold):
-            return WARNING
-        else: 
-            return ERROR
-    
-    def getLoadAverage(self):
-        subsystemStatus = _cache.get(self.name)
-        noData = {'name': self.name,
-                  'displayName': self.displayName,
-                  'oneMin': 'no data',
-                  'fiveMin': 'no data',
-                  'elapsedTime': ''}
-        if subsystemStatus is None:
-            return noData
-        try: 
-            jsonDict = json.loads(subsystemStatus)
-        except: 
-            return noData
-        timestampString = jsonDict['lastUpdated']
-        lastUpdated = dateutil.parser.parse(timestampString)
-        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
-        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
-        retval = {'name': self.name,
-                  'oneMin': jsonDict['oneMin'], 
-                  'fiveMin': jsonDict['fiveMin'],
-                  'elapsedTime': elapsedTimeStr}
-        return retval
-    
-    def getDataQuality(self):
-        subsystemStatus = _cache.get(self.name)
-        noData = {'name': self.name,
-                'displayName': self.displayName,
-                'statusColor': ERROR,
-                'elapsedTime': ''}
-        if subsystemStatus is None:
-            return noData
-        try: 
-            jsonDict = json.loads(subsystemStatus)
-        except: 
-            return noData
-        timestampString = jsonDict['lastUpdated']
-        lastUpdated = dateutil.parser.parse(timestampString)
-        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
-        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
-        level = self.getColorLevel(lastUpdated)
-        if (level != ERROR) and (jsonDict['dataQuality'] == OKAY):
-            statusColor = OKAY
-        else: 
-            statusColor = ERROR
-        retval ={'name': self.name,
-                 'statusColor': statusColor,
-                 'elapsedTime': elapsedTimeStr}
-        return retval
-    
+
     def getStatus(self):
-        subsystemName = self.name
-        subsystemStatus = _cache.get(subsystemName)
-        noData = {'name': subsystemName,
-                  'displayName': self.displayName,
-                  'statusColor': ERROR,
-                  'elapsedTime': ''}
-        if subsystemStatus is None:
-            return noData
         try: 
-            jsonDict = json.loads(subsystemStatus)
+            return json.loads(_cache.get(self.name))
         except: 
-            return noData
-        timestampString = jsonDict['lastUpdated']
-        lastUpdated = dateutil.parser.parse(timestampString)
-        elapsedSeconds = self.getElapsedSeconds(lastUpdated)
-        elapsedTimeStr = self.getElapsedTimeString(elapsedSeconds)
-        level = self.getColorLevel(lastUpdated)
-        retval = {'name': subsystemName,
-                  'statusColor': level, 
-                  'elapsedTime': elapsedTimeStr}
-        return retval
+            return 
                 
     def toDict(self):
         """
@@ -258,6 +247,6 @@ class AbstractSubsystem(models.Model):
         result = modelToDict(self)
         return result
     
-
+    
 class Subsystem(AbstractSubsystem):
     pass

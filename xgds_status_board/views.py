@@ -32,7 +32,7 @@ from geocamUtil import anyjson as json
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 from geocamUtil.loader import LazyGetModelByName
 
-from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, Subsystem, SubsystemGroup
+from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, SubsystemGroup, Subsystem
 from xgds_status_board import settings
 
 from subprocess import Popen, PIPE
@@ -241,19 +241,21 @@ def getServerDatetimeJSON(request):
 
 
 def getSubsystemGroupJson():
-    subsystemStatus = {}
+    # gets the json of all active subsystems
+    subsystemStatusDict = {}
     subsystemGroups = SubsystemGroup.objects.all()
     for subsystemGroup in subsystemGroups:
-        subsystemStatus[subsystemGroup.name] = []
+        subsystemStatusDict[subsystemGroup.name] = []
         subsystems = Subsystem.objects.filter(group = subsystemGroup)
-        for subsystem in subsystems: 
-            if "LoadAverage" in subsystem.name:
-                subsystemStatus[subsystemGroup.name].append(subsystem.getLoadAverage())
-            elif "DataQuality" in subsystem.name:
-                subsystemStatus[subsystemGroup.name].append(subsystem.getDataQuality())
-            else: 
-                subsystemStatus[subsystemGroup.name].append(subsystem.getStatus())
-    subsystemStatusJson = json.dumps(subsystemStatus, indent=4, sort_keys=True)
+        for subsystem in subsystems:
+            if subsystem.active:
+                try:  
+                    subsystemStatus = subsystem.getStatus()
+                except: 
+                    continue
+                if subsystemStatus:
+                    subsystemStatusDict[subsystemGroup.name].append(subsystemStatus)
+    subsystemStatusJson = json.dumps(subsystemStatusDict, indent=4, sort_keys=True)
     return subsystemStatusJson
 
 

@@ -24,12 +24,11 @@ $(function() {
 		function updateData() {
 			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, function(data) { self.render(data) });
 		}
-		setInterval(updateData, 1000);
+		setInterval(updateData, 1000); // update every second
 	};
 
 	Widget.prototype.render = function(data) {
 		// update the colors based on data.
-		console.log("data is ", data);
 		$.each(data, function(group, subsystems) {
 			data2 = data;
 			$.each(subsystems, function(index, sub) {

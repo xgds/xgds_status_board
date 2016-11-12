@@ -17,6 +17,21 @@
   {% endfor %}
 {% endblock %}
 
+
+{% block content %}
+	{% block preDashboard %}
+	{% endblock preDashboard %}
+
+	{% block dashboard %}
+	<div id="container" class="grid-stack grid-stack-8"> 
+		
+		{% block inDashboard %}
+		{% endblock inDashboard %}
+		
+	</div> <!--  gridstack container -->
+	{% endblock dashboard %}
+{% endblock content %}
+
 {% block jsSetVars %}
   {{ block.super }}
   var settings = {
@@ -24,3 +39,24 @@
       'dataUrl': '{{settings.DATA_URL}}'
   };
 {% endblock %}
+
+{% block jsInit %}
+	$(function(){
+        {% block preLayout %}
+		{% endblock preLayout %}
+		
+		var options = {
+	        cellHeight: 200,
+	        verticalMargin: 20,
+	        width: 8,
+	        float: false
+	    };
+    	xgds_gridstack.initializeGridstack(options);
+    	
+    	{% block otherJSInit %}
+		{% endblock otherJSInit %}
+	});
+	
+{% endblock %}
+
+
