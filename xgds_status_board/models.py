@@ -61,7 +61,7 @@ class SubsystemStatus():
     # update subsystem status with json
     def __init__(self, subsystemName):
         self.cache = caches['default']
-        self.subsystem = Subsystem.objects.get(name=subsystemName)
+        self.subsystem = Subsystem.objects.filter(name=subsystemName)[0]
         self.name = self.subsystem.name
         self.displayName = self.subsystem.displayName
         if not self.cache.get(self.name):
@@ -204,7 +204,6 @@ class AbstractSubsystemGroup(models.Model):
 
 class SubsystemGroup(AbstractSubsystemGroup):
     pass
-
 
 
 class AbstractSubsystem(models.Model):
