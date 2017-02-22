@@ -136,7 +136,7 @@ class StatusboardAnnouncement(models.Model):
                                        blank=True, auto_now_add=True, editable=False)
     dateOfAnnouncement = models.DateTimeField(null=True, db_column='dateOfAnnouncement',
                                               blank=True)
-    content = models.CharField(max_length=765, blank=True)
+    content = models.CharField(max_length=768, blank=True)
 
     class Meta:
         db_table = u'xgds_status_board_announcement'
@@ -163,7 +163,7 @@ class StatusboardEvent(models.Model):
                                        blank=True, auto_now_add=True, editable=False)
     dateOfEvent = models.DateTimeField(null=True, db_column='dateOfEvent',
                                        blank=True, default=midnightThisMorning)
-    content = models.CharField(max_length=765, blank=True)
+    content = models.CharField(max_length=768, blank=True)
 
     class Meta:
         db_table = u'xgds_status_board_event'
@@ -177,8 +177,8 @@ class AbstractSubsystemGroup(models.Model):
     """
     EV1, EV2, Field Server, etc that groups subsystems in the monitor view.
     """
-    name = models.CharField(max_length=255, blank=True, help_text='no spaces and unique')
-    displayName = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=128, blank=True, db_index=True, help_text='no spaces and unique')
+    displayName = models.CharField(max_length=128, blank=True)
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
     
@@ -210,14 +210,14 @@ class AbstractSubsystem(models.Model):
     """
     Data quality, Video, etc. Each individual device.
     """
-    name = models.CharField(max_length=255, blank=True, help_text='no spaces and unique')
-    displayName = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=128, blank=True, db_index=True, help_text='no spaces and unique')
+    displayName = models.CharField(max_length=128, blank=True)
     group = models.ForeignKey(SubsystemGroup, null=True, blank=True, related_name="subsystems")
-    logFileUrl = models.CharField(max_length=765, blank=True)
+    logFileUrl = models.CharField(max_length=512, blank=True)
     warningThreshold = models.IntegerField(default=5, null=True, blank=True, help_text='in seconds')
     failureThreshold = models.IntegerField(default=10, null=True, blank=True, help_text='in seconds')
     refreshRate = models.IntegerField(default=1, null=True, blank=True, help_text='in seconds')
-    constantName = models.CharField(max_length=255, null=True, blank=True, help_text='constant name to look up the hostname')
+    constantName = models.CharField(max_length=128, null=True, blank=True, help_text='constant name to look up the hostname')
     active = models.BooleanField(null=False, blank=True, default=True)
 
     class Meta:
