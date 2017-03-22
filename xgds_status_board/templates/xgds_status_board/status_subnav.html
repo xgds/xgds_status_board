@@ -1,11 +1,9 @@
 {% block sitemenu-content-secondary %}
 {% load nav %}
-<div class="sitemenu-nav-secondary">
 	<nav class="subnav">
-		<ul>
-		    <li {% currentnav status xgds_status_boardView %}><a href="{% url 'xgds_status_boardView' %}">View</a></li>
-		    <li {% currentnav xgds_status_boardEdit %}><a href="{% url 'xgds_status_boardEdit' %}">Edit</a></li>
+		<ul class="nav nav-pills">
+		    <li class='nav-item {% currentnav status xgds_status_boardView %}'><a class='nav-link {% currentnav status xgds_status_boardView %}' href="{% url 'xgds_status_boardView' %}">View</a></li>
+		    <li class='nav-item {% currentnav xgds_status_boardEdit %}'><a class='nav-link {% currentnav xgds_status_boardEdit %}' href="{% url 'xgds_status_boardEdit' %}">Edit</a></li>
 		</ul>
 	</nav>
-</div>
 {% endblock %}
