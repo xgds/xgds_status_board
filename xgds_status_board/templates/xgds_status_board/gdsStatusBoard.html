@@ -325,7 +325,7 @@ function updateSCORESchedule() {
 {% block preAnnouncements %}
 {% endblock preAnnouncements %}
 {% block announcements %}
-<h2 class="h2">Announcements</h2>
+<h6 class="h2">Announcements</h6>
 <span id='announceSection'></span>
 {% endblock announcements %}
 {% endif %}
@@ -335,7 +335,7 @@ function updateSCORESchedule() {
 {% block preSchedule %}
 {% endblock preSchedule %}
 {% block schedule %}
-<h2 class="h2"><br/>Schedule</h2>
+<h6 class="h2"><br/>Schedule</h6>
 <span id='scheduleSection'></span>
 {% endblock schedule %}
 {% endif %}
@@ -344,7 +344,7 @@ function updateSCORESchedule() {
 {% block preScoreSchedule %}
 {% endblock preScoreSchedule %}
 {% block scoreSchedule %}
-<h2 class="h2"><br/>Score Schedule <span id="today_timezonelabel" style="color: {{ STATUS_BOARD_DATE_TIMEZONE.color }};" ></span></h2>
+<h6 class="h2"><br/>Score Schedule <span id="today_timezonelabel" style="color: {{ STATUS_BOARD_DATE_TIMEZONE.color }};" ></span></h6>
 {% include "xgds_status_board/ScheduleFromSCORE.html" %}
 {% endblock scoreSchedule %}
 {% endif %}
