@@ -14,7 +14,7 @@
 #specific language governing permissions and limitations under the License.
 # __END_LICENSE__
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from xgds_status_board import views
 

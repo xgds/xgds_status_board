@@ -22,10 +22,9 @@ import pytz
 from apps.xgds_core.views import get_handlebars_templates
 utc = pytz.utc
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.core.cache import cache    
 from django.core.urlresolvers import reverse
 
 from geocamUtil import anyjson as json
@@ -62,28 +61,28 @@ def getMultiTimezones(time):
 def statusBoard(request):
     timestamp = datetime.utcnow()
     startTime = timestamp - timedelta(hours=12, microseconds=0)
-    return (render_to_response
-            ("xgds_status_board/gdsStatusBoard.html",
-             {
-                 'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
-                 'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
-                 'navigation_tab': settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
-                 'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
-                 'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
-                 'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
-                 'SCORE_URL': settings.STATUS_BOARD_SCORE_URL,
-                 'SCORE_START_TIME': startTime.isoformat(),
-                 'TIMEZONE_OFFSET': default_timezone_offset
-             },
-             context_instance=RequestContext(request)))
+    return render(request, 
+                  "xgds_status_board/gdsStatusBoard.html",
+                  {'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
+                   'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
+                   'navigation_tab': settings.STATUS_BOARD_VIEW_NAVIGATION_TAB,
+                   'STATUS_BOARD_ANNOUNCEMENTS': settings.STATUS_BOARD_ANNOUNCEMENTS,
+                   'STATUS_BOARD_SCHEDULE': settings.STATUS_BOARD_SCHEDULE,
+                   'STATUS_BOARD_SCORE_SCHEDULE': settings.STATUS_BOARD_SCORE_SCHEDULE,
+                   'SCORE_URL': settings.STATUS_BOARD_SCORE_URL,
+                   'SCORE_START_TIME': startTime.isoformat(),
+                   'TIMEZONE_OFFSET': default_timezone_offset
+                   },
+                  )
 
 
 def statusBoardEdit(request):
     announcementList = StatusboardAnnouncement.objects.order_by('-priority')
-    return render_to_response("xgds_status_board/EditAnnouncements.html",
-                              {'announcements': announcementList,
-                               'navigation_tab': settings.STATUS_BOARD_EDIT_NAVIGATION_TAB},
-                              context_instance=RequestContext(request))
+    return render(request,
+                  "xgds_status_board/EditAnnouncements.html",
+                  {'announcements': announcementList,
+                   'navigation_tab': settings.STATUS_BOARD_EDIT_NAVIGATION_TAB},
+                  )
 
 
 def statusBoardAnnouncements(request):
@@ -96,10 +95,10 @@ def statusBoardAnnouncements(request):
         announcement.time = [(t, color) for _name, t, color in multiTimezones]
         result.append(announcement)
 
-    return render_to_response("xgds_status_board/announcements.html",
-                              {'announcements': result,
-                               },
-                              context_instance=RequestContext(request))
+    return render(request,
+                  "xgds_status_board/announcements.html",
+                  {'announcements': result}
+                  )
 
 
 def getAnnouncementTS(request):
@@ -203,13 +202,13 @@ def statusBoardSchedule(request):
     siteTimeOffset = 0
     siteTimes = [e.dateOfEvent + siteTimeOffset for e in eventList]
     eventsPlusSiteTimes = zip(eventList, siteTimes)
-    schedHtml = render_to_response("xgds_status_board/schedule.html",
-                                   {'eventList': eventList,
-                                    'eventsPlusSiteTimes': eventsPlusSiteTimes,
-                                    'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
-                                    'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
-                                    },
-                                   context_instance=RequestContext(request))
+    schedHtml = render(request,
+                       "xgds_status_board/schedule.html",
+                       {'eventList': eventList,
+                        'eventsPlusSiteTimes': eventsPlusSiteTimes,
+                        'STATUS_BOARD_TIMEZONES': settings.STATUS_BOARD_TIMEZONES,
+                        'STATUS_BOARD_DATE_TIMEZONE': settings.STATUS_BOARD_DATE_TIMEZONE,
+                        })
     resultDict = {'schedHtml': schedHtml.content, 'localTimes': localTimes,
                   'dateCount': eventList.count()}
     resultJson = json.dumps(resultDict)
@@ -261,11 +260,12 @@ def getSubsystemGroupJson():
 
 def showSubsystemStatus(request):
     subsystemStatusJson = getSubsystemGroupJson()
-    return render_to_response("xgds_status_board/subsystemStatus.html",
-                              {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
-                               'subsystemStatusJson': subsystemStatusJson,
-                               'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
-                              context_instance=RequestContext(request))
+    return render(request,
+                  "xgds_status_board/subsystemStatus.html",
+                  {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
+                   'subsystemStatusJson': subsystemStatusJson,
+                   'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
+                  )
 
 
 def subsystemStatusJson(request):
