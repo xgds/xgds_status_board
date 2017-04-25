@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load nav %}
  {% block nav %}
     {% nav "status" %}
@@ -9,7 +10,7 @@
 	{% include "xgds_status_board/status_subnav.html" %}
 	{% endblock sitemenu-content-secondary %}
 {% block cssExtras %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xgds_status_board/css/status_board.css" ></link>
+    <link rel="stylesheet" type="text/css" href="{% static 'xgds_status_board/css/status_board.css' %}" ></link>
     <!--  stuff for score schedule -->
     <style type="text/css" title="currentStyle">
 		.active_task {
@@ -28,7 +29,7 @@
   {{ block.super }}
     <script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-ui/jquery-ui.min.js"></script>
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
-	<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}geocamUtil/js/datatable_helpers.js"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'geocamUtil/js/datatable_helpers.js' %}"></script>
 	<script src="{{ EXTERNAL_URL }}jquery-countdown/build/jquery.countdown.js"></script>
 	<script src="{{ EXTERNAL_URL }}jquery-timers/index.js"></script>
 

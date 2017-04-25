@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load nav %}
  {% block nav %}
     {% nav "xgds_status_boardEdit" %}
@@ -12,14 +13,14 @@
 {% block cssExtras %}
 <style type="text/css" title="currentStyle">
 @import "{{ EXTERNAL_URL }}jquery-ui/themes/base/jquery-ui.min.css";
-@import "{{ STATIC_URL }}xgds_status_board/css/status_board.css";
+@import "{% static 'xgds_status_board/css/status_board.css' %}";
 </style>
 {% endblock cssExtras %}
 {% block scripts %}
   {{ block.super }}
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-ui/jquery-ui.min.js"></script>
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
-	<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}geocamUtil/js/datatable_helpers.js"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'geocamUtil/js/datatable_helpers.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jeditable/jquery.jeditable.js"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-validate/dist/jquery.validate.js"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables-editable/media/js/jquery.dataTables.editable.js"></script>
