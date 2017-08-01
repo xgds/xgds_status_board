@@ -28,6 +28,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
 from geocamUtil import anyjson as json
+from geocamUtil.datetimeJsonEncoder import DatetimeJsonEncoder
 from geocamUtil.models.ExtrasDotField import convertToDotDictRecurse
 from geocamUtil.loader import LazyGetModelByName
 
@@ -245,16 +246,15 @@ def getSubsystemGroupJson():
     subsystemGroups = SubsystemGroup.objects.all()
     for subsystemGroup in subsystemGroups:
         subsystemStatusDict[subsystemGroup.name] = []
-        subsystems = Subsystem.objects.filter(group = subsystemGroup)
-        for subsystem in subsystems:
+        for subsystem in subsystemGroup.subsystems.all():
             if subsystem.active:
                 try:  
                     subsystemStatus = subsystem.getStatus()
+                    if subsystemStatus:
+                        subsystemStatusDict[subsystemGroup.name].append(subsystemStatus)
                 except: 
                     continue
-                if subsystemStatus:
-                    subsystemStatusDict[subsystemGroup.name].append(subsystemStatus)
-    subsystemStatusJson = json.dumps(subsystemStatusDict, indent=4, sort_keys=True)
+    subsystemStatusJson = json.dumps(subsystemStatusDict, indent=4, sort_keys=True, cls=DatetimeJsonEncoder)
     return subsystemStatusJson
 
 

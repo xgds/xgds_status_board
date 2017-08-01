@@ -52,6 +52,8 @@ _cache = caches['default']
 
 
 class SubsystemStatus():
+    """ Uses Memcache to store status for subsystems so that status board can refer to it """
+    
     OKAY = '#00ff00'
     WARNING = '#ffff00'
     ERROR = '#ff0000'
@@ -73,17 +75,17 @@ class SubsystemStatus():
                   "displayName": self.displayName, 
                   "elapsedTime": "",
                   "statusColor": self.NO_DATA,
-                  "oneMin": "", 
-                  "fiveMin": "", 
-                  "indexFileExists": 0,
                   "lastUpdated": "",
-                  "segNumber": 0,
-                  "tsCount": 0,
                   "flight": "" 
                   }
     
     def getStatus(self):
-        return json.loads(self.cache.get(self.name))
+        try:
+            return json.loads(self.cache.get(self.name))
+        except:
+            defaultStatus = self.getDefaultStatus()
+            self.setStatus(defaultStatus)
+            return defaultStatus
     
     def setStatus(self, statusJson):
         self.cache.set(self.name, json.dumps(statusJson))

@@ -1,0 +1,24 @@
+<div class="grid-stack-item" 
+	data-gs-width="2" data-gs-height="2">
+	<div class="grid-stack-item-content">
+		<strong>{{displayName}}</strong>
+		<table>
+			<thead>
+				<th>Subsystem</th>
+				<th>Elapsed Time</th>
+				<th>  </th>
+			</thead>
+			<tbody>
+				{{#subsystem}}
+				<tr>
+					<td class="left subsystemName">{{displayName}}</td>
+					<td class="left status elapsedTime" id="{{name}}_status">{{elapsedTime}}</td>
+					{{#if logfileUrl}}
+					<td class="left"><a class="button" href="{{logfileUrl}}" target="_blank"> Log </a></td>
+					{{/if}}
+				</tr>
+				{{/subsystem}}
+			</tbody>
+		</table>
+	</div>
+</div>
