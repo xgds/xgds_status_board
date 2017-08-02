@@ -1,28 +1,29 @@
 var xgds_status_board = xgds_status_board || {};
-$container = $('#container');
-
+var $container = $('#container');
 
 // renders the handlebars widget
 function constructSubsystemMonitorView(subsystemStatusJson) {
-	var rawTemplate = $('#template-subsystem-monitor').html();
+	var rawTemplate = $('#template-subsystem-group').html();
 	var compiledTemplate = Handlebars.compile(rawTemplate);
-	var newDiv = compiledTemplate(subsystemStatusJson);
-	var subsystemMonitorTemplate = $(newDiv);
-	$container.append(subsystemMonitorTemplate);
+	var newDiv = $(compiledTemplate(subsystemStatusJson));
+	$container.append(newDiv);
+	return newDiv;
 }
 
 
 // polls server for updates
 $(function() {
-	function Widget(domElement) {
-		this.domElement = domElement;
+	function Widget(groupName, domElement) {
+		this.el = el;
+		this.groupName = groupName;
 		return this;
 	}
 	
 	Widget.prototype.update = function() {
-		var self = this;
+		var context = this;
 		function updateData() {
-			$.getJSON(settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL, function(data) { self.render(data) });
+			var url = settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL + '/' + groupName;
+			$.getJSON(url, function(data) { context.render(data) });
 		}
 		setInterval(updateData, 1000); // update every second
 	};

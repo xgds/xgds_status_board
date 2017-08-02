@@ -27,6 +27,7 @@ from xgds_core.models import Constant
 from django.core.cache import caches  
 from xgds_video.util import getSegmentPath
 from geocamUtil.loader import LazyGetModelByName, getClassByName
+from geocamUtil.datetimeJsonEncoder import DatetimeJsonEncoder
 
 
 ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER2_ACTIVE_FLIGHT_MODEL)
@@ -63,7 +64,7 @@ class SubsystemStatus():
     # update subsystem status with json
     def __init__(self, subsystemName):
         self.cache = caches['default']
-        self.subsystem = Subsystem.objects.filter(name=subsystemName)[0]
+        self.subsystem = Subsystem.objects.get(name=subsystemName)
         self.name = self.subsystem.name
         self.displayName = self.subsystem.displayName
         if not self.cache.get(self.name):
@@ -88,7 +89,7 @@ class SubsystemStatus():
             return defaultStatus
     
     def setStatus(self, statusJson):
-        self.cache.set(self.name, json.dumps(statusJson))
+        self.cache.set(self.name, json.dumps(statusJson, cls=DatetimeJsonEncoder))
     
     def getColorLevel(self, lastUpdated):
         """
@@ -212,7 +213,7 @@ class AbstractSubsystem(models.Model):
     """
     Data quality, Video, etc. Each individual device.
     """
-    name = models.CharField(max_length=128, blank=True, db_index=True, help_text='no spaces and unique')
+    name = models.CharField(max_length=128, blank=True, db_index=True, unique=True, help_text='no spaces and unique')
     displayName = models.CharField(max_length=128, blank=True)
     group = models.ForeignKey(SubsystemGroup, null=True, blank=True, related_name="subsystems")
     logFileUrl = models.CharField(max_length=512, blank=True)

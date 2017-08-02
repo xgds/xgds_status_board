@@ -1,6 +1,8 @@
-{% extends "dashboard_no_map.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block siteSection %}Recorder Status{% endblock %}
+{% block siteSection %}{{settings.HOSTNAME}} Status{% endblock %}
+
+{% block siteTitle %}{{settings.HOSTNAME}} Status{% endblock siteTitle%}
 
 {% block cssExtras %}
   {{ block.super }}
@@ -20,17 +22,10 @@
 
 
 {% block content %}
-	{% block preDashboard %}
-	{% endblock preDashboard %}
-
-	{% block dashboard %}
-	<div id="container" class="grid-stack grid-stack-8"> 
-		
-		{% block inDashboard %}
-		{% endblock inDashboard %}
-		
-	</div> <!--  gridstack container -->
-	{% endblock dashboard %}
+{% block preContainer %}
+{% endblock preContainer %}
+<div id="container">
+</div>
 {% endblock content %}
 
 {% block jsSetVars %}
@@ -42,22 +37,16 @@
 {% endblock %}
 
 {% block jsInit %}
-	$(function(){
-        {% block preLayout %}
-		{% endblock preLayout %}
-		
-		var options = {
-	        cellHeight: 200,
-	        verticalMargin: 20,
-	        width: 8,
-	        float: false
-	    };
-    	xgds_gridstack.initializeGridstack(options);
-    	
-    	{% block otherJSInit %}
-		{% endblock otherJSInit %}
-	});
-	
+  {{ block.super }}
+  $(function() {
+  var newDiv = undefined;
+  var widget = undefined;
+  {% for groupName, subsystems in subsystemStatusDict.items %}
+	newDiv = constructSubsystemMonitorView({{groupName}},{{subsystems}})
+	widget = new xgds_status_board.SubsystemStatusWidget({{groupName}}, newDiv); //$('#subsystemStatus'));
+    widget.update();
+	{% endfor %}
+      
+  });
 {% endblock %}
-
 

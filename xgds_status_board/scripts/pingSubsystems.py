@@ -18,10 +18,8 @@ import datetime
 import os
 import time
 import threading
-import memcache
 import logging
 import json
-import dateutil.parser
 
 import django
 django.setup()
@@ -38,10 +36,11 @@ def setup(opts):
 def buildPingThreads(config):
     threads = []
     for subsystem in config:
-        logging.info('BUILDING THREAD FOR ' + subsystem)
+        print('BUILDING THREAD FOR ' + subsystem)
         try: 
+            print('looking up subsystem for %s ' % subsystem)
             subsystemStatus = SubsystemStatus(subsystem)
-            ssThread = threading.Thread(target=setSubsystemStatus, name=subsystem, args=(subsystemStatus))
+            ssThread = threading.Thread(target=setSubsystemStatus, name=subsystem, args=[subsystemStatus])
             threads.append(ssThread)
             ssThread.start()
         except:
@@ -61,29 +60,29 @@ def setSubsystemStatus(subsystemStatus):
     """
     Pings each subsystem for a response at every "interval_sec" seconds.
     """
-   
     hostname = subsystemStatus.subsystem.getHostname()
-    status = getDefaultStatus()
-    lastUpdated = datetime.datetime.utcnow().isoformat()
+    status = getDefaultStatus(subsystemStatus)
+    print('default status')
+    print(status)
+    lastUpdated = datetime.datetime.utcnow()
     status['lastUpdated'] = lastUpdated
     while hostname:
 #         status = subsystemStatus.getStatus()
-#         lastUpdated = dateutil.parser.parse(status['lastUpdated'])
         statusColor = subsystemStatus.getColorLevel(lastUpdated)
         elapsedTime = subsystemStatus.getElapsedTimeString(lastUpdated)
         status['statusColor'] = statusColor
         status['elapsedTime'] = elapsedTime
 
         seconds = subsystemStatus.subsystem.refreshRate
-        logging.info('pinging %s' % subsystemStatus.name)
+        #print('pinging %s' % subsystemStatus.name)
         
         response = os.system("ping -c 1 " + hostname)
         if response != 0: # cannot ping host
             # try pinging again.
             response = os.system("ping -c 1 " + hostname)
         if response == 0: # hostname is up
-            lastUpdated = datetime.datetime.utcnow().isoformat()
-            status['lastUpdated'] = lastUpdated
+            lastUpdated = datetime.datetime.utcnow()
+            status['lastUpdated'] = lastUpdated.isoformat()
             
         # this sets the memcache
         subsystemStatus.setStatus(status)
