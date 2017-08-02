@@ -27,7 +27,7 @@ def setup(opts):
 
 def buildLoadAverageThreads(config):
     threads = []
-    for name, values in config[0].iteritems():
+    for name, values in config.iteritems():
         logging.info('BUILDING THREAD FOR ' + name)
         try: 
             subsystemStatus = SubsystemStatus(name)
