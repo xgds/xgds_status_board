@@ -240,40 +240,25 @@ def getServerDatetimeJSON(request):
     return HttpResponse(datejson, content_type='application/json')
 
 
-def getSubsystemStatusList(subsystemGroup):
-    result = []
-    for subsystem in subsystemGroup.subsystems.all():
-        if subsystem.active:
-            try:  
-                subsystemStatus = subsystem.getStatus()
-                if subsystemStatus:
-                    result.append(subsystemStatus)
-            except: 
-                continue
-    return result
-
-def getSubsystemGroups():
-    # gets the json of all active subsystems
-    subsystemStatusDict = {}
-    subsystemGroups = SubsystemGroup.objects.all()
-    for subsystemGroup in subsystemGroups:
-        subsystemStatusDict[subsystemGroup.name] = getSubsystemStatusList(subsystemGroup)
-        
-    return subsystemStatusDict
+# def getSubsystemGroups():
+#     # gets the json of all active subsystems
+#     subsystemStatusDict = {}
+#     subsystemGroups = SubsystemGroup.objects.all()
+#     for subsystemGroup in subsystemGroups:
+#         subsystemStatusDict[subsystemGroup.name] = subsystemGroup.getSubsystemStatusList()
+#     return subsystemStatusDict
 
 
 def showSubsystemStatus(request):
-    subsystemStatusJson = getSubsystemGroups()
     return render(request,
                   "xgds_status_board/subsystemStatus.html",
                   {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
-                   'subsystemStatusDict': subsystemStatusJson,
-                   'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': reverse('xgds_status_board_subsystemStatusJson')},
+                   'subsystemGroups': SubsystemGroup.objects.all(),
+                   'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/'},
                   )
 
 
 def subsystemStatusJson(request, groupName):
-    subsystemGroup = SubsystemGroup.objects.get(name='groupName')
-    subsystemStatusJson = json.dumps(getSubsystemStatusList(subsystemGroup), sort_keys=True, cls=DatetimeJsonEncoder)
-    return HttpResponse(subsystemStatusJson, 
+    subsystemGroup = SubsystemGroup.objects.get(name=groupName)
+    return HttpResponse(subsystemGroup.getSubsystemStatusListJson(), 
                         content_type='application/json')

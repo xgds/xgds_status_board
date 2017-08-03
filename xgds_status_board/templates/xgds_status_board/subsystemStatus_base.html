@@ -41,9 +41,10 @@
   $(function() {
   var newDiv = undefined;
   var widget = undefined;
-  {% for groupName, subsystems in subsystemStatusDict.items %}
-	newDiv = constructSubsystemMonitorView({{groupName}},{{subsystems}})
-	widget = new xgds_status_board.SubsystemStatusWidget({{groupName}}, newDiv); //$('#subsystemStatus'));
+  var container = $('#container');
+  {% for group in subsystemGroups %}
+	//newDiv = constructSubsystemMonitorView('{{group.name}}',{{group.getSubsystemStatusListJson|safe}});
+	widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
     widget.update();
 	{% endfor %}
       

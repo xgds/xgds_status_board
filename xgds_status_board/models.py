@@ -16,9 +16,8 @@
 
 import datetime
 import json
-import dateutil.parser
-import os, os.path
 import subprocess
+import traceback
 
 from django.db import models
 from django.conf import settings
@@ -49,8 +48,6 @@ PRIORITY_CHOICES = (
     (9, '9'),
 )
 
-_cache = caches['default']
-
 
 class SubsystemStatus():
     """ Uses Memcache to store status for subsystems so that status board can refer to it """
@@ -58,7 +55,8 @@ class SubsystemStatus():
     OKAY = '#00ff00'
     WARNING = '#ffff00'
     ERROR = '#ff0000'
-    NO_DATA = 'grey'
+    NO_DATA = ''
+
     # get default
     # update one value of subsystem status
     # update subsystem status with json
@@ -89,7 +87,11 @@ class SubsystemStatus():
             return defaultStatus
     
     def setStatus(self, statusJson):
+        print 'setting status in cache'
+        print self.name
+        print statusJson
         self.cache.set(self.name, json.dumps(statusJson, cls=DatetimeJsonEncoder))
+        print 'done setting status'
     
     def getColorLevel(self, lastUpdated):
         """
@@ -203,6 +205,22 @@ class AbstractSubsystemGroup(models.Model):
         """
         result = modelToDict(self)
         return result
+    
+    def getSubsystemStatusList(self):
+        result = []
+        for subsystem in self.subsystems.all():
+            try:  
+                if subsystem.active:
+                    subsystemStatus = subsystem.getStatus()
+                    if subsystemStatus:
+                        result.append(subsystemStatus)
+            except: 
+                continue
+        return result
+    
+    def getSubsystemStatusListJson(self):
+        result = self.getSubsystemStatusList()
+        return json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder)
 
 
 class SubsystemGroup(AbstractSubsystemGroup):
@@ -223,9 +241,6 @@ class AbstractSubsystem(models.Model):
     constantName = models.CharField(max_length=128, null=True, blank=True, help_text='constant name to look up the hostname')
     active = models.BooleanField(null=False, blank=True, default=True)
 
-    class Meta:
-        abstract = True
-    
     def getTitle(self):
         return self.displayName
     
@@ -238,9 +253,11 @@ class AbstractSubsystem(models.Model):
 
     def getStatus(self):
         try: 
+            _cache = caches['default']
             return json.loads(_cache.get(self.name))
-        except: 
-            return 
+        except:
+            subsystemStatus = SubsystemStatus(self.name)
+            return subsystemStatus.getStatus()
                 
     def toDict(self):
         """
@@ -248,7 +265,10 @@ class AbstractSubsystem(models.Model):
         """
         result = modelToDict(self)
         return result
-    
+
+    class Meta:
+        abstract = True
+        ordering = ['displayName']
     
 class Subsystem(AbstractSubsystem):
     pass

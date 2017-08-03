@@ -1,50 +1,38 @@
 var xgds_status_board = xgds_status_board || {};
-var $container = $('#container');
-
-// renders the handlebars widget
-function constructSubsystemMonitorView(subsystemStatusJson) {
-	var rawTemplate = $('#template-subsystem-group').html();
-	var compiledTemplate = Handlebars.compile(rawTemplate);
-	var newDiv = $(compiledTemplate(subsystemStatusJson));
-	$container.append(newDiv);
-	return newDiv;
-}
 
 
-// polls server for updates
+// builds the UI and polls server for updates for each subsystem group
 $(function() {
-	function Widget(groupName, domElement) {
-		this.el = el;
+	function Widget(groupName, container, initialData) {
 		this.groupName = groupName;
+		this.initialize(container, initialData)
 		return this;
+	};
+	
+	Widget.prototype.buildDataObject = function(newData) {
+		return {'displayName': this.groupName,
+			    'subsystem': newData}
+	};
+	
+	Widget.prototype.initialize = function(container, initialData) {
+		var rawTemplate = $('#template-subsystem-group').html();
+		this.template = Handlebars.compile(rawTemplate);
+		this.el = $(this.template(this.buildDataObject(initialData)));
+		container.append(this.el);
 	}
 	
 	Widget.prototype.update = function() {
 		var context = this;
 		function updateData() {
-			var url = settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL + '/' + groupName;
+			var url = settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL  + context.groupName;
 			$.getJSON(url, function(data) { context.render(data) });
 		}
 		setInterval(updateData, 1000); // update every second
 	};
 
 	Widget.prototype.render = function(data) {
-		// update the colors based on data.
-		$.each(data, function(group, subsystems) {
-			data2 = data;
-			$.each(subsystems, function(index, sub) {
-				// set the status colors
-				var statusId = group + "_" + sub['name'] + "_status";
-				$('#' + statusId).css('background', sub['statusColor']);
-				$('#' + statusId).html(sub['elapsedTime']);
-				if (sub['name'].includes('LoadAverage')) {
-					$('#' + sub['name']).find('td.oneMin').html(sub['oneMin']);
-					$('#' + sub['name']).find('td.fiveMin').html(sub['fiveMin']);
-				}
-			});
-		});
+		this.el.empty().append(this.template(this.buildDataObject(data)));
 	};
 
-	// export
 	xgds_status_board.SubsystemStatusWidget = Widget;
 });
