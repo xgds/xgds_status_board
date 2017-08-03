@@ -63,5 +63,5 @@ XGDS_STATUS_BOARD_HANDLEBARS_DIR = [os.path.join('xgds_status_board', 'templates
 # include this in your siteSettings.py BOWER_INSTALLED_APPS
 STATUS_BOARD_BOWER_INSTALLED_APPS = (
     'jquery-countdown',
-    'jquery-timers=https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js'
+    'jquery-timers=https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js',
 )

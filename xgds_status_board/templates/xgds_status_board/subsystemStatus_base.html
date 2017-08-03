@@ -2,7 +2,6 @@
 {% load static %}
 {% block siteSection %}{{settings.HOSTNAME}} Status{% endblock %}
 
-{% block siteTitle %}{{settings.HOSTNAME}} Status{% endblock siteTitle%}
 
 {% block cssExtras %}
   {{ block.super }}
@@ -24,7 +23,11 @@
 {% block content %}
 {% block preContainer %}
 {% endblock preContainer %}
-<div id="container">
+<div  class="container-fluid">
+<div class="row">
+    <div id="container" class="card-columns">
+    </div>
+</div>
 </div>
 {% endblock content %}
 
@@ -43,7 +46,6 @@
   var widget = undefined;
   var container = $('#container');
   {% for group in subsystemGroups %}
-	//newDiv = constructSubsystemMonitorView('{{group.name}}',{{group.getSubsystemStatusListJson|safe}});
 	widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
     widget.update();
 	{% endfor %}

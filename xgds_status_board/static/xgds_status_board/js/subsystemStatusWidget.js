@@ -17,7 +17,8 @@ $(function() {
 	Widget.prototype.initialize = function(container, initialData) {
 		var rawTemplate = $('#template-subsystem-group').html();
 		this.template = Handlebars.compile(rawTemplate);
-		this.el = $(this.template(this.buildDataObject(initialData)));
+		this.data = this.buildDataObject(initialData);
+		this.el = $(this.template(this.data));
 		container.append(this.el);
 	}
 	
@@ -31,7 +32,8 @@ $(function() {
 	};
 
 	Widget.prototype.render = function(data) {
-		this.el.empty().append(this.template(this.buildDataObject(data)));
+		this.data = this.buildDataObject(data);
+		this.el.html(this.template(this.data));
 	};
 
 	xgds_status_board.SubsystemStatusWidget = Widget;
