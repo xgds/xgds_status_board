@@ -14,10 +14,10 @@ Handlebars.registerHelper('getDisplayValue', function(sub) {
 		if (fiveMin === undefined){
 			fiveMin = '';
 		}
-		result='<td class="status elapsedTime"><table class="loadAverage"><thead><th>1min</th><th>5min</th><th></th></thead>';
-		result += '<tbody><tr id="' + sub["name"] +'_loadAverage"';
-		result += '<td class="oneMin status">' + oneMin + '</td>';
-		result += '<td class="fiveMin status">' + fiveMin + '</td></tr></tbody></table></td>';
+		result='<td class="status elapsedTime"><table class="loadAverage"><thead><th>1min</th><th>5min</th></thead>';
+		result += '<tbody><tr id="' + sub["name"] +'_loadAverage">';
+		result += '<td class="oneMin">' + oneMin + '</td>';
+		result += '<td class="fiveMin">' + fiveMin + '</td></tr></tbody></table></td>';
 	} else {
 		result = '<td class="status elapsedTime" id="' + sub['name'] +'_status"';
 		if ('statusColor' in sub && (!_.isEmpty(sub['statusColor']))) {
