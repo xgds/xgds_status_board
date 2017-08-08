@@ -1,88 +1,10 @@
 /* status board stuff */
 
-.button {
-     background-color: grey;
-     border: 0;
-     color: white;
-     padding: 10px 20px; 
-     height: 30px;
-}
-
-.button:hover {
-     background: grey;
-     color: white;
-     text-decoration: none;  
-}
-
-
-.fieldServicesDivLeft {
-	float:left;
-	padding-right: 50px;
-}
-
-h1 {
-	padding-bottom: 30px;
-}
-
-.fieldServicesDiv {
-	display: block;
-}
-
-tr#fieldLoadAverage td.oneMin {
-	font-size: 20px;
-}
-
-tr#fieldLoadAverage td.fiveMin {
-	font-size: 20px;
-}
-
-tr#basecampLoadAverage td.oneMin {
-	font-size: 20px;
-}
-
-tr#basecampLoadAverage td.fiveMin {
-	font-size: 20px;
-}
-
-table.loadAverageTable {
-	width: 100%;
-}
-
-table.ev1Status th.left {
-	text-align: center;
-	font-weight: bold;
-	font-size: 18px;
-}
-
-table.ev2Status th.left {
-	text-align: center;
-	font-weight: bold;
-	font-size: 18px;
-}
-
-
-tr td.left {padding-top: 5px; padding-bottom:5px}
-
 td.subsystemName {
 	font-weight: bold;
-	font-size: 18px;
-}
-
-table.ev1Status {
-	width: 100%;
-}
-
-table.ev2Status {
-	width: 100%;
-}
-
-td.elapsedTime {
-	font-size: 18px;
 }
 
 .service {
-	padding-bottom: 20px;
-	font-size: 18px;
 	font-weight: bold;
 }
 
@@ -102,13 +24,16 @@ td.elapsedTime {
 .details {
 	font-size:14px;
 }
-.statusboard {
-	font-size: 14px;
-	color:#333333;  /* status board text body */
-}
 
 .time {
 	text-decoration:bold;
+}
+
+.loadAverage {
+	border: 1px solid black;
+	margin-bottom: 0px;
+	width: 100px;
+	padding:0px;
 }
 
 .linkblock {
@@ -125,7 +50,7 @@ td.elapsedTime {
 .boldClass {
 	font-weight: bold;
 }
-li { padding-bottom: 10px; }
+
 
 .announcement1 { color:#af1b1b; text-decoration: bold;}
 .announcement2 { color:#af1b1b; text-decoration: bold;}
@@ -137,15 +62,10 @@ li { padding-bottom: 10px; }
 .announcement8 { color:#14594d; }
 .announcement9 { color:#14594d; }
 
-table.display tr.even.row_selected td {
-    background-color: #B0BED9;
-}
-table.display tr.odd.row_selected td {
-    background-color: #9FAFD1;
-}
 
 .elapsedTime {
 	border: 1px solid black;
+	padding: 0px;
 }
 
 

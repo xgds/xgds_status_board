@@ -9,13 +9,15 @@
 			</thead>
 			<tbody>
 				{{#subsystem}}
+				{{#if displayName}}
 				<tr>
 					<td class="left subsystemName">{{displayName}}</td>
-					<td class="left status elapsedTime" id="{{name}}_status" {{#if statusColor}}style="background-color:{{statusColor}};"{{/if}}>{{elapsedTime}}</td>
+					{{getDisplayValue this}}
 					{{#if logfileUrl}}
 					<td class="left"><a class="button" href="{{logfileUrl}}" target="_blank"> Log </a></td>
 					{{/if}}
 				</tr>
+				{{/if}}
 				{{/subsystem}}
 			</tbody>
 		</table>

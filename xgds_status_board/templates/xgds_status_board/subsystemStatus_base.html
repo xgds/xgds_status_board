@@ -26,6 +26,9 @@
 <div  class="container-fluid">
 <div class="row">
     <div id="container" class="card-columns">
+    {% for group in subsystemGroups %}
+    		<div id="{{group.name}}_container"></div>
+    {% endfor %}
     </div>
 </div>
 </div>
@@ -44,8 +47,9 @@
   $(function() {
   var newDiv = undefined;
   var widget = undefined;
-  var container = $('#container');
+  
   {% for group in subsystemGroups %}
+  	var container = $('#{{group.name}}_container');
 	widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
     widget.update();
 	{% endfor %}
