@@ -56,7 +56,7 @@ def main():
     parser.add_option('-n', '--subsystemName',
                       default="",
                       help='name of the subsystem to ping')
-    parser.add_option('-h', '--host',
+    parser.add_option('-o', '--host',
                       default="irg@boat",
                       help='user@machine')
     parser.add_option('-c', '--command',
