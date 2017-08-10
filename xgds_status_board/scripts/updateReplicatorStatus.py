@@ -43,7 +43,7 @@ def setReplicatorStatus(opts):
         status = subsystemStatus.getStatus()
         lastUpdatedString = status['lastUpdated']
         lastUpdated = datetime.datetime.utcnow().isoformat()
-        elapsedTimeString = '0'
+        elapsedTimeString = '00:00:00'
         if lastUpdatedString:
             try:
                 lastUpdated = dateutil.parser.parse(status['lastUpdated'])
