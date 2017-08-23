@@ -270,7 +270,8 @@ class AbstractSubsystem(models.Model):
     class Meta:
         abstract = True
         ordering = ['displayName']
-    
+
+
 class Subsystem(AbstractSubsystem):
     def __unicode__(self):
         return "%s" % (self.name)
