@@ -224,7 +224,8 @@ class AbstractSubsystemGroup(models.Model):
 
 
 class SubsystemGroup(AbstractSubsystemGroup):
-    pass
+    def __unicode__(self):
+        return "%s" % (self.name)
 
 
 class AbstractSubsystem(models.Model):
@@ -271,4 +272,5 @@ class AbstractSubsystem(models.Model):
         ordering = ['displayName']
     
 class Subsystem(AbstractSubsystem):
-    pass
+    def __unicode__(self):
+        return "%s" % (self.name)
