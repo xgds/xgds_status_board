@@ -262,3 +262,22 @@ def subsystemStatusJson(request, groupName):
     subsystemGroup = SubsystemGroup.objects.get(name=groupName)
     return HttpResponse(subsystemGroup.getSubsystemStatusListJson(), 
                         content_type='application/json')
+    
+def multiSubsystemStatusJson(request):
+    ''' pass in a space separated list of subsystem names using the key 'names'  '''
+    if request.POST:
+        ssNames = request.POST.get('names')
+        result = []
+        for name in ssNames.split(' '):
+            try:  
+                subsystem = Subsystem.objects.get(name=name)
+                if subsystem.active:
+                    subsystemStatus = subsystem.getStatus()
+                    if subsystemStatus:
+                        result.append(subsystemStatus)
+            except: 
+                continue
+        print json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder)
+        return HttpResponse(json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder), 
+                            content_type='application/json')
+        
