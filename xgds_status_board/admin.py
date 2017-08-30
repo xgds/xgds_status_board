@@ -20,3 +20,5 @@ from xgds_status_board.models import *  # pylint: disable=W0401
 
 admin.site.register(StatusboardAnnouncement)
 admin.site.register(StatusboardEvent)
+admin.site.register(Subsystem)
+admin.site.register(SubsystemGroup)
