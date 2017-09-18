@@ -277,7 +277,6 @@ def multiSubsystemStatusJson(request):
                         result.append(subsystemStatus)
             except: 
                 continue
-        print json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder)
         return HttpResponse(json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder), 
                             content_type='application/json')
         

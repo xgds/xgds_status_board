@@ -36,9 +36,7 @@ def setup(opts):
 def buildPingThreads(config):
     threads = []
     for subsystem in config:
-        print('BUILDING THREAD FOR ' + subsystem)
         try: 
-            print('looking up subsystem for %s ' % subsystem)
             subsystemStatus = SubsystemStatus(subsystem)
             ssThread = threading.Thread(target=setSubsystemStatus, name=subsystem, args=[subsystemStatus])
             threads.append(ssThread)
@@ -62,8 +60,6 @@ def setSubsystemStatus(subsystemStatus):
     """
     hostname = subsystemStatus.subsystem.getHostname()
     status = getDefaultStatus(subsystemStatus)
-    print('default status')
-    print(status)
     lastUpdated = datetime.datetime.utcnow()
     status['lastUpdated'] = lastUpdated
     while hostname:
@@ -74,7 +70,6 @@ def setSubsystemStatus(subsystemStatus):
         status['elapsedTime'] = elapsedTime
 
         seconds = subsystemStatus.subsystem.refreshRate
-        #print('pinging %s' % subsystemStatus.name)
         
         response = os.system("ping -c 1 " + hostname)
         if response != 0: # cannot ping host

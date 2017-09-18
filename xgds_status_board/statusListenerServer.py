@@ -31,9 +31,6 @@ class TestServer(Pyro.core.ObjBase):
         Pyro.core.ObjBase.__init__(self)
 
     def submitData(self, jstr):
-        # Print what we got
-        print 'got data:'
-        print jstr
         obj = json.loads(jstr)
         # for now, assume it's plan status, that's all we have...
         planStat = obj['planStatus']

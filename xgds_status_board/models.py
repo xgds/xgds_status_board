@@ -87,11 +87,7 @@ class SubsystemStatus():
             return defaultStatus
     
     def setStatus(self, statusJson):
-        print 'setting status in cache'
-        print self.name
-        print statusJson
         self.cache.set(self.name, json.dumps(statusJson, cls=DatetimeJsonEncoder))
-        print 'done setting status'
     
     def getColorLevel(self, lastUpdated):
         """
