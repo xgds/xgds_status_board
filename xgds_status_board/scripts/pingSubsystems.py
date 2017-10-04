@@ -25,6 +25,7 @@ import django
 django.setup()
 
 from xgds_status_board.models import SubsystemStatus
+from xgds_status_board.util import *
 
 def setup(opts):
     with open(opts.configFile) as data_file:    
@@ -50,7 +51,7 @@ def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
             "displayName": subsystemStatus.displayName, 
             "elapsedTime": "",
-            "statusColor": subsystemStatus.NO_DATA,
+            "statusColor": NO_DATA,
             "lastUpdated": "",
             }
 

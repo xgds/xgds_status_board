@@ -27,6 +27,7 @@ from django.core.cache import caches
 from xgds_video.util import getSegmentPath
 from geocamUtil.loader import LazyGetModelByName, getClassByName
 from geocamUtil.datetimeJsonEncoder import DatetimeJsonEncoder
+from xgds_status_board.util import *
 
 
 ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER2_ACTIVE_FLIGHT_MODEL)
@@ -34,29 +35,11 @@ ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER2_ACTIVE_FLIGHT_MO
 
 # pylint: disable=C1001
 
-# Create your models here.
-PRIORITY_CHOICES = (
-    (0, '0'),
-    (1, '1'),
-    (2, '2'),
-    (3, '3'),
-    (4, '4'),
-    (5, '5'),
-    (6, '6'),
-    (7, '7'),
-    (8, '8'),
-    (9, '9'),
-)
 
 
 class SubsystemStatus():
     """ Uses Memcache to store status for subsystems so that status board can refer to it """
     
-    OKAY = '#00ff00'
-    WARNING = '#ffff00'
-    ERROR = '#ff0000'
-    NO_DATA = ''
-
     # get default
     # update one value of subsystem status
     # update subsystem status with json
@@ -73,7 +56,7 @@ class SubsystemStatus():
         return {"name": self.name, 
                   "displayName": self.displayName, 
                   "elapsedTime": "",
-                  "statusColor": self.NO_DATA,
+                  "statusColor": NO_DATA,
                   "lastUpdated": "",
                   "flight": "" 
                   }
@@ -92,18 +75,18 @@ class SubsystemStatus():
     def getColorLevel(self, lastUpdated):
         """
         interval = (CurrentTime - LastUpdatedTime)
-        compare interval to thresholds and return color level (OKAY,WARNING,ERROR)
+        compare interval to thresholds and return color level (OKAY_COLOR,WARNING_COLOR,ERROR_COLOR)
         """
         if not lastUpdated:
-            return self.ERROR
+            return ERROR_COLOR
         currentTime = datetime.datetime.utcnow()
         elapsed = (currentTime - lastUpdated).total_seconds()
         if elapsed < self.subsystem.warningThreshold:
-            return self.OKAY
+            return OKAY_COLOR
         elif (elapsed < self.subsystem.failureThreshold) and (elapsed > self.subsystem.warningThreshold):
-            return self.WARNING
+            return WARNING_COLOR
         else: 
-            return self.ERROR
+            return ERROR_COLOR
         
     def getElapsedTimeSeconds(self, lastUpdated):
         if not lastUpdated:

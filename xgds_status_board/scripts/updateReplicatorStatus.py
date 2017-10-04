@@ -11,6 +11,7 @@ import django
 django.setup()
 
 from xgds_status_board.models import Subsystem, SubsystemStatus
+from xgds_status_board.util import *
 
 
 def setReplicatorStatus(opts):
@@ -29,16 +30,16 @@ def setReplicatorStatus(opts):
     
     while True: 
         result = subsystemStatus.runRemoteCommand(HOST, COMMAND)
-        statusColor = subsystemStatus.OKAY
+        statusColor = OKAY_COLOR
         if result !=[]:
             for line in result:
                 if "state" in line: 
                     state = line.replace(" ", "").split(':')[1]
                     if not ("ONLINE" in state):
-                        statusColor = subsystemStatus.ERROR
+                        statusColor = ERROR_COLOR
                         continue
         else: # result is empty
-            statusColor = subsystemStatus.NO_DATA
+            statusColor = NO_DATA
 
         status = subsystemStatus.getStatus()
         lastUpdatedString = status['lastUpdated']

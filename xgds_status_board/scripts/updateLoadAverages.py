@@ -12,6 +12,7 @@ import django
 django.setup()
 
 from xgds_status_board.models import Subsystem, SubsystemStatus
+from xgds_status_board.util import *
 
 COMMAND="uptime"
 
@@ -43,7 +44,7 @@ def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
             "displayName": subsystemStatus.displayName, 
             "elapsedTime": "",
-            "statusColor": subsystemStatus.NO_DATA,
+            "statusColor": NO_DATA,
             "oneMin": "", 
             "fiveMin": "", 
             "lastUpdated": "",
