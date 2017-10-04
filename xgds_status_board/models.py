@@ -102,7 +102,12 @@ class SubsystemStatus():
         return "%d:%02d:%02d" % (h, m, s)
         
     def runRemoteCommand(self, HOST, COMMAND):
-        if socket.gethostname() == HOST:
+        try:
+            actualHostname = HOST.split('@')[1]
+        except:
+            actualHostname = HOST
+
+        if socket.gethostname() == actualHostname:
             # run locally
             myprocess = subprocess.Popen([COMMAND],
                                          shell=False,
