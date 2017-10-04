@@ -18,6 +18,7 @@ import datetime
 import json
 import subprocess
 import traceback
+import socket
 
 from django.db import models
 from django.conf import settings
@@ -101,11 +102,19 @@ class SubsystemStatus():
         return "%d:%02d:%02d" % (h, m, s)
         
     def runRemoteCommand(self, HOST, COMMAND):
-        ssh = subprocess.Popen(["ssh", "%s" % HOST, COMMAND],
-                               shell=False,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-        result = ssh.stdout.readlines()
+        if socket.gethostname() == HOST:
+            # run locally
+            myprocess = subprocess.Popen([COMMAND],
+                                         shell=False,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+            
+        else:
+            myprocess = subprocess.Popen(["ssh", "%s" % HOST, COMMAND],
+                                         shell=False,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+        result = myprocess.stdout.readlines()
         return result
 
 
