@@ -44,15 +44,12 @@ def setReplicatorStatus(opts):
         status = subsystemStatus.getStatus()
         lastUpdatedString = status['lastUpdated']
         lastUpdated = datetime.datetime.utcnow().isoformat()
-        elapsedTimeString = '0:00:00'
         if lastUpdatedString:
             try:
                 lastUpdated = dateutil.parser.parse(status['lastUpdated'])
-                elapsedTimeString = subsystemStatus.getElapsedTimeString(lastUpdated)
             except:
                 pass
         status['statusColor'] = statusColor
-        status['elapsedTime'] = elapsedTimeString
         status['lastUpdated'] = datetime.datetime.utcnow().isoformat()
         subsystemStatus.setStatus(status)
         seconds = subsystemStatus.subsystem.refreshRate

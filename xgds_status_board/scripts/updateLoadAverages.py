@@ -43,8 +43,6 @@ def buildLoadAverageThreads(config):
 def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
             "displayName": subsystemStatus.displayName, 
-            "elapsedTime": "",
-            "statusColor": NO_DATA,
             "oneMin": "", 
             "fiveMin": "", 
             "lastUpdated": "",

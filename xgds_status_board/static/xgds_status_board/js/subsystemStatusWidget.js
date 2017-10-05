@@ -1,5 +1,40 @@
 var xgds_status_board = xgds_status_board || {};
 
+
+var WARNING_TIME = 120;
+var ERROR_TIME = 180;
+var OKAY_COLOR = '#00ff00'
+var	WARNING_COLOR = '#ffff00'
+var	ERROR_COLOR = '#ff0000'
+
+var calculateElapsedTime = function(lastUpdated, refreshRate){
+	if (_.isUndefined(refreshRate) || _.isEmpty(refreshRate)){
+		refreshRate = 60;
+	}
+	var result_color = ERROR_COLOR;
+	var result_string = '';
+	try {
+		if (!_.isUndefined(lastUpdated) && !_.isEmpty(lastUpdated)){
+			var nowtime = moment.utc();
+			var lasttime = moment(lastUpdated);
+			var delta = lasttime.diff(nowtime, 'seconds');
+			var duration = moment.duration(delta);
+		    var result_string= sprintf('%02d:%02d:%02d', duration.hours(), duration.minutes(), duration.seconds());
+		
+			if (delta >= 2*refreshRate){
+				result_color = WARNING_COLOR;
+			} else {
+				result_color = OKAY_COLOR;
+			}
+		}
+	} catch (err) {
+		// things are bad.
+	}
+	
+	return {'color':result_color, 'time':result_string};
+	
+}
+
 Handlebars.registerHelper('getDisplayValue', function(sub) {
 	var result = '';
 	if (!('name' in sub)){
@@ -19,11 +54,20 @@ Handlebars.registerHelper('getDisplayValue', function(sub) {
 		result += '<td class="oneMin">' + oneMin + '</td>';
 		result += '<td class="fiveMin">' + fiveMin + '</td></tr></tbody></table></td>';
 	} else {
-		result = '<td class="status elapsedTime" id="' + sub['name'] +'_status"';
-		if ('statusColor' in sub && (!_.isEmpty(sub['statusColor']))) {
-			result += 'style="background-color:' + sub['statusColor'] + '"';
+		var analyzedTime = calculateElapsedTime(sub['lastUpdated'], sub['refreshRate']);
+		var color = analyzedTime.color;
+		if ('statusColor' in sub){
+			color = sub['statusColor'];
 		}
-		result += '>' + sub['elapsedTime'] + '</td>';
+		result = '<td class="status elapsedTime" id="' + sub['name'] +'_status"';
+//		if ('statusColor' in sub && (!_.isEmpty(sub['statusColor']))) {
+//			result += 'style="background-color:' + sub['statusColor'] + '"';
+//		}
+//		result += '>' + sub['elapsedTime'] + '</td>';
+
+		result += 'style="background-color:' + analyzedTime.color + '"';
+		result += '>' + analyzedTime.time + '</td>';
+
 	}
 	  return  new Handlebars.SafeString(result);
 });

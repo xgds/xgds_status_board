@@ -50,8 +50,7 @@ def buildPingThreads(config):
 def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
             "displayName": subsystemStatus.displayName, 
-            "elapsedTime": "",
-            "statusColor": NO_DATA,
+            "refreshRate": subsystemStatus.subsystem.refreshRate,
             "lastUpdated": "",
             }
 
@@ -64,13 +63,9 @@ def setSubsystemStatus(subsystemStatus):
     lastUpdated = datetime.datetime.utcnow()
     status['lastUpdated'] = lastUpdated
     while hostname:
-#         status = subsystemStatus.getStatus()
-        statusColor = subsystemStatus.getColorLevel(lastUpdated)
-        elapsedTime = subsystemStatus.getElapsedTimeString(lastUpdated)
-        status['statusColor'] = statusColor
-        status['elapsedTime'] = elapsedTime
 
         seconds = subsystemStatus.subsystem.refreshRate
+        status['refreshRate'] =  subsystemStatus.subsystem.refreshRate
         
         response = os.system("ping -c 1 " + hostname)
         if response != 0: # cannot ping host

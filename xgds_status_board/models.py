@@ -56,8 +56,6 @@ class SubsystemStatus():
     def getDefaultStatus(self):
         return {"name": self.name, 
                   "displayName": self.displayName, 
-                  "elapsedTime": "",
-                  "statusColor": NO_DATA,
                   "lastUpdated": "",
                   "flight": "" 
                   }
