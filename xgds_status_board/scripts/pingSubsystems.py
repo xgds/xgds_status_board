@@ -22,6 +22,7 @@ import logging
 import json
 
 import django
+from util import OKAY_COLOR
 django.setup()
 
 from xgds_status_board.models import SubsystemStatus
@@ -74,6 +75,9 @@ def setSubsystemStatus(subsystemStatus):
         if response == 0: # hostname is up
             lastUpdated = datetime.datetime.utcnow()
             status['lastUpdated'] = lastUpdated.isoformat()
+            status['statusColor'] = OKAY_COLOR
+        else:
+            status['statusColor'] = ERROR_COLOR
             
         # this sets the memcache
         subsystemStatus.setStatus(status)
