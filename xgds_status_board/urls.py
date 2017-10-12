@@ -14,23 +14,19 @@
 #specific language governing permissions and limitations under the License.
 # __END_LICENSE__
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from xgds_status_board import views
 
-urlpatterns = [
-    url(r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
-    url(r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True},
-     "announcements"),
-    url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON, {'readOnly': True}),
-    url(r'^schedule.json$', views.statusBoardSchedule, {'readOnly': True}, "schedule.json"),
-    url(r'^serverDatetime.json$', views.getServerDatetimeJSON, {'readOnly': True}, "serverDatetime.json"),
-    url(r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
-    url(r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
-    url(r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
-    url(r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
-    url(r'^getAnnouncementTS$', views.getAnnouncementTS, {'readOnly': True}, "getAnnouncementTS"),
-    url(r'^subsystemStatus/$', views.showSubsystemStatus, {'loginRequired': False}, 'xgds_status_board_showSubsystemStatus'),
-    url(r'^subsystemStatusJson/(?P<groupName>\w*)$', views.subsystemStatusJson, {}, 'xgds_status_board_subsystemStatusJson'),
-    url(r'^multiSubsystemStatusJson/$', views.multiSubsystemStatusJson, {}, 'xgds_status_board_multiSubsystemStatusJson'),
-]
+urlpatterns = [url(r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
+               url(r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True}, "announcements"),
+               url(r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
+               url(r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
+               url(r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
+               url(r'^deleteAnnouncement$', views.deleteAnnouncement, {}, "deleteAnnouncement"),
+               url(r'^subsystemStatus/$', views.showSubsystemStatus, {}, 'xgds_status_board_showSubsystemStatus'),
+    
+               # Including these in this order ensures that reverse will return the non-rest urls for use in our server
+               url(r'^rest/', include('xgds_status_board.restUrls')),
+               url('', include('xgds_status_board.restUrls')),
+               ]
