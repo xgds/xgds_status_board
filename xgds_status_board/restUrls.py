@@ -18,10 +18,10 @@ from django.conf.urls import url
 
 from xgds_status_board import views
 
-urlpatterns = [url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON, {'readOnly': True}),
-               url(r'^schedule.json$', views.statusBoardSchedule, {'readOnly': True}, "schedule.json"),
-               url(r'^serverDatetime.json$', views.getServerDatetimeJSON, {'readOnly': True}, "serverDatetime.json"),
-               url(r'^getAnnouncementTS$', views.getAnnouncementTS, {'readOnly': True}, "getAnnouncementTS"),
+urlpatterns = [url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON),
+               url(r'^schedule.json$', views.statusBoardSchedule, {}, "schedule.json"),
+               url(r'^serverDatetime.json$', views.getServerDatetimeJSON, {}, "serverDatetime.json"),
+               url(r'^getAnnouncementTS$', views.getAnnouncementTS, {}, "getAnnouncementTS"),
                url(r'^subsystemStatusJson/(?P<groupName>\w*)$', views.subsystemStatusJson, {}, 'xgds_status_board_subsystemStatusJson'),
                url(r'^multiSubsystemStatusJson/$', views.multiSubsystemStatusJson, {}, 'xgds_status_board_multiSubsystemStatusJson'),
                ]

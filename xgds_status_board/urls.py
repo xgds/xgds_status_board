@@ -18,8 +18,8 @@ from django.conf.urls import url, include
 
 from xgds_status_board import views
 
-urlpatterns = [url(r'^$', views.statusBoard, {'readOnly': True}, 'xgds_status_boardView'),
-               url(r'^announcements$', views.statusBoardAnnouncements, {'readOnly': True}, "announcements"),
+urlpatterns = [url(r'^$', views.statusBoard, {}, 'xgds_status_boardView'),
+               url(r'^announcements$', views.statusBoardAnnouncements, {}, "announcements"),
                url(r'^edit/', views.statusBoardEdit, {}, "xgds_status_boardEdit"),
                url(r'^addAnnouncement$', views.addAnnouncement, {}, "addAnnouncement"),
                url(r'^updateAnnouncement$', views.updateAnnouncement, {}, "updateAnnouncement"),
