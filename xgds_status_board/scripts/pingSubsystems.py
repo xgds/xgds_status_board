@@ -22,7 +22,7 @@ import logging
 import json
 
 import django
-from util import OKAY_COLOR
+from util import OKAY_COLOR, ERROR_COLOR
 django.setup()
 
 from xgds_status_board.models import SubsystemStatus
