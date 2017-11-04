@@ -19,6 +19,7 @@ import json
 import subprocess
 import traceback
 import socket
+import shlex
 
 from django.db import models
 from django.conf import settings
@@ -107,7 +108,8 @@ class SubsystemStatus():
 
         if socket.gethostname() == actualHostname:
             # run locally
-            myprocess = subprocess.Popen([COMMAND],
+            splitCommand = shlex.split(COMMAND)
+            myprocess = subprocess.Popen(splitCommand,
                                          shell=False,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
