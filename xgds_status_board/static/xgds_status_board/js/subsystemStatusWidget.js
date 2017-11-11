@@ -23,7 +23,7 @@ var calculateElapsedTime = function(lastUpdated, refreshRate){
 		if (!_.isUndefined(lastUpdated) && !_.isEmpty(lastUpdated)){
 			var nowtime = moment.utc();
 			var lasttime = moment.utc(lastUpdated);
-			var delta = nowtime.diff(lasttime, 'seconds');
+			var delta = nowtime.diff(lasttime); 
 			duration = moment.duration(delta);
 		    var result_string = '';
 		    if (delta * 1440 > 86400){
