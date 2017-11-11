@@ -23,10 +23,10 @@ var calculateElapsedTime = function(lastUpdated, refreshRate){
 		if (!_.isUndefined(lastUpdated) && !_.isEmpty(lastUpdated)){
 			var nowtime = moment.utc();
 			var lasttime = moment.utc(lastUpdated);
-			var delta = nowtime.diff(lasttime); 
-			duration = moment.duration(delta);
+			var delta = nowtime.diff(lasttime,'seconds'); 
+			duration = moment.duration(nowtime.diff(lasttime));
 		    var result_string = '';
-		    if (nowtime.diff(lasttime, 'seconds') * 1440 > 86400){
+		    if (delta * 1440 > 86400){
 		    		result_string = '> 1 day';
 		    } else {
 		    		result_string = sprintf('%02d:%02d:%02d', duration.hours(), duration.minutes(), duration.seconds());
