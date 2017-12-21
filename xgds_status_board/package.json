@@ -1,0 +1,16 @@
+{
+  "name": "xgds_status_board",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "jquery-countdown": "fetch/countdown",
+    "jquery-timers": "https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0"
+}
