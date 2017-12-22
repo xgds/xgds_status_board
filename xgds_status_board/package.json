@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "jquery-countdown": "fetch/countdown",
-    "jquery-timers": "https://sparqlpush.googlecode.com/svn-history/r2/trunk/client/jquery.timers-1.2.js"
+    "jquery.timer-tools": "^0.2.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -12,3 +12,4 @@ migrations
 test*
 *.swp
 /xgds_status_board/migrations
+node_modules
