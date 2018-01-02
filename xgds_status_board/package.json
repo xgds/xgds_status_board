@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "jquery-countdown": "fetch/countdown",
+    "jquery.countdown": "fetch/countdown#v0.1.4",
     "jquery.timer-tools": "^0.2.0"
   },
   "devDependencies": {},
