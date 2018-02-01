@@ -5,11 +5,11 @@
     {% nav "xgds_status_boardEdit" %}
     {{ block.super }}
     {% endblock nav %}
-    
+
     {% block sitemenu-content-secondary %}
 	{% include "xgds_status_board/status_subnav.html" %}
 	{% endblock sitemenu-content-secondary%}
-	
+
 {% block cssExtras %}
 <style type="text/css" title="currentStyle">
 @import "{{ EXTERNAL_URL }}jquery-ui-dist/jquery-ui.min.css";
@@ -20,7 +20,7 @@
   {{ block.super }}
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-ui-dist/jquery-ui.min.js"></script>
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
-	<script language="javascript" type="text/javascript" src="{% static 'geocamUtil/js/datatable_helpers.js' %}"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'xgds_core/js/datatablesUtils.js' %}"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-jeditable/dist/jquery.jeditable.min.js"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-validation/dist/jquery.validate.min.js"></script>
 	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables-editable/media/js/jquery.dataTables.editable.js"></script>
@@ -41,7 +41,7 @@ fnOnNewRowPosted: function(theId) {
 
    var timeField = document.getElementById('time');
    timeField.value = theTimeString;
-   
+
    return true;
 },
 sAddURL: "{% url 'addAnnouncement' %}",

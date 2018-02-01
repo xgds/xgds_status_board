@@ -5,7 +5,7 @@
     {% nav "status" %}
     {{ block.super }}
     {% endblock nav %}
-    
+
     {% block sitemenu-content-secondary %}
 	{% include "xgds_status_board/status_subnav.html" %}
 	{% endblock sitemenu-content-secondary %}
@@ -29,8 +29,8 @@
   {{ block.super }}
     <script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}jquery-ui-dist/jquery-ui.min.js"></script>
   	<script language="javascript" type="text/javascript" src="{{ EXTERNAL_URL }}datatables/media/js/jquery.dataTables.min.js"></script>
-	<script language="javascript" type="text/javascript" src="{% static 'geocamUtil/js/datatable_helpers.js' %}"></script>
-	<script src="{{ EXTERNAL_URL }}jquery.countdown/jquery.countdown.js"></script>
+	<script language="javascript" type="text/javascript" src="{% static 'xgds_core/js/datatablesUtils.js' %}"></script>
+    <script src="{{ EXTERNAL_URL }}jquery.countdown/jquery.countdown.js"></script>
 	<script src="{{ EXTERNAL_URL }}jquery.timer-tools/jquery.timer-tools.min.js"></script>
 
 <script type="text/javascript">
@@ -55,11 +55,11 @@ function updateDynamicElements() {
   		{% if STATUS_BOARD_ANNOUNCEMENTS %}
   		updateAnnouncements();
   		{% endif %}
-  		
+
   		{% if STATUS_BOARD_SCHEDULE %}
   		updateSchedule();
   		{% endif %}
-  		
+
   		{% if STATUS_BOARD_SCORE_SCHEDULE %}
   		updateSCORESchedule();
   		{% endif %}
@@ -74,15 +74,15 @@ function updateServerTimestamp() {
 	    if (value.zone == "{{ STATUS_BOARD_DATE_TIMEZONE.name }}") {
 		dateStr = value.dayName + " " + value.month + "/" + value.day;
 	      	$('#date').html(dateStr);
-	      	
+
 	      	// Javascript dates have the month starting from 0.
 	      	today = new Date(value.year, value.month - 1, value.day);
 	      	now = new Date(value.year, value.month - 1, value.day, value.hour, value.min);
 	      	//console.log("now is " + now);
-	      	
+
 	      	$('#today_timezonelabel').html("In " + value.zone + " time");
 	    }
-	    
+
 	    // populate the times
       	    timestampStr = '<span style="width: 50px;">' + value.hour + ":" + value.min + '</span> ' + value.zone;
       	    var elementname = '#time' + (index+1)
@@ -184,10 +184,10 @@ var theScoreTable;
 		}
 		if (negative){
 			result += " ago"
-		} 
+		}
 		return result;
 	}
-	
+
 	function formatDiff(diff, negative){
 		var result = "";
 		result = result + diff.hours;
@@ -203,7 +203,7 @@ var theScoreTable;
 		}
 		return result;
 	}
-	
+
 function getRemainingTimeString(compareDate, now) {
 	if (compareDate >= now){
 		var diff = get_time_difference(now, compareDate);
@@ -212,20 +212,20 @@ function getRemainingTimeString(compareDate, now) {
 		var diff = get_time_difference(compareDate, now);
 		return formatDiff(diff, true);
 	}
-	
+
 }
 
 function get_time_difference(earlierDate,laterDate)
 {
        var nTotalDiff = laterDate.getTime() - earlierDate.getTime();
        var oDiff = new Object();
- 
+
        oDiff.hours = Math.floor(nTotalDiff/1000/60/60);
        nTotalDiff -= oDiff.hours*1000*60*60;
- 
+
        oDiff.minutes = Math.floor(nTotalDiff/1000/60);
        nTotalDiff -= oDiff.minutes*1000*60;
- 
+
        return oDiff;
 }
 
@@ -257,7 +257,7 @@ function updateSCORERows() {
 		theScoreTable.fnAddData(activities);
 		//theScoreTable.fnUpdate(activities);
 	}
-	
+
 }
 
 function updateSCORESchedule() {
@@ -267,21 +267,21 @@ function updateSCORESchedule() {
                      + "&minuteSpan=720"
                      + "&timezone={{ STATUS_BOARD_DATE_TIMEZONE.name }}"
                      + "&callback=?");
-      
+
       //console.log(scheduleURL);
-      
+
 	  $.ajax({
 		  url: scheduleURL,
 		  dataType: 'jsonp',
 		  success: function(data) {
 			  activities.length = 0;
 			  var temp = data.activities;
-			 
+
 			  for (var i = 0; i < temp.length; i++) {
 				  var current = temp[i];
 				  var startDate = new Date(current.start);
 				  var endDate = new Date(current.end);
-					  
+
 				  var include = true;
 				  var rightNow = new Date();
 				  if (rightNow > endDate){
@@ -294,8 +294,8 @@ function updateSCORESchedule() {
 						  }
 					  }
 					  include = false;
-				  } 
-				  
+				  }
+
 				  if (include){
 			  		var activity = [getRemainingTimeString(startDate, rightNow),
 			  		                formatTime(dateTimezoneShift(startDate)),
@@ -305,7 +305,7 @@ function updateSCORESchedule() {
 	  			  	activities.push(activity);
 				  }
 			  }
-			  
+
 			  if (activities.length > 0){
 				  updateSCORERows();
 			  }
