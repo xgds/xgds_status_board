@@ -32,7 +32,7 @@ from geocamUtil.datetimeJsonEncoder import DatetimeJsonEncoder
 from xgds_status_board.util import *
 
 
-ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER2_ACTIVE_FLIGHT_MODEL)
+ACTIVE_FLIGHT_MODEL = LazyGetModelByName(settings.XGDS_PLANNER_ACTIVE_FLIGHT_MODEL)
     
 
 # pylint: disable=C1001
