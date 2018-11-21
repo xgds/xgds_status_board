@@ -65,7 +65,7 @@ def updateLoadAverage(subsystemStatus, host):
             status['oneMin'] = oneMin
             status['fiveMin'] = fiveMin
             status['lastUpdated'] = lastUpdated
-            # set it in memcache
+            # set it in a persistent store
             subsystemStatus.setStatus(status)
         else: 
             logging.error("Command %s in host %s returned []" % (COMMAND, host))

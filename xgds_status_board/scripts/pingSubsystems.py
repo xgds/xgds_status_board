@@ -78,7 +78,7 @@ def setSubsystemStatus(subsystemStatus):
         else:
             status['statusColor'] = ERROR_COLOR
             
-        # this sets the memcache
+        # this sets the value in a persistent store
         subsystemStatus.setStatus(status)
         time.sleep(seconds)
 
