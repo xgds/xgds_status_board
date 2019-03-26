@@ -52,7 +52,7 @@
   
   {% for group in subsystemGroups %}
   	var container = $('#{{group.name}}_container');
-	widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
+	widget = new xgds_status_board.SubsystemStatusWidget('{{group.displayName}}', container, {{group.getSubsystemStatusListJson|safe}});
     widget.update();
 	{% endfor %}
       
