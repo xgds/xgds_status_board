@@ -27,13 +27,15 @@ django.setup()
 from xgds_status_board.models import SubsystemStatus
 from xgds_status_board.util import *
 
+
 def setup(opts):
     with open(opts.configFile) as data_file:    
         data = json.load(data_file)
     data_file.close()
     if data:
         buildPingThreads(data)
-        
+
+
 def buildPingThreads(config):
     threads = []
     for subsystem in config:
@@ -47,12 +49,14 @@ def buildPingThreads(config):
         
     return threads
 
+
 def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
             "displayName": subsystemStatus.displayName, 
             "refreshRate": subsystemStatus.subsystem.refreshRate,
             "lastUpdated": "",
             }
+
 
 def setSubsystemStatus(subsystemStatus):
     """
@@ -63,7 +67,6 @@ def setSubsystemStatus(subsystemStatus):
     lastUpdated = datetime.datetime.utcnow()
     status['lastUpdated'] = lastUpdated
     while hostname:
-
         seconds = subsystemStatus.subsystem.refreshRate
         status['refreshRate'] =  subsystemStatus.subsystem.refreshRate
         
@@ -81,6 +84,7 @@ def setSubsystemStatus(subsystemStatus):
         # this sets the value in a persistent store
         subsystemStatus.setStatus(status)
         time.sleep(seconds)
+
 
 def main():
     import optparse

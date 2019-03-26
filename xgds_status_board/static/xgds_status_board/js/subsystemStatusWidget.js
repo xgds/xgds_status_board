@@ -12,18 +12,19 @@ var ERROR = 2;
 	
 
 var calculateElapsedTime = function(lastUpdated, refreshRate){
-	if (_.isUndefined(refreshRate) || _.isEmpty(refreshRate)){
+	if (_.isUndefined(refreshRate) || refreshRate === ""){
 		refreshRate = 60;
 	}
 	var result_color = ERROR_COLOR;
 	var result_string = '';
 	var duration = 2*refreshRate;
 	var status = ERROR;
+	var delta = undefined;
 	try {
 		if (!_.isUndefined(lastUpdated) && !_.isEmpty(lastUpdated)){
 			var nowtime = moment.utc();
 			var lasttime = moment.utc(lastUpdated);
-			var delta = nowtime.diff(lasttime,'seconds'); 
+			delta = nowtime.diff(lasttime,'seconds');
 			duration = moment.duration(nowtime.diff(lasttime));
 		    var result_string = '';
 		    if (delta * 1440 > 86400){
@@ -43,7 +44,7 @@ var calculateElapsedTime = function(lastUpdated, refreshRate){
 	} catch (err) {
 		// things are bad.
 	}
-	
+
 	return {'color':result_color, 'time_string':result_string, 'delta': delta, 'status': status};
 	
 }
@@ -73,11 +74,12 @@ Handlebars.registerHelper('getDisplayValue', function(sub) {
 			color = sub['statusColor'];
 		}
 		result = '<td class="status elapsedTime" id="' + sub['name'] +'_status"';
-		if (color !== undefined && color !== '') {
+		if (!_.isUndefined(color) && color !== '') {
 			result += 'style="background-color:' + color + '"';
 		}
 
 		result += '>' + analyzedTime.time_string + '</td>';
+
 
 	}
 	  return  new Handlebars.SafeString(result);
@@ -109,7 +111,11 @@ $(function() {
 		var context = this;
 		function updateData() {
 			var url = settings.XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL  + context.groupName;
-			$.getJSON(url, function(data) { context.render(data) });
+			$.getJSON(url, function(data) {
+				// TODO sometimes we get no lastUpdated time here, even though the server always seems to provide that in json
+
+				context.render(data);
+			});
 		}
 		setInterval(updateData, 1000); // update every second
 	};

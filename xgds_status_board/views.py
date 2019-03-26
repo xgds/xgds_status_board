@@ -26,6 +26,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
+from  django.views.decorators.cache import never_cache
 
 from geocamUtil import anyjson as json
 from geocamUtil.datetimeJsonEncoder import DatetimeJsonEncoder
@@ -257,12 +258,13 @@ def showSubsystemStatus(request):
                    'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/'},
                   )
 
-
+@never_cache
 def subsystemStatusJson(request, groupName):
     subsystemGroup = SubsystemGroup.objects.get(name=groupName)
     return HttpResponse(subsystemGroup.getSubsystemStatusListJson(), 
                         content_type='application/json')
-    
+
+@never_cache
 def multiSubsystemStatusJson(request):
     ''' pass in a space separated list of subsystem names using the key 'names'  '''
     if request.POST:

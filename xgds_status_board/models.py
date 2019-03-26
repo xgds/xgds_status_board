@@ -71,7 +71,7 @@ class SubsystemStatus():
     
     def setStatus(self, statusJson):
         self.cache.set(self.name, json.dumps(statusJson, cls=DatetimeJsonEncoder))
-    
+
     def getColorLevel(self, lastUpdated):
         """
         interval = (CurrentTime - LastUpdatedTime)
@@ -248,7 +248,8 @@ class AbstractSubsystem(models.Model):
     def getStatus(self):
         try: 
             _cache = caches['default']
-            return json.loads(_cache.get(self.name))
+            result = json.loads(_cache.get(self.name))
+            return result
         except:
             subsystemStatus = SubsystemStatus(self.name)
             return subsystemStatus.getStatus()
