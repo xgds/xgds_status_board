@@ -14,9 +14,10 @@ django.setup()
 from xgds_status_board.models import Subsystem, SubsystemStatus
 from xgds_status_board.util import *
 
-COMMAND="uptime"
+COMMAND = "uptime"
 
-""" you have to have SSH keys set up for these to work.
+""" 
+You have to have SSH keys set up for these to work.
 """
 
 def setup(opts):
@@ -25,6 +26,7 @@ def setup(opts):
     data_file.close()
     if data:
         buildLoadAverageThreads(data)
+
 
 def buildLoadAverageThreads(config):
     threads = []
@@ -36,9 +38,10 @@ def buildLoadAverageThreads(config):
             threads.append(ssThread)
             ssThread.start()
         except:
-            logging.error('invalid subsystem name %s '  % name)
+            logging.error('invalid subsystem name %s ' % name)
         
     return threads
+
 
 def getDefaultStatus(subsystemStatus):
     return {"name": subsystemStatus.name, 
@@ -48,6 +51,7 @@ def getDefaultStatus(subsystemStatus):
             "lastUpdated": "",
             }
 
+
 def updateLoadAverage(subsystemStatus, host):
     """ 
     updates the load average
@@ -56,7 +60,7 @@ def updateLoadAverage(subsystemStatus, host):
     status = getDefaultStatus(subsystemStatus)
     while True: 
         result = subsystemStatus.runRemoteCommand(host, COMMAND)
-        if result !=[]:
+        if result != []:
             loadStr = re.search('load average:(.*)\n', result[0]).group(1)
             loadTimes = loadStr.split(",")
             oneMin = float(loadTimes[0].strip())
