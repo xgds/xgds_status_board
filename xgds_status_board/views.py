@@ -251,7 +251,7 @@ def showSubsystemStatus(request):
                    'subsystemGroups': SubsystemGroup.objects.all(),
                    'listOfProcesses': listOfProcesses,
                    'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/',
-                   'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processStatusJson',
+                   'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processListJson',
                    },
                   )
 
