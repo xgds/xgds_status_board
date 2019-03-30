@@ -24,4 +24,5 @@ urlpatterns = [url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON),
                url(r'^getAnnouncementTS$', views.getAnnouncementTS, {}, "getAnnouncementTS"),
                url(r'^subsystemStatusJson/(?P<groupName>\w*)$', views.subsystemStatusJson, {}, 'xgds_status_board_subsystemStatusJson'),
                url(r'^multiSubsystemStatusJson/$', views.multiSubsystemStatusJson, {}, 'xgds_status_board_multiSubsystemStatusJson'),
+               url(r'^processListJson$', views.pycroraptorProcessListJson, {}, 'xgds_status_board_pycroraptorProcessListJson'),
                ]

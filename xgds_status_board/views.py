@@ -39,14 +39,17 @@ from xgds_status_board import settings
 from subprocess import Popen, PIPE
 from time import sleep as time_sleep
 
+from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
+
 
 # pylint: disable=E1101
 default_timezone_offset = 0
 XGDS_STATUS_BOARD_TEMPLATE_LIST = list(settings.XGDS_STATUS_BOARD_HANDLEBARS_DIR)
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
 
+pyraptordClient = PycroraptorStatus()
+listOfProcesses = pyraptordClient.getListOfProcesses()
 
-#print 'CALCULATING TIMEZONES WE HAVE %d' % len(timezones)
 for timezone in timezones:
     timezone.tzobject = pytz.timezone(timezone.code)
 
@@ -241,21 +244,15 @@ def getServerDatetimeJSON(request):
     return HttpResponse(datejson, content_type='application/json')
 
 
-# def getSubsystemGroups():
-#     # gets the json of all active subsystems
-#     subsystemStatusDict = {}
-#     subsystemGroups = SubsystemGroup.objects.all()
-#     for subsystemGroup in subsystemGroups:
-#         subsystemStatusDict[subsystemGroup.name] = subsystemGroup.getSubsystemStatusList()
-#     return subsystemStatusDict
-
-
 def showSubsystemStatus(request):
     return render(request,
                   "xgds_status_board/subsystemStatus.html",
                   {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
                    'subsystemGroups': SubsystemGroup.objects.all(),
-                   'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/'},
+                   'listOfProcesses': listOfProcesses,
+                   'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/',
+                   'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processStatusJson',
+                   },
                   )
 
 @never_cache
@@ -281,4 +278,7 @@ def multiSubsystemStatusJson(request):
                 continue
         return HttpResponse(json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder), 
                             content_type='application/json')
-        
+
+@never_cache
+def pycroraptorProcessListJson(request):
+    return HttpResponse(json.dumps(pyraptordClient.getListOfProcesses()), content_type='application/json')

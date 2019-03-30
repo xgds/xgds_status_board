@@ -14,6 +14,9 @@
   <script type="text/javascript" src="{{ EXTERNAL_URL }}moment/min/moment.min.js"></script>
   <script type="text/javascript" src='{{ EXTERNAL_URL }}sprintf-js/dist/sprintf.min.js'></script>
   <script src="{% static 'xgds_status_board/js/subsystemStatusWidget.js' %}" type="text/javascript"></script>
+  <script src="{% static 'xgds_status_board/js/processStatus.js' %}" type="text/javascript"></script>
+  <script src="{% static 'xgds_status_board/js/processStatusWidget.js' %}" type="text/javascript"></script>
+
   {% for template_name, template in templates.items %}
   	<script type="text/handlebars" id="template-{{template_name}}">
 		{{template|safe}}
@@ -31,6 +34,9 @@
     {% for group in subsystemGroups %}
     		<div id="{{group.name}}_container"></div>
     {% endfor %}
+    {% for key, value in listOfProcesses.items %}
+    		<div id="{{key}}_container"></div>
+    {% endfor %}
     </div>
 </div>
 </div>
@@ -39,6 +45,7 @@
 {% block jsSetVars %}
   {{ block.super }}
   var settings = {
+      'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '{{ XGDS_STATUS_BOARD_PROCESS_STATUS_URL }}',
       'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '{{ XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL }}',
       'dataUrl': '{{settings.DATA_URL}}'
   };
@@ -52,9 +59,16 @@
   
   {% for group in subsystemGroups %}
   	var container = $('#{{group.name}}_container');
-	widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
+	  widget = new xgds_status_board.SubsystemStatusWidget('{{group.name}}', container, {{group.getSubsystemStatusListJson|safe}});
     widget.update();
-	{% endfor %}
+  {% endfor %}
+
+  {% for key, value in listOfProcesses.items %}
+  	var container = $('#{{key}}_container');
+	  widget = new xgds_status_board.ProcessStatusWidget('{{key}}', container, '{{value}}');
+    widget.update();
+  {% endfor %}
+
       
   });
 {% endblock %}
