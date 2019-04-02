@@ -34,9 +34,6 @@
     {% for group in subsystemGroups %}
     		<div id="{{group.name}}_container"></div>
     {% endfor %}
-    {% for key, value in listOfProcesses.items %}
-    		<div id="{{key}}_container"></div>
-    {% endfor %}
     </div>
 </div>
 </div>
@@ -63,11 +60,16 @@
     widget.update();
   {% endfor %}
 
-  {% for key, value in listOfProcesses.items %}
-  	var container = $('#{{key}}_container');
-	  widget = new xgds_status_board.ProcessStatusWidget('{{key}}', container, '{{value}}');
-    widget.update();
-  {% endfor %}
+  $.getJSON(settings.XGDS_STATUS_BOARD_PROCESS_STATUS_URL, {}).done(
+    function (data) {
+      for (var key in data) {
+        $('#container').append('<div id="' + key + '_container"></div>');
+        var container = $('#' + key + '_container');
+        widget = new xgds_status_board.ProcessStatusWidget(key, container, data[key]);
+        widget.update();
+      }
+    }
+  );
 
       
   });

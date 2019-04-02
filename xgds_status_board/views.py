@@ -47,8 +47,6 @@ default_timezone_offset = 0
 XGDS_STATUS_BOARD_TEMPLATE_LIST = list(settings.XGDS_STATUS_BOARD_HANDLEBARS_DIR)
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
 
-pyraptordClient = PycroraptorStatus()
-listOfProcesses = pyraptordClient.getListOfProcesses()
 
 for timezone in timezones:
     timezone.tzobject = pytz.timezone(timezone.code)
@@ -249,7 +247,6 @@ def showSubsystemStatus(request):
                   "xgds_status_board/subsystemStatus.html",
                   {'templates': get_handlebars_templates(XGDS_STATUS_BOARD_TEMPLATE_LIST, 'XGDS_STATUS_BOARD_TEMPLATE_LIST'),
                    'subsystemGroups': SubsystemGroup.objects.all(),
-                   'listOfProcesses': listOfProcesses,
                    'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/',
                    'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processListJson',
                    },
@@ -281,4 +278,4 @@ def multiSubsystemStatusJson(request):
 
 @never_cache
 def pycroraptorProcessListJson(request):
-    return HttpResponse(json.dumps(pyraptordClient.getListOfProcesses()), content_type='application/json')
+    return HttpResponse(json.dumps(PycroraptorStatus().getListOfProcesses()), content_type='application/json')
