@@ -39,8 +39,6 @@ from xgds_status_board import settings
 from subprocess import Popen, PIPE
 from time import sleep as time_sleep
 
-from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
-
 
 # pylint: disable=E1101
 default_timezone_offset = 0
@@ -278,4 +276,5 @@ def multiSubsystemStatusJson(request):
 
 @never_cache
 def pycroraptorProcessListJson(request):
+    from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
     return HttpResponse(json.dumps(PycroraptorStatus().getListOfProcesses()), content_type='application/json')
