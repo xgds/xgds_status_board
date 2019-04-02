@@ -39,7 +39,6 @@ from xgds_status_board import settings
 from subprocess import Popen, PIPE
 from time import sleep as time_sleep
 
-from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
 
 
 # pylint: disable=E1101
@@ -47,8 +46,19 @@ default_timezone_offset = 0
 XGDS_STATUS_BOARD_TEMPLATE_LIST = list(settings.XGDS_STATUS_BOARD_HANDLEBARS_DIR)
 timezones = convertToDotDictRecurse(settings.STATUS_BOARD_TIMEZONES)
 
-pyraptordClient = PycroraptorStatus()
-listOfProcesses = pyraptordClient.getListOfProcesses()
+PYRAPTOR_INITIALIZED = False
+pyraptordClient = None
+
+def setup_pyraptor():
+    if settings.PYRAPTORD_SERVICE:
+        global PYRAPTOR_INITIALIZED
+        if not PYRAPTOR_INITIALIZED:
+            from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
+            global pyraptordClient
+            pyraptordClient = PycroraptorStatus()
+            listOfProcesses = pyraptordClient.getListOfProcesses()
+            PYRAPTOR_INITIALIZED = True
+
 
 for timezone in timezones:
     timezone.tzobject = pytz.timezone(timezone.code)
@@ -281,4 +291,7 @@ def multiSubsystemStatusJson(request):
 
 @never_cache
 def pycroraptorProcessListJson(request):
-    return HttpResponse(json.dumps(pyraptordClient.getListOfProcesses()), content_type='application/json')
+    setup_pyraptor()
+    if PYRAPTOR_INITIALIZED:
+        return HttpResponse(json.dumps(pyraptordClient.getListOfProcesses()), content_type='application/json')
+    return HttpResponse(json.dumps({}), content_type='application/json')
