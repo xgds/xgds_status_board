@@ -247,6 +247,7 @@ def showSubsystemStatus(request):
                    'subsystemGroups': SubsystemGroup.objects.all(),
                    'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/',
                    'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processListJson',
+                   'XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL': '/xgds_status_board/persistentErrors',
                    },
                   )
 
@@ -278,3 +279,8 @@ def multiSubsystemStatusJson(request):
 def pycroraptorProcessListJson(request):
     from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
     return HttpResponse(json.dumps(PycroraptorStatus().getListOfProcesses()), content_type='application/json')
+
+@never_cache
+def persistentErrorsListJson(request):
+    from xgds_core.util import get_persisted_errors
+    return HttpResponse(json.dumps(get_persisted_errors()), content_type='application/json')
