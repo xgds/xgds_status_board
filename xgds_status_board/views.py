@@ -36,6 +36,11 @@ from geocamUtil.loader import LazyGetModelByName
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, SubsystemGroup, Subsystem
 from xgds_status_board import settings
 
+from xgds_core.util import get_persisted_errors
+
+if settings.PYRAPTORD_SERVICE:
+    from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
+
 from subprocess import Popen, PIPE
 from time import sleep as time_sleep
 
@@ -275,16 +280,16 @@ def multiSubsystemStatusJson(request):
         return HttpResponse(json.dumps(result, sort_keys=True, cls=DatetimeJsonEncoder), 
                             content_type='application/json')
 
-@never_cache
-def pycroraptorProcessListJson(request):
-    from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
-    return HttpResponse(json.dumps(PycroraptorStatus().getListOfProcesses()), content_type='application/json')
+
+if settings.PYRAPTORD_SERVICE:
+    @never_cache
+    def pycroraptorProcessListJson(request):
+        return HttpResponse(json.dumps(PycroraptorStatus().getListOfProcesses()), content_type='application/json')
 
 @never_cache
 def persistentErrorsListJson(request):
-    from xgds_core.util import get_persisted_errors
     persisted_errors = get_persisted_errors()
     printable = {}
     for k, v in persisted_errors.iteritems():
         printable[k] = str(v)
-    return HttpResponse(json.dumps(printable), content_type='application/json')
+    return HttpResponse(json.dumps(printable, cls=DatetimeJsonEncoder), content_type='application/json')
