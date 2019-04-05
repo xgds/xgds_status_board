@@ -289,7 +289,4 @@ if settings.PYRAPTORD_SERVICE:
 @never_cache
 def persistentErrorsListJson(request):
     persisted_errors = get_persisted_errors()
-    printable = {}
-    for k, v in persisted_errors.iteritems():
-        printable[k] = str(v)
-    return HttpResponse(json.dumps(printable, cls=DatetimeJsonEncoder), content_type='application/json')
+    return HttpResponse(json.dumps(persisted_errors, cls=DatetimeJsonEncoder), content_type='application/json')

@@ -11,7 +11,7 @@ $(function() {
 		let string = "";
 		for (let key in this.errors) // this.errors is an object (i.e. {})
 		{
-			let value = JSON.parse(this.errors[key]);
+			let value = this.errors[key];
 			string += "<tr><td>" + value.timestamp + "</td><td>" + key + "</td><td>" + value.error + "</td></tr>";
 		}
 		return new Handlebars.SafeString(string);
