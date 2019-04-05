@@ -283,4 +283,8 @@ def pycroraptorProcessListJson(request):
 @never_cache
 def persistentErrorsListJson(request):
     from xgds_core.util import get_persisted_errors
-    return HttpResponse(json.dumps(get_persisted_errors()), content_type='application/json')
+    persisted_errors = get_persisted_errors()
+    printable = {}
+    for k, v in persisted_errors.iteritems():
+        printable[k] = str(v)
+    return HttpResponse(json.dumps(printable), content_type='application/json')
