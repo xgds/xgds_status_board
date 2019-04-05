@@ -1,26 +1,14 @@
 <div class="card" style="width: 20rem;">
 	<div class="card-block">
-		<h2 class="card-title">{{displayName}}</h2>	
+		<h2 class="card-title">Pycroraptor Services</h2>
 		<table>
 			<thead>
-				<th>Subsystem</th>
-				<th>Elapsed Time</th>
-				<th>Log</th>
+				<th>Service</th>
+				<th>Status</th>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="left subsystemName">{{displayName}}</td>
-					<td 
-					class="status elapsedTime" 
-					style="background-color: {{color}}"> 
-					{{status}} 
-					</td>
-					{{#if logfileUrl}}
-					<td class="left"><a class="button" href="{{logfileUrl}}" target="_blank"> Log </a></td>
-					{{else}}
-					<td></td>
-					{{/if}}
-				</tr>
+				{{ table_contents }}
+				
 			</tbody>
 		</table>
 	</div>

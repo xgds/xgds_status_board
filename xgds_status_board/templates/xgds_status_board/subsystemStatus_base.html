@@ -14,7 +14,6 @@
   <script type="text/javascript" src="{{ EXTERNAL_URL }}moment/min/moment.min.js"></script>
   <script type="text/javascript" src='{{ EXTERNAL_URL }}sprintf-js/dist/sprintf.min.js'></script>
   <script src="{% static 'xgds_status_board/js/subsystemStatusWidget.js' %}" type="text/javascript"></script>
-  <script src="{% static 'xgds_status_board/js/processStatus.js' %}" type="text/javascript"></script>
   <script src="{% static 'xgds_status_board/js/processStatusWidget.js' %}" type="text/javascript"></script>
   <script src="{% static 'xgds_status_board/js/persistentErrorsWidget.js' %}" type="text/javascript"></script>
 
@@ -62,16 +61,10 @@
     widget.update();
   {% endfor %}
 
-  $.getJSON(settings.XGDS_STATUS_BOARD_PROCESS_STATUS_URL, {}).done(
-    function (data) {
-      for (var key in data) {
-        $('#container').append('<div id="' + key + '_container"></div>');
-        var container = $('#' + key + '_container');
-        widget = new xgds_status_board.ProcessStatusWidget(key, container, data[key]);
-        widget.update();
-      }
-    }
-  );
+  $('#container').append('<div id="pycroraptor_container"></div>');
+  var container = $('#pycroraptor_container');
+  widget = new xgds_status_board.ProcessStatusWidget(container, settings.XGDS_STATUS_BOARD_PROCESS_STATUS_URL);
+  widget.update();
 
   $('#container').append('<div id="persistent_errors_container"></div>');
   var container = $('#persistent_errors_container');
