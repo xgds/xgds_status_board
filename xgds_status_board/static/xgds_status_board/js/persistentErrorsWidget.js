@@ -12,7 +12,7 @@ $(function() {
 		for (let key in this.errors) // this.errors is an object (i.e. {})
 		{
 			let value = this.errors[key];
-			string += "<tr><td>" + value.timestamp + "</td><td>" + key + "</td><td>" + value.error + "</td></tr>";
+			string += "<tr><td>" + moment.unix(value.timestamp).utc().format("YYYY/MM/DD HH:mm:ss") + "</td><td>" + key + "</td><td>" + value.error + "</td></tr>";
 		}
 		return new Handlebars.SafeString(string);
 	}
