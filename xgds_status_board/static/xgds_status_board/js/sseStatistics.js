@@ -37,6 +37,7 @@ $(function() {
 				this.statistics = JSON.parse(JSON.parse(e.data).message.data);
 				this.render();
 			}.bind(this),
+			"redis_statistics",
 			["redis_stats_sse"],
 		);
 	};
