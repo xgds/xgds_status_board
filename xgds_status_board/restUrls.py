@@ -26,4 +26,5 @@ urlpatterns = [url(r'^announcementsJSON$', views.statusBoardAnnouncementsJSON),
                url(r'^multiSubsystemStatusJson/$', views.multiSubsystemStatusJson, {}, 'xgds_status_board_multiSubsystemStatusJson'),
                url(r'^processListJson$', views.pycroraptorProcessListJson, {}, 'xgds_status_board_pycroraptorProcessListJson'),
                url(r'^persistentErrors$', views.persistentErrorsListJson, {}, 'xgds_status_board_persistentErrorsListJson'),
+               url(r'^deleteError$', views.persistentErrorsDelete, {}, 'xgds_status_board_persistentErrorsDelete'),
                ]

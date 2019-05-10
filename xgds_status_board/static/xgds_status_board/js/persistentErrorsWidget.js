@@ -1,7 +1,8 @@
 $(function() {
-	function Widget(container, url) {
+	function Widget(container, url, deleteUrl) {
 		this.container = container;
 		this.url = url;
+		this.deleteUrl = deleteUrl;
 		this.errors = {};
 		this.initialize();
 		return this;
@@ -12,7 +13,17 @@ $(function() {
 		for (let key in this.errors) // this.errors is an object (i.e. {})
 		{
 			let value = this.errors[key];
-			string += "<tr><td>" + moment.unix(value.timestamp).utc().format("YYYY/MM/DD HH:mm:ss") + "</td><td>" + key + "</td><td>" + value.error + "</td></tr>";
+			string += ("<tr><td>" + 
+			moment.unix(value.timestamp).utc().format(
+				"YYYY/MM/DD HH:mm:ss") + 
+				"</td><td>" +
+				key +
+				"</td><td>" + 
+				value.error + 
+				"</td><td>" + 
+				'<button value="' + key + '">Clear</button>' +
+				"</td></tr>"
+			);
 		}
 		return new Handlebars.SafeString(string);
 	}
@@ -46,6 +57,15 @@ $(function() {
 	Widget.prototype.render = function() {
 		this.container.html(
 			$(this.template(this.buildDataObject()))
+		)
+		var deleteUrl = this.deleteUrl;
+		this.container.find("button").click(
+			function () {
+				$.getJSON(
+					deleteUrl + "?key=" + $(this).attr("value"),
+					function (e) {},
+				);
+			}
 		);
 	};
 

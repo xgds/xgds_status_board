@@ -46,6 +46,7 @@
       'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '{{ XGDS_STATUS_BOARD_PROCESS_STATUS_URL }}',
       'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '{{ XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL }}',
       'XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL': '{{ XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL }}',
+      'XGDS_STATUS_BOARD_DELETE_ERROR_URL': '{{ XGDS_STATUS_BOARD_DELETE_ERROR_URL }}',
       'dataUrl': '{{settings.DATA_URL}}'
   };
 {% endblock %}
@@ -69,7 +70,7 @@
 
   $('#container').append('<div id="persistent_errors_container"></div>');
   var container = $('#persistent_errors_container');
-  widget = new xgds_status_board.PersistentErrorsWidget(container, settings.XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL);
+  widget = new xgds_status_board.PersistentErrorsWidget(container, settings.XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL, settings.XGDS_STATUS_BOARD_DELETE_ERROR_URL);
   widget.update();
 
   $('#container').append('<div id="sse_statistics_container"></div>');

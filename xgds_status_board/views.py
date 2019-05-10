@@ -36,7 +36,7 @@ from geocamUtil.loader import LazyGetModelByName
 from xgds_status_board.models import StatusboardAnnouncement, StatusboardEvent, SubsystemGroup, Subsystem
 from xgds_status_board import settings
 
-from xgds_core.util import get_persisted_errors
+from xgds_core.util import get_persisted_errors, delete_persisted_error
 
 if settings.PYRAPTORD_SERVICE:
     from xgds_status_board.scripts.getPycroraptorStatus import PycroraptorStatus
@@ -253,6 +253,7 @@ def showSubsystemStatus(request):
                    'XGDS_STATUS_BOARD_SUBSYSTEM_STATUS_URL': '/xgds_status_board/subsystemStatusJson/',
                    'XGDS_STATUS_BOARD_PROCESS_STATUS_URL': '/xgds_status_board/processListJson',
                    'XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL': '/xgds_status_board/persistentErrors',
+                   'XGDS_STATUS_BOARD_DELETE_ERROR_URL': '/xgds_status_board/deleteError',
                    },
                   )
 
@@ -290,3 +291,9 @@ if settings.PYRAPTORD_SERVICE:
 def persistentErrorsListJson(request):
     persisted_errors = get_persisted_errors()
     return HttpResponse(json.dumps(persisted_errors, cls=DatetimeJsonEncoder), content_type='application/json')
+
+@never_cache
+def persistentErrorsDelete(request):
+    errorKey = request.GET["key"]
+    delete_persisted_error(errorKey)
+    return HttpResponse("", content_type='application/json')
