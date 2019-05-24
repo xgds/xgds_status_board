@@ -68,14 +68,16 @@
   widget = new xgds_status_board.ProcessStatusWidget(container, settings.XGDS_STATUS_BOARD_PROCESS_STATUS_URL);
   widget.update();
 
-  $('#container').append('<div id="persistent_errors_container"></div>');
-  var container = $('#persistent_errors_container');
-  widget = new xgds_status_board.PersistentErrorsWidget(container, settings.XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL, settings.XGDS_STATUS_BOARD_DELETE_ERROR_URL);
-  widget.update();
+  
 
   $('#container').append('<div id="sse_statistics_container"></div>');
   var container = $('#sse_statistics_container');
   widget = new xgds_status_board.SseStatisticsWidget(container, settings.XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL);
+  widget.update();
+  
+  $('#container').append('<div id="persistent_errors_container"></div>');
+  var container = $('#persistent_errors_container');
+  widget = new xgds_status_board.PersistentErrorsWidget(container, settings.XGDS_STATUS_BOARD_PERSISTENT_ERRORS_URL, settings.XGDS_STATUS_BOARD_DELETE_ERROR_URL);
   widget.update();
       
   });
